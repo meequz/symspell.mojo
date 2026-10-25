@@ -1,0 +1,11 @@
+
+ 
+onlyword
+word notanumber
+ok 3
+ 4
+	5
+x  6
+dup 1
+dup 2
+dup 3

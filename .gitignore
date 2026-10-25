@@ -1,0 +1,9 @@
+.pixi/
+build/
+*.mojopkg
+__pycache__/
+bench/data/
+*.idx
+
+# Large generated fixtures (pixi run fixtures)
+tests/fixtures/lookup_*.tsv

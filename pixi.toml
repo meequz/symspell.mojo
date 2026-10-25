@@ -1,0 +1,30 @@
+[workspace]
+name = "symspell"
+version = "0.1.0"
+description = "Fast, memory-lean SymSpell spelling correction in pure Mojo"
+authors = ["Michaś Varantsou <meequz@gmail.com>"]
+license = "MIT"
+channels = ["https://conda.modular.com/max", "conda-forge"]
+platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
+
+[dependencies]
+mojo = "1.2.*"
+
+[tasks]
+build = "mkdir -p build && mojo package src/symspell -o build/symspell.mojopkg"
+fixtures = "bash reference/ensure_fixtures.sh"
+test = { cmd = "bash tests/run_all.sh", depends-on = ["build", "fixtures"] }
+fmt = "mojo format src tests bench examples"
+
+[feature.ref.dependencies]
+python = "3.13.*"
+
+[feature.ref.pypi-dependencies]
+symspellpy = "==6.10.0"
+editdistpy = "*"
+
+[feature.ref.tasks]
+ref = "python reference/generate_all.py"
+
+[environments]
+ref = { features = ["ref"], solve-group = "ref" }

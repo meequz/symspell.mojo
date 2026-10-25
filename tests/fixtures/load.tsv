@@ -1,0 +1,321 @@
+# Dictionary loading fixtures: odd files and the resulting dictionary state.
+# 
+# Input files are written to tests/fixtures/load/. Records:
+#     U  file  term_index  count_index  separator  d  p  t      (load_dictionary)
+#     B  file  term_index  count_index  separator-or-"<None>"   (load_bigram_dictionary)
+#     Y  file  d  p  t                                          (create_dictionary)
+# followed by the outcome:
+#     E  error message            (the call raised)
+#     G  word_count  entry_count  max_length  n_below  bigram_count_min
+#     w  term  count              (one per word, sorted by term)
+#     b  term  count              (one per below-threshold word, sorted)
+#     g  bigram  count            (one per bigram, sorted)
+U	crlf.txt	0	1	 	2	7	1
+G	3	48	6	0	9223372036854775807
+w	apple	10
+w	banana	20
+w	cherry	30
+U	lone_cr.txt	0	1	 	2	7	1
+G	3	48	6	0	9223372036854775807
+w	apple	10
+w	banana	20
+w	cherry	30
+U	mixed_newlines.txt	0	1	 	2	7	1
+G	4	36	5	0	9223372036854775807
+w	four	4
+w	one	1
+w	three	3
+w	two	2
+U	trailing_space.txt	0	1	 	2	7	1
+G	4	54	5	0	9223372036854775807
+w	alpha	5
+w	beta	6
+w	delta	8
+w	gamma	7
+U	bad_lines.txt	0	1	 	2	7	1
+G	3	11	3	0	9223372036854775807
+w		4
+w	dup	6
+w	ok	3
+U	bad_lines.txt	0	1	 	2	7	4
+G	2	8	3	1	9223372036854775807
+w		4
+w	dup	6
+b	ok	3
+U	counts.txt	0	1	 	2	7	1
+G	7	88	6	0	9223372036854775807
+w	arabic	34
+w	max	9223372036854775807
+w	near	9223372036854775807
+w	plus	7
+w	small	1
+w	under	1000
+w	wide	12
+U	counts.txt	0	1	 	2	7	0
+G	9	104	6	0	9223372036854775807
+w	arabic	34
+w	max	9223372036854775807
+w	near	9223372036854775807
+w	neg	0
+w	plus	7
+w	small	1
+w	under	1000
+w	wide	12
+w	zero	0
+U	counts.txt	0	1	 	2	7	1000
+G	3	33	5	4	9223372036854775807
+w	max	9223372036854775807
+w	near	9223372036854775807
+w	under	1000
+b	arabic	34
+b	plus	7
+b	small	1
+b	wide	12
+U	unicode.txt	0	1	 	2	7	1
+G	6	62	6	0	9223372036854775807
+w	Straße	30
+w	é	50
+w	λόγος	20
+w	сям'я	10
+w	漢字	60
+w	😀	40
+U	unicode.txt	0	1	 	1	2	1
+G	6	17	6	0	9223372036854775807
+w	Straße	30
+w	é	50
+w	λόγος	20
+w	сям'я	10
+w	漢字	60
+w	😀	40
+U	separator.txt	0	1	$	2	7	1
+G	4	40	7	0	9223372036854775807
+w		5
+w	abcs of	10956800
+w	of	13151942776
+w	the	23135851162
+U	tabs.txt	0	1	\t	2	7	1
+G	3	32	8	0	9223372036854775807
+w	a	1
+w	b	2
+w	longword	3
+U	tabs.txt	0	2	\t	2	7	1
+G	0	0	0	0	9223372036854775807
+U	columns.txt	1	0	 	2	7	1
+G	3	39	5	0	9223372036854775807
+w	alpha	5
+w	beta	6
+w	gamma	7
+U	invalid_utf8.txt	0	1	 	2	7	1
+E	UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 10: invalid start byte
+U	bigrams.txt	0	2	 	2	7	1
+E	IndexError: list index out of range
+U	random_0.txt	0	1	 	2	7	1
+G	1	4	2	0	9223372036854775807
+w	-$	5
+U	random_0.txt	0	1	$	2	7	2
+G	1	2	1	0	9223372036854775807
+w	-	5
+U	random_1.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_1.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_2.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_2.txt	0	1	$	2	7	2
+G	1	1	0	0	9223372036854775807
+w		5
+U	random_3.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_3.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_4.txt	0	1	 	2	7	1
+G	1	23	8	0	9223372036854775807
+w	 \t\t_$a-5	5
+U	random_4.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_5.txt	0	1	 	2	7	1
+G	1	4	2	0	9223372036854775807
+w	$b	5
+U	random_5.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_6.txt	0	1	 	2	7	1
+G	1	1	0	0	9223372036854775807
+w		5
+U	random_6.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_7.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_7.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_8.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_8.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_9.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_9.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_10.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_10.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_11.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_11.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_12.txt	0	1	 	2	7	1
+G	1	7	3	0	9223372036854775807
+w	$_ 	55
+U	random_12.txt	0	1	$	2	7	2
+G	1	1	0	0	9223372036854775807
+w		5
+U	random_13.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_13.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_14.txt	0	1	 	2	7	1
+G	1	1	0	0	9223372036854775807
+w		10
+U	random_14.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_15.txt	0	1	 	2	7	1
+G	1	29	13	0	9223372036854775807
+w	$_я-\tba$$\t- 😀	5
+U	random_15.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_16.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_16.txt	0	1	$	2	7	2
+G	1	28	7	0	9223372036854775807
+w	-  \tb\t 	55
+U	random_17.txt	0	1	 	2	7	1
+G	1	2	1	0	9223372036854775807
+w	_	5
+U	random_17.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_18.txt	0	1	 	2	7	1
+G	1	8	5	0	9223372036854775807
+w	-😀555	5
+U	random_18.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+U	random_19.txt	0	1	 	2	7	1
+G	0	0	0	0	9223372036854775807
+U	random_19.txt	0	1	$	2	7	2
+G	0	0	0	0	9223372036854775807
+B	bigrams.txt	0	2	<None>
+G	0	0	0	0	3
+g	a b	4
+g	c d	8
+g	lonely 5	7
+g	quick brown	3
+g	the quick	12
+B	bigrams_sep.txt	0	1	$
+G	0	0	0	0	1
+g		1
+g	quick brown	3
+g	the quick	10
+B	crlf.txt	0	1	 
+G	0	0	0	0	10
+g	apple	10
+g	banana	20
+g	cherry	30
+B	separator.txt	0	1	$
+G	0	0	0	0	5
+g		5
+g	abcs of	10956800
+g	of	13151942776
+g	the	23135851162
+B	invalid_utf8.txt	0	1	 
+E	UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 10: invalid start byte
+B	random_0.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_1.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_2.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_3.txt	0	2	<None>
+G	0	0	0	0	55
+g	_ $	55
+B	random_4.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_5.txt	0	2	<None>
+G	0	0	0	0	5
+g	_ aя	5
+B	random_6.txt	0	2	<None>
+G	0	0	0	0	55
+g	_😀 😀a	55
+B	random_7.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_8.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_9.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_10.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_11.txt	0	2	<None>
+G	0	0	0	0	5
+g	😀b_я- a	5
+B	random_12.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_13.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_14.txt	0	2	<None>
+G	0	0	0	0	5
+g	-$ я_b	5
+g	5 яя$😀😀	5
+B	random_15.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_16.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_17.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_18.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+B	random_19.txt	0	2	<None>
+G	0	0	0	0	9223372036854775807
+Y	corpus.txt	2	7	1
+G	20	261	9	0	9223372036854775807
+w	'quoted'	1
+w	2026	1
+w	and	1
+w	a²	1
+w	brown	1
+w	camelcase	1
+w	case	1
+w	don't	1
+w	fox	4
+w	isn't	1
+w	it	1
+w	it’s	1
+w	quick	1
+w	snake	1
+w	stop	1
+w	the	1
+w	word''s	1
+w	λόγος	1
+w	сям'я	1
+w	٣	1
+Y	corpus.txt	2	7	2
+G	1	7	3	19	9223372036854775807
+w	fox	4
+b	'quoted'	1
+b	2026	1
+b	and	1
+b	a²	1
+b	brown	1
+b	camelcase	1
+b	case	1
+b	don't	1
+b	isn't	1
+b	it	1
+b	it’s	1
+b	quick	1
+b	snake	1
+b	stop	1
+b	the	1
+b	word''s	1
+b	λόγος	1
+b	сям'я	1
+b	٣	1
+Y	invalid_utf8.txt	2	7	1
+E	UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 10: invalid start byte

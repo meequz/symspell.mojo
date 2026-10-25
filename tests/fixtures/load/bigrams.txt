@@ -1,0 +1,8 @@
+the quick 10
+quick brown 3
+bad line
+x y notanumber
+the quick 12
+a  b 4
+lonely 5 7
+c	d 8

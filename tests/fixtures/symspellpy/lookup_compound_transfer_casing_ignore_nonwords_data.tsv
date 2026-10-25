@@ -1,0 +1,11 @@
+# Converts symspellpy's JSON test fixtures to the TSV fixture format.
+# 
+# This is a plain format conversion; the values are symspellpy's own.
+# 
+# lookup_compound*.tsv records:
+#     F  typo  dictionary("bigram"/"unigram")  num_results  term  distance  count
+#     r  key  term                       (replacement, only in replaced_words data)
+# word_segmentation.tsv records:
+#     F  typo  edit_distance  term
+F	Whereis th elove hehaD Dated FOREEVER forImuch of thepast who couqdn'tread in sixthgrade AND ins pired him	bigram		Where is the love he haD Dated FOREEVER for much of the past who couldn't read in sixth grade AND inspired him		
+F	Whereis th elove hehaD Dated FOREEVER forImuch of thepast who couqdn'tread in sixthgrade AND ins pired him	unigram		Whereas the love heaD Dated FOREEVER for much of the past who couldn't read in sixth grade AND inspired him		

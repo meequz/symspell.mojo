@@ -1,0 +1,15 @@
+neg -5
+zero 0
+plus +7
+under 1_000
+badunder 1__0
+wide １２
+arabic ٣٤
+sup ²
+huge 92233720368547758081
+max 9223372036854775807
+max 1
+near 9223372036854775806
+near 1
+near 5
+small 1

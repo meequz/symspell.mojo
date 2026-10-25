@@ -1,0 +1,12 @@
+# Converts symspellpy's JSON test fixtures to the TSV fixture format.
+# 
+# This is a plain format conversion; the values are symspellpy's own.
+# 
+# lookup_compound*.tsv records:
+#     F  typo  dictionary("bigram"/"unigram")  num_results  term  distance  count
+#     r  key  term                       (replacement, only in replaced_words data)
+# word_segmentation.tsv records:
+#     F  typo  edit_distance  term
+F	thequickbrownfoxjumpsoverthelazydog	0	the quick brown fox jumps over the lazy dog
+F	itwasabrightcolddayinaprilandtheclockswerestrikingthirteen	0	it was a bright cold day in april and the clocks were striking thirteen
+F	itwasthebestoftimesitwastheworstoftimesitwastheageofwisdomitwastheageoffoolishness	0	it was the best of times it was the worst of times it was the age of wisdom it was the age of foolishness

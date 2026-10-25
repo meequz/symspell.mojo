@@ -1,0 +1,1377 @@
+# lookup_compound and word_segmentation fixtures.
+# 
+# lookup_compound files:
+#     C  dictionary  bigrams-or-"-"  d  p  t
+#     K  phrase  med  ignore_non_words  transfer_casing  split_by_space  ignore_term_with_digits
+#        term  distance  count
+#     R  key  term  distance  count      (replaced_words after all K records of one flag set)
+#     X  (marks the start of a new flag set: the replaced_words map starts empty again)
+# 
+# word_segmentation files:
+#     C  dictionary  d  p  t
+#     W  phrase  med  max_segmentation_word_length-or-"-"
+#        segmented  corrected  distance_sum  log_prob_sum
+# A call that raises has "E" and the message in place of the result fields.
+C	frequency_dictionary_en_82_765.txt	2	7	1
+W	whereisthelove	0	-	where is the love	where is the love	3	-11.145625803541458
+W	whereisthelove	0	11	where is the love	where is the love	3	-11.145625803541458
+W	whereisthelove	1	-	whereis the love	whereas the love	3	-10.19820236031625
+W	whereisthelove	1	11	whereis the love	whereas the love	3	-10.19820236031625
+W	whereisthelove	2	-	whereis the love	whereas the love	3	-10.19820236031625
+W	whereisthelove	2	11	whereis the love	whereas the love	3	-10.19820236031625
+W	thebigjest playrs	0	-	the big jest play rs	the big jest play rs	5	-28.237268927718603
+W	thebigjest playrs	0	11	the big jest play rs	the big jest play rs	5	-28.237268927718603
+W	thebigjest playrs	1	-	the bigjest playrs	the biggest players	3	-10.468794276917887
+W	thebigjest playrs	1	11	the bigjest playrs	the biggest players	3	-10.468794276917887
+W	thebigjest playrs	2	-	the bigjest playrs	the biggest players	3	-10.468794276917887
+W	thebigjest playrs	2	11	the bigjest playrs	the biggest players	3	-10.468794276917887
+W	Canyureadthis	0	-	Can yu read this	Can yu read this	5	-21.931205453095348
+W	Canyureadthis	0	11	Can yu read this	Can yu read this	5	-21.931205453095348
+W	Canyureadthis	1	-	Cany uread this	Can read this	4	-8.920520456795352
+W	Canyureadthis	1	11	Cany uread this	Can read this	4	-8.920520456795352
+W	Canyureadthis	2	-	Can yuread this	Can read this	4	-8.920520456795352
+W	Canyureadthis	2	11	Can yuread this	Can read this	4	-8.920520456795352
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	0	-	where isth e love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	where isth e love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	26	-103.82282895422115
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	0	11	where isth e love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	where isth e love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	26	-103.82282895422115
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	1	-	where isth elove hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	where isth love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-70.85035625485281
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	1	11	where isth elove hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	where isth love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-70.85035625485281
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	2	-	where isth elovehe had dated for Imuch of the past who couqdn't readin sixth grade and inspired him	where isth slovene had dated for Much of the past who couldn't reading sixth grade and inspired him	19	-73.06715097180701
+W	whereisth elovehehad datedforImuchofthepastwhocouqdn'treadin sixthgradeandinspiredhim	2	11	where isth elovehe had dated for Imuch of the past who couqdn't readin sixth grade and inspired him	where isth slovene had dated for Much of the past who couldn't reading sixth grade and inspired him	19	-73.06715097180701
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	0	-	int edh irdqar ter of last j ear he had learned of case k ret plan	int edh irdqar ter of last j ear he had learned of case k ret plan	22	-93.53955459032925
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	0	11	int edh irdqar ter of last j ear he had learned of case k ret plan	int edh irdqar ter of last j ear he had learned of case k ret plan	22	-93.53955459032925
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	1	-	inte dhird qarter of last jear hehad learned of case kret plan	into third quarter of last year head learned of case ret plan	16	-43.80515789546545
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	1	11	inte dhird qarter of last jear hehad learned of case kret plan	into third quarter of last year head learned of case ret plan	16	-43.80515789546545
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	2	-	in tedhird qarter of last jear he had learned of case kret plan	in third quarter of last year he had learned of case ret plan	16	-44.98374908338575
+W	intedhirdqarteroflast jearhehadlearnedofcasekretplan	2	11	in tedhird qarter of last jear he had learned of case kret plan	in third quarter of last year he had learned of case ret plan	16	-44.98374908338575
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	0	-	the big jest play rs in test rog somme r films late with p let y of fun n	the big jest play rs in test rog somme r films late with p let y of fun n	27	-123.69864738713567
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	0	11	the big jest play rs in test rog somme r films late with p let y of fun n	the big jest play rs in test rog somme r films late with p let y of fun n	27	-123.69864738713567
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	1	-	the bigjest playr sinte strog sommer films late withp lety offu nn	the biggest play site strong summer films late with let off in	20	-42.33919666812567
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	1	11	the bigjest playr sinte strog sommer films late withp lety offu nn	the biggest play site strong summer films late with let off in	20	-42.33919666812567
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	2	-	the bigjest playrs intestro gsommer films late with pletyoff unn	the biggest players investor summer films late with playoff inn	18	-40.22839609334341
+W	thebigjestplayrsintestrogsommerfilmslatewithpletyoffunn	2	11	the bigjest playrs intestro gsommer films late with pletyoff unn	the biggest players investor summer films late with playoff inn	18	-40.22839609334341
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	0	-	Can yu read this message despite the ho rib les ppe ling msi takes	Can yu read this message despite the ho rib les ppe ling msi takes	22	-92.67248373855527
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	0	11	Can yu read this message despite the ho rib les ppe ling msi takes	Can yu read this message despite the ho rib les ppe ling msi takes	22	-92.67248373855527
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	1	-	Can yure ad this message despite theh oribles ppeling msitakes	Can sure and this message despite the orioles peeling mistakes	14	-37.882499899609506
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	1	11	Can yure ad this message despite theh oribles ppeling msitakes	Can sure and this message despite the orioles peeling mistakes	14	-37.882499899609506
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	2	-	Can yuread this message despite the horible sppeling msitakes	Can read this message despite the horrible spelling mistakes	13	-34.027831738065984
+W	Can yureadthismessagedespitethehoriblesppelingmsitakes	2	11	Can yuread this message despite the horible sppeling msitakes	Can read this message despite the horrible spelling mistakes	13	-34.027831738065984
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	0	-	where isth e love 123 he had dated for I much of THE PAST who co uqdn't read in SIXTH grade and inspired him	where isth e love 123 he had dated for I much of The Past who co uqdn't read in Sixth grade and inspired him	29	-117.83351395052115
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	0	11	where isth e love 123 he had dated for I much of THE PAST who co uqdn't read in SIXTH grade and inspired him	where isth e love 123 he had dated for I much of The Past who co uqdn't read in Sixth grade and inspired him	29	-117.83351395052115
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	1	-	where isth elove 123 hehad dated for Imuch of THE PAST who couqdn't readin SIXTH grade and inspired him	where isth love 123 head dated for Much of The Past who couldn't reading Sixth grade and inspired him	22	-84.86104125115281
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	1	11	where isth elove 123 hehad dated for Imuch of THE PAST who couqdn't readin SIXTH grade and inspired him	where isth love 123 head dated for Much of The Past who couldn't reading Sixth grade and inspired him	22	-84.86104125115281
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	2	-	where isth elove1 23he had dated for Imuch of THE PAST who couqdn't readin SIXTH grade and inspired him	where isth love the had dated for Much of The Past who couldn't reading Sixth grade and inspired him	21	-71.86959610784201
+W	whereisth elove123hehaddated forImuchofTHEPASTwho couqdn'treadin SIXTHgradeandinspiredhim	2	11	where isth elove1 23he had dated for Imuch of THE PAST who couqdn't readin SIXTH grade and inspired him	where isth love the had dated for Much of The Past who couldn't reading Sixth grade and inspired him	21	-71.86959610784201
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	0	-	int eDH IRD1qar ter of last j ear he had learned of case k ret plan	int edh IRD1qar ter of last j ear he had learned of case k ret plan	25	-94.53955459032925
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	0	11	int eDH IRD1qar ter of last j ear he had learned of case k ret plan	int edh IRD1qar ter of last j ear he had learned of case k ret plan	25	-94.53955459032925
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	1	-	inte DHIRD 1 qarter of lastj earhe had learned of ca sekret plan	into Third a quarter of last earle had learned of a secret plan	19	-45.415477783929
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	1	11	inte DHIRD 1 qarter of lastj earhe had learned of ca sekret plan	into Third a quarter of last earle had learned of a secret plan	19	-45.415477783929
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	2	-	in teDHIRD 1qarter of last jear hehad learned of ca sekret plan	in third quarter of last year head learned of a secret plan	18	-40.08199238759125
+W	inteDHIRD1qarteroflastjearhehadlearnedofca sekretplan	2	11	in teDHIRD 1qarter of last jear hehad learned of ca sekret plan	in third quarter of last year head learned of a secret plan	18	-40.08199238759125
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	0	-	the big jest play rs in test roG SOmme r films late with P LET Yof12 fun n	the big jest play rs in test roG Somme r films late with P Let Yof12 fun n	30	-125.80695230142386
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	0	11	the big jest play rs in test roG SOmme r films late with P LET Yof12 fun n	the big jest play rs in test roG Somme r films late with P Let Yof12 fun n	30	-125.80695230142386
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	1	-	the bigjest playr sinte stroG SOmmer films latew ith PLETY of1 2 funn	the biggest play site strong Summer films later with Plenty of a fun	21	-45.505259325797745
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	1	11	the bigjest playr sinte stroG SOmmer films latew ith PLETY of1 2 funn	the biggest play site strong Summer films later with Plenty of a fun	21	-45.505259325797745
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	2	-	the bigjest playrs intestro GSOmmer films latew ith PLETY of1 2funn	the biggest players investor Summer films later with Plenty of fun	20	-41.059934556307006
+W	thebigjestplayrsintestroGSOmmerfilmslatew ith PLETYof12funn	2	11	the bigjest playrs intestro GSOmmer films latew ith PLETY of1 2funn	the biggest players investor Summer films later with Plenty of fun	20	-41.059934556307006
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	0	-	Can yu read tHIS message despite the hor ible1234sppe ling msi takes	Can yu read this message despite the hor ible1234sppe ling msi takes	28	-84.84979629034672
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	0	11	Can yu read tHIS message despite the hor i ble1234sppe ling msi takes	Can yu read this message despite the hor i ble1234sppe ling msi takes	28	-86.37105366272026
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	1	-	Cany uread tHIS message despite the horible 1234s ppeling msitakes	Can read this message despite the horrible 1234s peeling mistakes	19	-51.039637210888024
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	1	11	Cany uread tHIS message despite the horible 1234s ppeling msitakes	Can read this message despite the horrible 1234s peeling mistakes	19	-51.039637210888024
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	2	-	Can yuread tHIS message despite the horible1 23 4sppelin gmsitakes	Can read this message despite the horrible of zeppelin mistakes	19	-36.28268792776802
+W	CanyureadtHISmessagedespitethehorible1234sppelingmsitakes	2	11	Can yuread tHIS message despite the horible1 23 4sppelin gmsitakes	Can read this message despite the horrible of zeppelin mistakes	19	-36.28268792776802
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	0	-	Can yu read tHIS message despite the ho rib leA B1234sppe ling msi takes	Can yu read this message despite the ho rib lea B1234sppe ling msi takes	29	-99.48536426335484
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	0	11	Can yu read tHIS message despite the ho rib leA B1234sppe ling msi takes	Can yu read this message despite the ho rib lea B1234sppe ling msi takes	29	-99.48536426335484
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	1	-	Cany uread tHIS message despite the horible AB1234s ppeling msitakes	Can read this message despite the horrible AB1234s peeling mistakes	21	-53.039637210888024
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	1	11	Cany uread tHIS message despite the horible AB1234s ppeling msitakes	Can read this message despite the horrible AB1234s peeling mistakes	21	-53.039637210888024
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	2	-	Can yuread tHIS message despite the horibleA B12 34s ppeling msitakes	Can read this message despite the horrible By is peeling mistakes	20	-39.852642784367134
+W	CanyureadtHISmessagedespitethehoribleAB1234sppelingmsitakes	2	11	Can yuread tHIS message despite the horibleA B12 34s ppeling msitakes	Can read this message despite the horrible By is peeling mistakes	20	-39.852642784367134
+W	PIonleave,arrangeCo-Itodoscreening	0	-	PIon leave, arrange Co I to do screening	Pion leave, arrange Co I to do screening	8	-43.98523274832581
+W	PIonleave,arrangeCo-Itodoscreening	0	11	PIon leave, arrange Co I to do screening	Pion leave, arrange Co I to do screening	8	-43.98523274832581
+W	PIonleave,arrangeCo-Itodoscreening	1	-	PIon leave ,arrange Co Itod oscreening	Pion leave arrange Co Ipod screening	8	-28.936754858967543
+W	PIonleave,arrangeCo-Itodoscreening	1	11	PIon leave ,arrange Co Itod oscreening	Pion leave arrange Co Ipod screening	8	-28.936754858967543
+W	PIonleave,arrangeCo-Itodoscreening	2	-	PIon leave ,arrangeC oItodo screening	Pion leave arranged outdo screening	8	-27.298163786639382
+W	PIonleave,arrangeCo-Itodoscreening	2	11	PIon leave ,arrangeC oItodo screening	Pion leave arranged outdo screening	8	-27.298163786639382
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	0	-	where is the love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	where is the love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	25	-87.94012607452949
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	0	11	where is the love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	where is the love he had dated for I much of the past who co uqdn't read in sixth grade and inspired him	25	-87.94012607452949
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	1	-	whereis the love hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	whereas the love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-66.03091492823592
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	1	11	whereis the love hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	whereas the love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-66.03091492823592
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	2	-	whereis the love hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	whereas the love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-66.03091492823592
+W	whereisthelovehehaddatedforImuchofthepast whocouqdn'treadin sixthgrade andinspiredhim	2	11	whereis the love hehad dated for Imuch of the past who couqdn't readin sixth grade and inspired him	whereas the love head dated for Much of the past who couldn't reading sixth grade and inspired him	19	-66.03091492823592
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	0	-	int edh irdqar ter of last j ear he had learned of case k ret plan	int edh irdqar ter of last j ear he had learned of case k ret plan	22	-93.53955459032925
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	0	11	int edh irdqar ter of last j ear he had learned of case k ret plan	int edh irdqar ter of last j ear he had learned of case k ret plan	22	-93.53955459032925
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	1	-	inte dhird qarter of lastj earhe had learned of case kret plan	into third quarter of last earle had learned of case ret plan	16	-45.806915037351736
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	1	11	inte dhird qarter of lastj earhe had learned of case kret plan	into third quarter of last earle had learned of case ret plan	16	-45.806915037351736
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	2	-	in tedhird qarter of last jear hehad learned of case kret plan	in third quarter of last year head learned of case ret plan	16	-42.52597260686981
+W	intedhirdqarter oflastjearhehadlearnedofcasekretplan	2	11	in tedhird qarter of last jear hehad learned of case kret plan	in third quarter of last year head learned of case ret plan	16	-42.52597260686981
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	0	-	the big jest play rs in test rog somme r films late with p let y of fun n	the big jest play rs in test rog somme r films late with p let y of fun n	26	-123.69864738713567
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	0	11	the big jest play rs in test rog somme r films late with p let y of fun n	the big jest play rs in test rog somme r films late with p let y of fun n	26	-123.69864738713567
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	1	-	the bigjest playr sinte strog sommer films late withp lety offu nn	the biggest play site strong summer films late with let off in	19	-42.33919666812567
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	1	11	the bigjest playr sinte strog sommer films late withp lety offu nn	the biggest play site strong summer films late with let off in	19	-42.33919666812567
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	2	-	the bigjest playrs intestro gsommer films late withp lety offu nn	the biggest players investor summer films late with let off in	19	-39.94641486449077
+W	thebigjestplayrsintestrogsommerfilmslatewithplety offunn	2	11	the bigjest playrs intestro gsommer films late withp lety offu nn	the biggest players investor summer films late with let off in	19	-39.94641486449077
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	0	-	Where isth e love he haD Dated for I much of the past who co uqdn't read in sixth grade AND inspired him	Where isth e love he had Dated for I much of the past who co uqdn't read in sixth grade And inspired him	27	-103.82282895422115
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	0	11	Where isth e love he haD Dated for I much of the past who co uqdn't read in sixth grade AND inspired him	Where isth e love he had Dated for I much of the past who co uqdn't read in sixth grade And inspired him	27	-103.82282895422115
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	1	-	Where isth elove hehaD Dated for Imuch of the past who couqdn't readin sixth grade AND inspired him	Where isth love head Dated for Much of the past who couldn't reading sixth grade And inspired him	20	-70.85035625485281
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	1	11	Where isth elove hehaD Dated for Imuch of the past who couqdn't readin sixth grade AND inspired him	Where isth love head Dated for Much of the past who couldn't reading sixth grade And inspired him	20	-70.85035625485281
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	2	-	Where isth elovehe haD Dated for Imuch of the past who couqdn't readin sixth grade AND inspired him	Where isth slovene had Dated for Much of the past who couldn't reading sixth grade And inspired him	20	-73.06715097180701
+W	Whereisth elovehehaDDatedforImuchofthepastwhocouqdn'treadin sixthgradeANDinspiredhim	2	11	Where isth elovehe haD Dated for Imuch of the past who couqdn't readin sixth grade AND inspired him	Where isth slovene had Dated for Much of the past who couldn't reading sixth grade And inspired him	20	-73.06715097180701
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	0	-	Where is the love he haD Dated FORE EVER for I much of the past who co uqdn't read in sixth grade AND inspired him	Where is the love he had Dated Fore Ever for I much of the past who co uqdn't read in sixth grade And inspired him	27	-97.58396224979909
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	0	11	Where is the love he haD Dated FORE EVER for I much of the past who co uqdn't read in sixth grade AND inspired him	Where is the love he had Dated Fore Ever for I much of the past who co uqdn't read in sixth grade And inspired him	27	-97.58396224979909
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	1	-	Whereis the love hehaD Dated FOREEVER for Imuch of the past who couqdn't readin sixth grade AND inspired him	Whereas the love head Dated Forever for Much of the past who couldn't reading sixth grade And inspired him	21	-70.80150360194808
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	1	11	Whereis the love hehaD Dated FOREEVER for Imuch of the past who couqdn't readin sixth grade AND inspired him	Whereas the love head Dated Forever for Much of the past who couldn't reading sixth grade And inspired him	21	-70.80150360194808
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	2	-	Whereis the love hehaD Dated FOREEVER for Imuch of the past who couqdn't readin sixth grade AND inspired him	Whereas the love head Dated Forever for Much of the past who couldn't reading sixth grade And inspired him	21	-70.80150360194808
+W	WhereisthelovehehaDDatedFOREEVER forImuchofthepastwho couqdn'treadinsixthgrade ANDinspiredhim	2	11	Whereis the love hehaD Dated FOREEVER for Imuch of the past who couqdn't readin sixth grade AND inspired him	Whereas the love head Dated Forever for Much of the past who couldn't reading sixth grade And inspired him	21	-70.80150360194808
+W	fontelectricityexperime nts	0	-	font electricity experiments	font electricity experiments	3	-14.22690417925175
+W	fontelectricityexperime nts	0	11	font electricity experiment s	font electricity experiment s	5	-26.204292879942027
+W	fontelectricityexperime nts	1	-	font electricity experiments	font electricity experiments	3	-14.22690417925175
+W	fontelectricityexperime nts	1	11	font electricity experiment s	font electricity experiment a	5	-16.246150849497855
+W	fontelectricityexperime nts	2	-	font electricity experiments	font electricity experiments	3	-14.22690417925175
+W	fontelectricityexperime nts	2	11	font electricity experiment s	font electricity experiment a	5	-16.246150849497855
+W	emtzcricketplanettracewheelfiles	0	-	emtz cricket planet trace wheel files	emtz cricket planet trace wheel files	9	-38.01324741546169
+W	emtzcricketplanettracewheelfiles	0	11	emtz cricket planet trace wheel files	emtz cricket planet trace wheel files	9	-38.01324741546169
+W	emtzcricketplanettracewheelfiles	1	-	emtz cricket planett race wheel files	metz cricket planet race wheel files	7	-28.276557314463684
+W	emtzcricketplanettracewheelfiles	1	11	emtz cricket planett race wheel files	metz cricket planet race wheel files	7	-28.276557314463684
+W	emtzcricketplanettracewheelfiles	2	-	emtz cricket planett race wheel files	metz cricket planet race wheel files	7	-28.276557314463684
+W	emtzcricketplanettracewheelfiles	2	11	emtz cricket planett race wheel files	metz cricket planet race wheel files	7	-28.276557314463684
+W	oauwnseesratgenerateddeploymentappearing	0	-	oauwn sees rat generated deployment appearing	oauwn sees rat generated deployment appearing	10	-40.3287854308196
+W	oauwnseesratgenerateddeploymentappearing	0	11	oauwn sees rat generated deployment appearing	oauwn sees rat generated deployment appearing	10	-40.3287854308196
+W	oauwnseesratgenerateddeploymentappearing	1	-	oa uwn seesr at generated deployment appearing	of own sees at generated deployment appearing	9	-27.52487997518552
+W	oauwnseesratgenerateddeploymentappearing	1	11	oa uwn seesr at generated deployment appearing	of own sees at generated deployment appearing	9	-27.52487997518552
+W	oauwnseesratgenerateddeploymentappearing	2	-	oauwn sees rat generated deployment appearing	own sees rat generated deployment appearing	7	-27.96327550150808
+W	oauwnseesratgenerateddeploymentappearing	2	11	oauwn sees rat generated deployment appearing	own sees rat generated deployment appearing	7	-27.96327550150808
+W	neiltaggedcurrentlyformationshore	0	-	neil tagged currently formation shore	neil tagged currently formation shore	4	-23.67013452606868
+W	neiltaggedcurrentlyformationshore	0	11	neil tagged currently formation shore	neil tagged currently formation shore	4	-23.67013452606868
+W	neiltaggedcurrentlyformationshore	1	-	neil tagged currently formations hore	neil tagged currently formations more	5	-22.603142843197606
+W	neiltaggedcurrentlyformationshore	1	11	neil tagged currently formations hore	neil tagged currently formations more	5	-22.603142843197606
+W	neiltaggedcurrentlyformationshore	2	-	neil tagged currently formations hore	neil tagged currently formations more	5	-22.603142843197606
+W	neiltaggedcurrentlyformationshore	2	11	neil tagged currently formations hore	neil tagged currently formations more	5	-22.603142843197606
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	0	-	24 cAlcuLateD haLL editiNg THrOuGh manUf CAt urtrB DEP mAde d rio	24 calculated hall editing Through manuf Cat urtrB Dep made d rio	18	-82.76505618649597
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	0	11	24 cAlcuLateD haLL editiNg THrOuGh manUf CAt urtrB DEP mAde d rio	24 calculated hall editing Through manuf Cat urtrB Dep made d rio	18	-82.76505618649597
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	1	-	2 4cAlcuLateD haLL editiNg THrOuGh manUf CAtur trBDE P mAde drio	a calculated hall editing Through manuf Cater trade A made rio	15	-45.6385927609518
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	1	11	2 4cAlcuLateD haLL editiNg THrOuGh manUf CAtur trBDE P mAde drio	a calculated hall editing Through manuf Cater trade A made rio	15	-45.6385927609518
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	2	-	24cAlcuLateD haLL editiNg THrOuGh manUfCAturtr BDEP mAde drio	calculated hall editing Through manufacturer Dep made rio	12	-35.458722388422125
+W	24cAlcuLateDhaLLeditiNgTHrOuGhmanUfCAturtrBDEP mAd e drio	2	11	24cAlcuLate DhaLL editiNg THrOuGh manUfCAtur trBDEP mAde drio	calculate Shall editing Through manufacture trade made rio	14	-34.169408084507296
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	0	-	int re stu 1 st spirit canyon yao generate telling smart don't	int re stu 1 st spirit canyon yao generate telling smart don't	13	-73.26802806050432
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	0	11	int re stu 1 st spirit canyon yao generate telling smart don't	int re stu 1 st spirit canyon yao generate telling smart don't	13	-73.26802806050432
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	1	-	intrest u 1st spirit canyon yao generatet elling smart don't	interest a st spirit canyon lao generated selling smart don't	13	-44.7129715953468
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	1	11	intrest u 1st spirit canyon yao generatet elling smart don't	interest a st spirit canyon lao generated selling smart don't	13	-44.7129715953468
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	2	-	intrestu 1st spirit canyon yaoge nerate telling smart don't	interest st spirit canyon page negate telling smart don't	12	-42.45412595773047
+W	intrestu 1stspiritcanyon yaogeneratetellingsmartdon't	2	11	intrestu 1st spirit canyon yaoge nerate telling smart don't	interest st spirit canyon page negate telling smart don't	12	-42.45412595773047
+W	evening	0	-	evening	evening	0	-4.482986747752736
+W	evening	0	11	evening	evening	0	-4.482986747752736
+W	evening	1	-	evening	evening	0	-4.482986747752736
+W	evening	1	11	evening	evening	0	-4.482986747752736
+W	evening	2	-	evening	evening	0	-4.482986747752736
+W	evening	2	11	evening	evening	0	-4.482986747752736
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	0	-	newsletter vol bs ike ssv existing pro spec l tiv eit’s marc credits arizona	newsletter vol bs ike ssv existing pro spec l tiv eit’s marc credits arizona	21	-103.26684264708875
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	0	11	newsletter vol bs ike ssv existing pro spec l tiv eit’s marc credits arizona	newsletter vol bs ike ssv existing pro spec l tiv eit’s marc credits arizona	21	-103.26684264708875
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	1	-	newsletter volb sikes sve xisting prospecltive it’s marc credits arizona	newsletter vol sites see listing prospective its marc credits arizona	12	-41.11206645453093
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	1	11	newsletter volb sikes sve xisting prospecl tive it’s marc credits arizona	newsletter vol sites see listing prospect time its marc credits arizona	14	-44.33884284057117
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	2	-	newsletter vol bsikess vexisting prospecltive it’s marc credits arizona	newsletter vol business existing prospective its marc credits arizona	10	-37.94456030820323
+W	newsletter volbsikessvexistingprospecltiveit’s marc creditsarizona	2	11	newsletter vol bsikess vexistingp rospecltive it’s marc credits arizona	newsletter vol business existing respective its marc credits arizona	12	-37.30289773002058
+W	Babystones	0	-	Baby stones	Baby stones	1	-8.8498426175806
+W	Babystones	0	11	Baby stones	Baby stones	1	-8.8498426175806
+W	Babystones	1	-	Babys tones	Baby tones	2	-8.824361834583938
+W	Babystones	1	11	Babys tones	Baby tones	2	-8.824361834583938
+W	Babystones	2	-	Babys tones	Baby tones	2	-8.824361834583938
+W	Babystones	2	11	Babys tones	Baby tones	2	-8.824361834583938
+W	It’s	0	-	It ’s	It ’s	3	-15.572174960932141
+W	It’s	0	11	It ’s	It ’s	3	-15.572174960932141
+W	It’s	1	-	It’s	Its	1	-3.2900067052093878
+W	It’s	1	11	It’s	Its	1	-3.2900067052093878
+W	It’s	2	-	It’s	Its	1	-3.2900067052093878
+W	It’s	2	11	It’s	Its	1	-3.2900067052093878
+W	centralfranchiseprior depression3.14separatedsuites ask composite	0	-	central franchise prior depression 3.14 separated suites ask composite	central franchise prior depression 3.14 separated suites ask composite	9	-51.50526141247001
+W	centralfranchiseprior depression3.14separatedsuites ask composite	0	11	central franchise prior depression 3.14 separated suites ask composite	central franchise prior depression 3.14 separated suites ask composite	9	-51.50526141247001
+W	centralfranchiseprior depression3.14separatedsuites ask composite	1	-	central franchise prior depression3 .14 separated suites ask composite	central franchise prior depression .14 separated suites ask composite	9	-50.50526141247001
+W	centralfranchiseprior depression3.14separatedsuites ask composite	1	11	central franchise prior depression 3.1 4separated suites ask composite	central franchise prior depression 3.1 separated suites ask composite	9	-50.50526141247001
+W	centralfranchiseprior depression3.14separatedsuites ask composite	2	-	central franchise prior depression3. 14separated suites ask composite	central franchise prior depression separated suites ask composite	8	-36.49457641617001
+W	centralfranchiseprior depression3.14separatedsuites ask composite	2	11	central franchise prior depression 3. 14separated suites ask composite	central franchise prior depression of separated suites ask composite	9	-38.386271501881815
+W	owned al readypowdzrdon't	0	-	owned al ready pow dzr don't	owned al ready pow dzr don't	6	-38.76230923343699
+W	owned al readypowdzrdon't	0	11	owned al ready pow dzr don't	owned al ready pow dzr don't	6	-38.76230923343699
+W	owned al readypowdzrdon't	1	-	owned al ready powdzr don't	owned al ready powder don't	3	-24.033618236529716
+W	owned al readypowdzrdon't	1	11	owned al ready powdzr don't	owned al ready powder don't	3	-24.033618236529716
+W	owned al readypowdzrdon't	2	-	owned al ready powdzr don't	owned al ready powder don't	3	-24.033618236529716
+W	owned al readypowdzrdon't	2	11	owned al ready powdzr don't	owned al ready powder don't	3	-24.033618236529716
+W	headingoceanskipwildlifeceramicm chile24	0	-	heading ocean skip wildlife ceramic m chile 24	heading ocean skip wildlife ceramic m chile 24	9	-53.3915233729742
+W	headingoceanskipwildlifeceramicm chile24	0	11	heading ocean skip wildlife ceramic m chile 24	heading ocean skip wildlife ceramic m chile 24	9	-53.3915233729742
+W	headingoceanskipwildlifeceramicm chile24	1	-	heading ocean skip wildlife ceramicm chile2 4	heading ocean skip wildlife ceramic chile a	8	-30.422696346230026
+W	headingoceanskipwildlifeceramicm chile24	1	11	heading ocean skip wildlife ceramicm chile2 4	heading ocean skip wildlife ceramic chile a	8	-30.422696346230026
+W	headingoceanskipwildlifeceramicm chile24	2	-	heading ocean skip wildlife ceramicm chile24	heading ocean skip wildlife ceramic chile	7	-28.370153380374195
+W	headingoceanskipwildlifeceramicm chile24	2	11	heading ocean skip wildlife ceramicm chile24	heading ocean skip wildlife ceramic chile	7	-28.370153380374195
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	0	-	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	0	11	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	1	-	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	1	11	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	2	-	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	parentshighermotorolabrilliantpointersecondsironsoftware hosted	2	11	parents higher motorola brilliant pointer seconds iron software hosted	parents higher motorola brilliant pointer seconds iron software hosted	7	-39.69666898426263
+W	NASAscreenssignificancefallfoot,	0	-	N AS A screens significance fall foot,	N As A screens significance fall foot,	8	-47.320724497640036
+W	NASAscreenssignificancefallfoot,	0	11	N AS A screens sign if i canc ef all foot,	N As A screens sign if i canc ef all foot,	14	-69.90778499651684
+W	NASAscreenssignificancefallfoot,	1	-	NAS Ascreens significancef all foot,	As Screens significance all foot	8	-19.757180290614166
+W	NASAscreenssignificancefallfoot,	1	11	NAS Ascreens significanc efall foot,	As Screens significant fall foot	9	-20.479728073265278
+W	NASAscreenssignificancefallfoot,	2	-	NAS Ascreens significancef all foot,	As Screens significance all foot	8	-19.757180290614166
+W	NASAscreenssignificancefallfoot,	2	11	NAS Ascreens significanc efall foot,	As Screens significant fall foot	9	-20.479728073265278
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	0	-	nmn tenn do emotional legislation errors emerging sport investors exposure!	nmn tenn do emotional legislation errors emerging sport investors exposure!	11	-67.38743901666231
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	0	11	nmn tenn do emotional  legislation errors emerging sport investors exposure!	nmn tenn do emotional  legislation errors emerging sport investors exposure!	12	-78.39812401296231
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	1	-	nmn tenn do emotional legislation errors emerging sporti nvestors exposure!	non tenn do emotional legislation errors emerging sports investors exposure	11	-44.51617714267092
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	1	11	nmn tenn do emotional legislatio nerrors emerging sporti nvestors exposure!	non tenn do emotional legislation errors emerging sports investors exposure	13	-44.51617714267092
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	2	-	nmntenndo emotional legislation errors emerging sporti nvestors exposure!	nintendo emotional legislation errors emerging sports investors exposure	10	-36.52353153961732
+W	nmntenndo emotional legislationerrorsemergingsportinvestorsexposure!	2	11	nmntenndo emotional legislatio nerrors emerging sporti nvestors exposure!	nintendo emotional legislation errors emerging sports investors exposure	12	-36.52353153961732
+W	commitmentawaypaintsimpleaffairsbut	0	-	commitment away paint simple affairs but	commitment away paint simple affairs but	5	-24.811391491585
+W	commitmentawaypaintsimpleaffairsbut	0	11	commitment away paint simple affairs but	commitment away paint simple affairs but	5	-24.811391491585
+W	commitmentawaypaintsimpleaffairsbut	1	-	commitmenta waypaint simple affairs but	commitment warpaint simple affairs but	6	-23.875551870802624
+W	commitmentawaypaintsimpleaffairsbut	1	11	commitmenta waypaint simple affairs but	commitment warpaint simple affairs but	6	-23.875551870802624
+W	commitmentawaypaintsimpleaffairsbut	2	-	commitment awaypaint simple affairs but	commitment warpaint simple affairs but	6	-23.875551870802624
+W	commitmentawaypaintsimpleaffairsbut	2	11	commitment awaypaint simple affairs but	commitment warpaint simple affairs but	6	-23.875551870802624
+W	william!	0	-	william!	william!	1	-16.244637043819033
+W	william!	0	11	william!	william!	1	-16.244637043819033
+W	william!	1	-	william!	william	1	-4.23395204751903
+W	william!	1	11	william!	william	1	-4.23395204751903
+W	william!	2	-	william!	william	1	-4.23395204751903
+W	william!	2	11	william!	william	1	-4.23395204751903
+W	amendedatching	0	-	amended at ching	amended at ching	2	-13.20866673932024
+W	amendedatching	0	11	amended at ching	amended at ching	2	-13.20866673932024
+W	amendedatching	1	-	amended at ching	amended at ching	2	-13.20866673932024
+W	amendedatching	1	11	amended at ching	amended at ching	2	-13.20866673932024
+W	amendedatching	2	-	amended at ching	amended at ching	2	-13.20866673932024
+W	amendedatching	2	11	amended at ching	amended at ching	2	-13.20866673932024
+W	tdisncovered	0	-	tdisn covered	tdisn covered	6	-20.445465356648064
+W	tdisncovered	0	11	tdisn covered	tdisn covered	6	-20.445465356648064
+W	tdisncovered	1	-	t disncovered	to discovered	3	-6.731877543666723
+W	tdisncovered	1	11	t disncovered	to discovered	3	-6.731877543666723
+W	tdisncovered	2	-	tdisncovered	discovered	2	-4.805303214354649
+W	tdisncovered	2	11	t disncovered	to discovered	3	-6.731877543666723
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	0	-	county chris checking mae lnr ceased payday innovation speaking okay	county chris checking mae lnr ceased payday innovation speaking okay	12	-56.720986691527735
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	0	11	county chris checking mae lnr ceased payday innovation speaking okay	county chris checking mae lnr ceased payday innovation speaking okay	12	-56.720986691527735
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	1	-	county chris checking mae lnr ceased payday innovation speaking okay	county chris checking mae lar ceased payday innovation speaking okay	10	-48.68998604951867
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	1	11	county chris checking mae lnr ceased payday innovation speaking okay	county chris checking mae lar ceased payday innovation speaking okay	10	-48.68998604951867
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	2	-	county chris checking maelnr ceased payday innovation speaking okay	county chris checking mailer ceased payday innovation speaking okay	10	-43.04945605599133
+W	countychrischeckingmaelnrceasedpaydayinnovationspeakingokay	2	11	county chris checking maelnr ceased payday innovation speaking okay	county chris checking mailer ceased payday innovation speaking okay	10	-43.04945605599133
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	0	-	holjly wood usk r name customers shop claimed fortune voice dear athletics	holjly wood usk r name customers shop claimed fortune voice dear athletics	17	-74.95301536334074
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	0	11	holjly wood usk r name customers shop claimed fortune voice dear athletics	holjly wood usk r name customers shop claimed fortune voice dear athletics	17	-74.95301536334074
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	1	-	holjlywood uskrname customers shop claimed fortune voice dear athletics	hollywood username customers shop claimed fortune voice dear athletics	9	-40.66012810928863
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	1	11	holjlywood uskrname customers shop claimed fortune voice dear athletics	hollywood username customers shop claimed fortune voice dear athletics	9	-40.66012810928863
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	2	-	holjlywood uskrname customers shop claimed fortune voice dear athletics	hollywood username customers shop claimed fortune voice dear athletics	9	-40.66012810928863
+W	holjlywooduskrnamecustomersshop claimedfortunevoicedearathletics	2	11	holjlywood uskrname customers shop claimed fortune voice dear athletics	hollywood username customers shop claimed fortune voice dear athletics	9	-40.66012810928863
+W	markeptlacesweet usingwebsitescustomerdisc	0	-	mar kept lace sweet using websites customer disc	mar kept lace sweet using websites customer disc	6	-34.413463490296934
+W	markeptlacesweet usingwebsitescustomerdisc	0	11	mar kept lace sweet using websites customer disc	mar kept lace sweet using websites customer disc	6	-34.413463490296934
+W	markeptlacesweet usingwebsitescustomerdisc	1	-	markeptlace sweet using websites customer disc	marketplace sweet using websites customer disc	5	-25.311673778763854
+W	markeptlacesweet usingwebsitescustomerdisc	1	11	markeptlace sweet using websites customer disc	marketplace sweet using websites customer disc	5	-25.311673778763854
+W	markeptlacesweet usingwebsitescustomerdisc	2	-	markeptlace sweet using websites customer disc	marketplace sweet using websites customer disc	5	-25.311673778763854
+W	markeptlacesweet usingwebsitescustomerdisc	2	11	markeptlace sweet using websites customer disc	marketplace sweet using websites customer disc	5	-25.311673778763854
+W	attorneymorningvneisbagsremarksparagraph annually	0	-	attorney morning vne is bags remarks paragraph annually	attorney morning vne is bags remarks paragraph annually	9	-44.20817179265527
+W	attorneymorningvneisbagsremarksparagraph annually	0	11	attorney morning vne is bags remarks paragraph annually	attorney morning vne is bags remarks paragraph annually	9	-44.20817179265527
+W	attorneymorningvneisbagsremarksparagraph annually	1	-	attorney morningv neis bags remarks paragraph annually	attorney morning news bags remarks paragraph annually	7	-30.99192373306454
+W	attorneymorningvneisbagsremarksparagraph annually	1	11	attorney morningv neis bags remarks paragraph annually	attorney morning news bags remarks paragraph annually	7	-30.99192373306454
+W	attorneymorningvneisbagsremarksparagraph annually	2	-	attorney morningvn eisbags remarks paragraph annually	attorney morning airbags remarks paragraph annually	8	-29.400685907463277
+W	attorneymorningvneisbagsremarksparagraph annually	2	11	attorney morningvn eisbags remarks paragraph annually	attorney morning airbags remarks paragraph annually	8	-29.400685907463277
+W	roadstrategicuemseumbidbroadwaylordrather	0	-	road strategic u ems eum bid broadway lord rather	road strategic u ems eum bid broadway lord rather	12	-57.31653963882101
+W	roadstrategicuemseumbidbroadwaylordrather	0	11	road strategic u ems eum bid broadway lord rather	road strategic u ems eum bid broadway lord rather	12	-57.31653963882101
+W	roadstrategicuemseumbidbroadwaylordrather	1	-	road strategicu emse um bid broadway lord rather	road strategic else us bid broadway lord rather	10	-32.9094218116645
+W	roadstrategicuemseumbidbroadwaylordrather	1	11	road strategicu emse um bid broadway lord rather	road strategic else us bid broadway lord rather	10	-32.9094218116645
+W	roadstrategicuemseumbidbroadwaylordrather	2	-	road strategicu emseum bid broadway lord rather	road strategic museum bid broadway lord rather	9	-30.296793236089357
+W	roadstrategicuemseumbidbroadwaylordrather	2	11	road strategicu emseum bid broadway lord rather	road strategic museum bid broadway lord rather	9	-30.296793236089357
+W	seelctiglocaltook 3.14exchangehaven general chatgged	0	-	seel ctig local took 3.14 exchange haven general chat gged	seel ctig local took 3.14 exchange haven general chat gged	18	-76.58730535723852
+W	seelctiglocaltook 3.14exchangehaven general chatgged	0	11	seel ctig local took 3.14 exchange haven general chat gged	seel ctig local took 3.14 exchange haven general chat gged	18	-76.58730535723852
+W	seelctiglocaltook 3.14exchangehaven general chatgged	1	-	seelct ig local took 3.1 4exchange haven general chatg ged	select in local took 3.1 exchange haven general chat get	14	-47.588299832836746
+W	seelctiglocaltook 3.14exchangehaven general chatgged	1	11	seelct ig local took 3.1 4exchange haven general chatg ged	select in local took 3.1 exchange haven general chat get	14	-47.588299832836746
+W	seelctiglocaltook 3.14exchangehaven general chatgged	2	-	seelctig local took 3. 14exchange haven general chatgged	selecting local took of exchange haven general changed	12	-31.62982014258334
+W	seelctiglocaltook 3.14exchangehaven general chatgged	2	11	seelctig local took 3. 14exchange haven general chatgged	selecting local took of exchange haven general changed	12	-31.62982014258334
+W	mon ths suspension	0	-	months suspension	months suspension	1	-8.860512313366335
+W	mon ths suspension	0	11	months suspension	months suspension	1	-8.860512313366335
+W	mon ths suspension	1	-	months suspension	months suspension	1	-8.860512313366335
+W	mon ths suspension	1	11	months suspension	months suspension	1	-8.860512313366335
+W	mon ths suspension	2	-	months suspension	months suspension	1	-8.860512313366335
+W	mon ths suspension	2	11	months suspension	months suspension	1	-8.860512313366335
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	0	-	chaIns ReHabilitATion dIseasE estabLisHmEnt breAst x2	chains Rehabilitation disease establishment breast x2	6	-36.37546581935211
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	0	11	chaIns ReHab i lit AT ion dIseasE estabLisH mEn t breAst x2	chains Rehab i lit At ion disease establish men t breast x2	13	-67.52253580550015
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	1	-	chaIns ReHabilitATion dIseasE estabLisHmEnt breAstx 2	chains Rehabilitation disease establishment breast a	6	-25.41732378890794
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	1	11	chaIns Re HabilitATio ndIseasE estabLisHm Entbr eAstx 2	chains Re Habilitation disease establish Enter east a	12	-33.84530344270299
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	2	-	chaIns ReHabilitATion dIseasE estabLisHmEnt breAstx2	chains Rehabilitation disease establishment breast	5	-23.364780823052108
+W	chaIns ReHabilitATiondIseasEestabLisHmEntbreAstx2	2	11	chaIns ReHabil itATion dIseasE estabLisHm EntbreA stx2	chains Retail station disease establish Entire sex	13	-30.086636705780766
+W	printersbeatmove d infoblowjobsnotifymedica l	0	-	printers beat moved info blowjobs notify medical	printers beat moved info blowjobs notify medical	7	-30.286273352399032
+W	printersbeatmove d infoblowjobsnotifymedica l	0	11	printers beat moved info blowjobs notify medical	printers beat moved info blowjobs notify medical	7	-30.286273352399032
+W	printersbeatmove d infoblowjobsnotifymedica l	1	-	printersb eat moved info blowjobs notify medical	printers eat moved info blowjobs notify medical	8	-30.26150588199005
+W	printersbeatmove d infoblowjobsnotifymedica l	1	11	printersb eat moved info blowjobs notify medical	printers eat moved info blowjobs notify medical	8	-30.26150588199005
+W	printersbeatmove d infoblowjobsnotifymedica l	2	-	printersb eat moved info blowjobs notify medical	printers eat moved info blowjobs notify medical	8	-30.26150588199005
+W	printersbeatmove d infoblowjobsnotifymedica l	2	11	printersb eat moved info blowjobs notify medical	printers eat moved info blowjobs notify medical	8	-30.26150588199005
+W	prsionsprintslthsordinary	0	-	prs ions prints lths ordinary	prs ions prints lths ordinary	8	-35.8633699121238
+W	prsionsprintslthsordinary	0	11	prs ions prints lths ordinary	prs ions prints lths ordinary	8	-35.8633699121238
+W	prsionsprintslthsordinary	1	-	prsions printsl ths ordinary	prisons prints the ordinary	6	-16.617619214366268
+W	prsionsprintslthsordinary	1	11	prsions printsl ths ordinary	prisons prints the ordinary	6	-16.617619214366268
+W	prsionsprintslthsordinary	2	-	prsions printsl ths ordinary	prisons prints the ordinary	6	-16.617619214366268
+W	prsionsprintslthsordinary	2	11	prsions printsl ths ordinary	prisons prints the ordinary	6	-16.617619214366268
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	0	-	shft opt disease framework automated physicians benjamin	shft opt disease framework automated physicians benjamin	11	-43.51474819919506
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	0	11	shft opt disease framework automated physicians benjamin	shft opt disease framework automated physicians benjamin	11	-43.51474819919506
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	1	-	shft opt disease framework automated physicians benjamin	shot opt disease framework automated physicians benjamin	8	-32.89550443664228
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	1	11	shft opt disease framework automated physicians benjamin	shot opt disease framework automated physicians benjamin	8	-32.89550443664228
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	2	-	shftopt disease framework automated physicians benjamin	shutout disease framework automated physicians benjamin	8	-29.944650525780162
+W	shftoptdiseaseframeworkautomatedphysiciansbenjami n	2	11	shftopt disease framework automated physicians benjamin	shutout disease framework automated physicians benjamin	8	-29.944650525780162
+W	hanrledecademotorstruerequirescause	0	-	han rle decade motors true requires cause	han rle decade motors true requires cause	9	-41.823840286191725
+W	hanrledecademotorstruerequirescause	0	11	han rle decade motors true requires cause	han rle decade motors true requires cause	9	-41.823840286191725
+W	hanrledecademotorstruerequirescause	1	-	hanrle decade motors true requires cause	handle decade motors true requires cause	6	-26.884232388905755
+W	hanrledecademotorstruerequirescause	1	11	hanrle decade motors true requires cause	handle decade motors true requires cause	6	-26.884232388905755
+W	hanrledecademotorstruerequirescause	2	-	hanrle decade motors true requires cause	handle decade motors true requires cause	6	-26.884232388905755
+W	hanrledecademotorstruerequirescause	2	11	hanrle decade motors true requires cause	handle decade motors true requires cause	6	-26.884232388905755
+W	PauLCompressIonExtendedNearlyTzext	0	-	PauL CompressIon Extended Nearly Tz ext	Paul Compression Extended Nearly Tz ext	7	-35.97764004095081
+W	PauLCompressIonExtendedNearlyTzext	0	11	PauL CompressIon Extended Nearly Tz ext	Paul Compression Extended Nearly Tz ext	7	-35.97764004095081
+W	PauLCompressIonExtendedNearlyTzext	1	-	PauL CompressIon ExtendedN earlyT zext	Paul Compression Extended early next	7	-20.911342079923738
+W	PauLCompressIonExtendedNearlyTzext	1	11	PauL CompressIon ExtendedN earlyT zext	Paul Compression Extended early next	7	-20.911342079923738
+W	PauLCompressIonExtendedNearlyTzext	2	-	PauL CompressIon ExtendedN earlyT zext	Paul Compression Extended early next	7	-20.911342079923738
+W	PauLCompressIonExtendedNearlyTzext	2	11	PauL CompressIon ExtendedN earlyT zext	Paul Compression Extended early next	7	-20.911342079923738
+W	tuToRibS	0	-	tuToR ibS	tutor ibS	4	-19.35523134294874
+W	tuToRibS	0	11	tuToR ibS	tutor ibS	4	-19.35523134294874
+W	tuToRibS	1	-	tuToR ibS	tutor is	2	-7.682603062761948
+W	tuToRibS	1	11	tuToR ibS	tutor is	2	-7.682603062761948
+W	tuToRibS	2	-	tuToRibS	tutorial	2	-4.766874739266306
+W	tuToRibS	2	11	tuToRibS	tutorial	2	-4.766874739266306
+W	it’smaskvaluespalestinian	0	-	it ’s mask values palestinian	it ’s mask values palestinian	6	-29.67551018759633
+W	it’smaskvaluespalestinian	0	11	it ’s mask values palestinian	it ’s mask values palestinian	6	-29.67551018759633
+W	it’smaskvaluespalestinian	1	-	it’s mask values palestinian	its mask values palestinian	4	-17.39334193187358
+W	it’smaskvaluespalestinian	1	11	it’s mask values palestinian	its mask values palestinian	4	-17.39334193187358
+W	it’smaskvaluespalestinian	2	-	it’sm ask values palestinian	its ask values palestinian	5	-16.43290444611768
+W	it’smaskvaluespalestinian	2	11	it’sm ask values palestinian	its ask values palestinian	5	-16.43290444611768
+W	amcordersomeoneftowards3.14	0	-	am corder someone f towards 3.14	am corder someone f towards 3.14	10	-45.70432888554105
+W	amcordersomeoneftowards3.14	0	11	am corder someone f towards 3.14	am corder someone f towards 3.14	10	-45.70432888554105
+W	amcordersomeoneftowards3.14	1	-	amcorder someonef towards3 .14	camcorder someone towards .14	9	-27.461051709019465
+W	amcordersomeoneftowards3.14	1	11	amcorder someonef towards3 .14	camcorder someone towards .14	9	-27.461051709019465
+W	amcordersomeoneftowards3.14	2	-	amcorder someonef towards3. 14	camcorder someone towards of	9	-15.342061798431269
+W	amcordersomeoneftowards3.14	2	11	amcorder someonef towards3. 14	camcorder someone towards of	9	-15.342061798431269
+W	SHOPADDRESS	0	-	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	SHOPADDRESS	0	11	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	SHOPADDRESS	1	-	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	SHOPADDRESS	1	11	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	SHOPADDRESS	2	-	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	SHOPADDRESS	2	11	SHOP ADDRESS	Shop Address	1	-7.275320423251642
+W	camle	0	-	cam le	cam le	3	-17.64123836074394
+W	camle	0	11	cam le	cam le	3	-17.64123836074394
+W	camle	1	-	camle	came	1	-4.145659865409754
+W	camle	1	11	camle	came	1	-4.145659865409754
+W	camle	2	-	camle	came	1	-4.145659865409754
+W	camle	2	11	camle	came	1	-4.145659865409754
+W	fferphaseoverseas.	0	-	f fer phase overseas.	f fer phase overseas.	5	-39.2020049081295
+W	fferphaseoverseas.	0	11	f fer phase overseas.	f fer phase overseas.	5	-39.2020049081295
+W	fferphaseoverseas.	1	-	ffer phase overseas.	offer phase overseas	4	-13.151584548517818
+W	fferphaseoverseas.	1	11	ffer phase overseas.	offer phase overseas	4	-13.151584548517818
+W	fferphaseoverseas.	2	-	ffer phase overseas.	offer phase overseas	4	-13.151584548517818
+W	fferphaseoverseas.	2	11	ffer phase overseas.	offer phase overseas	4	-13.151584548517818
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	0	-	merchant shift toe laid netscape potentially application published pounds	merchant shift toe laid netscape potentially application published pounds	6	-41.499331703825625
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	0	11	merchant shift toe laid netscape potentially application published pounds	merchant shift toe laid netscape potentially application published pounds	6	-41.499331703825625
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	1	-	merchant shiftt oe laid netscape potentially application published pounds	merchant shift of laid netscape potentially application published pounds	8	-38.53411401843763
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	1	11	merchant shiftt oe laid netscape potentially application published pounds	merchant shift of laid netscape potentially application published pounds	8	-38.53411401843763
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	2	-	merchants hif ttoel aid netscape potentially application published pounds	merchants if hotel aid netscape potentially application published pounds	9	-38.27514036257863
+W	merchantshifttoelaid netscapepotentiallyapplicationpublished pounds	2	11	merchants hif ttoel aid netscape potentially application published pounds	merchants if hotel aid netscape potentially application published pounds	9	-38.27514036257863
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	0	-	ASPECT AUTHORITY I NO HERSELF WITH O PUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority I No Herself With O Put Montgomery Brands Shock Here	11	-55.32686505416117
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	0	11	ASPECT AUTHORITY I NO HERSELF WITH O PUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority I No Herself With O Put Montgomery Brands Shock Here	11	-55.32686505416117
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	1	-	ASPECT AUTHORITY INO HERSELF WITHOPUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority In Herself Without Montgomery Brands Shock Here	9	-37.05167889909867
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	1	11	ASPECT AUTHORITY INO HERSELF WITHOPUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority In Herself Without Montgomery Brands Shock Here	9	-37.05167889909867
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	2	-	ASPECT AUTHORITY INO HERSELF WITHOPUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority In Herself Without Montgomery Brands Shock Here	9	-37.05167889909867
+W	ASPECTAUTHORITYINO HERSELFWITHOPUTMONTGOMERYBRANDSSHOCKHERE	2	11	ASPECT AUTHORITY INO HERSELF WITHOPUT MONTGOMERY BRANDS SHOCK HERE	Aspect Authority In Herself Without Montgomery Brands Shock Here	9	-37.05167889909867
+W	promoteU.S. attendcorrectlyremarksreleased	0	-	promote U.S. attend correctly remarks released	promote U.S. attend correctly remarks released	8	-38.34770739870481
+W	promoteU.S. attendcorrectlyremarksreleased	0	11	promote U.S. attend correctly remarks released	promote U.S. attend correctly remarks released	8	-38.34770739870481
+W	promoteU.S. attendcorrectlyremarksreleased	1	-	promoteU .S . attend correctly remarks released	promote is a attend correctly remarks released	8	-27.72762208437385
+W	promoteU.S. attendcorrectlyremarksreleased	1	11	promoteU .S . attend correctly remarks released	promote is a attend correctly remarks released	8	-27.72762208437385
+W	promoteU.S. attendcorrectlyremarksreleased	2	-	promoteU .S. attend correctly remarks released	promote is attend correctly remarks released	7	-25.675079118518017
+W	promoteU.S. attendcorrectlyremarksreleased	2	11	promoteU .S. attend correctly remarks released	promote is attend correctly remarks released	7	-25.675079118518017
+W	teenage	0	-	teenage	teenage	0	-4.914171414456645
+W	teenage	0	11	teenage	teenage	0	-4.914171414456645
+W	teenage	1	-	teenage	teenage	0	-4.914171414456645
+W	teenage	1	11	teenage	teenage	0	-4.914171414456645
+W	teenage	2	-	teenage	teenage	0	-4.914171414456645
+W	teenage	2	11	teenage	teenage	0	-4.914171414456645
+W	interjuicepresucrfibedbreathportlandrecise	0	-	inter juice pres ucrfi bed breath portland rec is e	inter juice pres ucrfi bed breath portland rec is e	15	-64.57090051418436
+W	interjuicepresucrfibedbreathportlandrecise	0	11	inter juice pres ucrfi bed breath portland rec is e	inter juice pres ucrfi bed breath portland rec is e	15	-64.57090051418436
+W	interjuicepresucrfibedbreathportlandrecise	1	-	inter juice pre sucr fibed breath portland recise	inter juice are such fixed breath portland recipe	11	-34.42087748123477
+W	interjuicepresucrfibedbreathportlandrecise	1	11	inter juice pre sucr fibed breath portland recise	inter juice are such fixed breath portland recipe	11	-34.42087748123477
+W	interjuicepresucrfibedbreathportlandrecise	2	-	inter juice presucrfibed breath portland recise	inter juice prescribed breath portland recipe	8	-29.069414672374865
+W	interjuicepresucrfibedbreathportlandrecise	2	11	inter juice presucrfibe dbreath portland recise	inter juice prescribe breath portland recipe	9	-29.750641691495087
+W	coodrinatoinpurchase forward?	0	-	coo drin a to in purchase forward?	coo drin a to in purchase forward?	6	-39.49116055047253
+W	coodrinatoinpurchase forward?	0	11	coo drin a to in purchase forward?	coo drin a to in purchase forward?	6	-39.49116055047253
+W	coodrinatoinpurchase forward?	1	-	coo drin ato in purchase forward?	coo drin to in purchase forward	6	-25.4279325883167
+W	coodrinatoinpurchase forward?	1	11	coo drin ato in purchase forward?	coo drin to in purchase forward	6	-25.4279325883167
+W	coodrinatoinpurchase forward?	2	-	coodrinatoin purchase forward?	coordination purchase forward	4	-13.31441359655511
+W	coodrinatoinpurchase forward?	2	11	coodrinatoi npurchase forward?	coordinator purchase forward	5	-13.143795828497709
+W	diffdculdcrew	0	-	diff dculd crew	diff dculd crew	7	-25.261271582274976
+W	diffdculdcrew	0	11	diff dculd crew	diff dculd crew	7	-25.261271582274976
+W	diffdculdcrew	1	-	diffd culd crew	diff could crew	4	-12.780817013243492
+W	diffdculdcrew	1	11	diffd culd crew	diff could crew	4	-12.780817013243492
+W	diffdculdcrew	2	-	diffdculd crew	difficult crew	3	-9.042534489108679
+W	diffdculdcrew	2	11	diffdculd crew	difficult crew	3	-9.042534489108679
+W	kinghoward	0	-	king howard	king howard	1	-8.764791189849785
+W	kinghoward	0	11	king howard	king howard	1	-8.764791189849785
+W	kinghoward	1	-	king howard	king howard	1	-8.764791189849785
+W	kinghoward	1	11	king howard	king howard	1	-8.764791189849785
+W	kinghoward	2	-	king howard	king howard	1	-8.764791189849785
+W	kinghoward	2	11	king howard	king howard	1	-8.764791189849785
+W	gotcitation	0	-	got citation	got citation	1	-8.868120420768255
+W	gotcitation	0	11	got citation	got citation	1	-8.868120420768255
+W	gotcitation	1	-	got citation	got citation	1	-8.868120420768255
+W	gotcitation	1	11	got citation	got citation	1	-8.868120420768255
+W	gotcitation	2	-	got citation	got citation	1	-8.868120420768255
+W	gotcitation	2	11	got citation	got citation	1	-8.868120420768255
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	0	-	al be attachments mari z equity inc es inn reasonable unavailable	al be attachments mari z equity inc es inn reasonable unavailable	12	-64.99879441021419
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	0	11	al be attachments mari z equity inc es inn reasonable unavailable	al be attachments mari z equity inc es inn reasonable unavailable	12	-64.99879441021419
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	1	-	albe attachments mariz equity incesi nnreasonable unavailable	able attachments maria equity incest unreasonable unavailable	9	-33.27476164796576
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	1	11	albe attachments mariz equity incesi nn reasonable unavailable	able attachments maria equity incest in reasonable unavailable	10	-34.30031237040402
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	2	-	albe attachments mariz equity incesin nreasonable unavailable	able attachments maria equity incest reasonable unavailable	10	-32.21748027358599
+W	albeattachmentsmariz equ ity incesinnreasonableunavailable	2	11	albe attachments mariz equity incesin nreasonable unavailable	able attachments maria equity incest reasonable unavailable	10	-32.21748027358599
+W	agreed1st	0	-	agreed 1 st	agreed 1 st	3	-20.56813134981932
+W	agreed1st	0	11	agreed 1 st	agreed 1 st	3	-20.56813134981932
+W	agreed1st	1	-	agreed 1st	agreed st	2	-8.557446353519317
+W	agreed1st	1	11	agreed 1st	agreed st	2	-8.557446353519317
+W	agreed1st	2	-	agreed 1st	agreed st	2	-8.557446353519317
+W	agreed1st	2	11	agreed 1st	agreed st	2	-8.557446353519317
+W	lkies	0	-	lkies	lkies	5	-16.0106849963
+W	lkies	0	11	lkies	lkies	5	-16.0106849963
+W	lkies	1	-	lkies	lies	1	-4.801698050893704
+W	lkies	1	11	lkies	lies	1	-4.801698050893704
+W	lkies	2	-	lkies	lies	1	-4.801698050893704
+W	lkies	2	11	lkies	lies	1	-4.801698050893704
+W	ibran stadium relationshipsbell	0	-	i bran stadium relationships bell	i bran stadium relationships bell	2	-22.67197194349733
+W	ibran stadium relationshipsbell	0	11	i bran stadium relation ships bell	i bran stadium relation ships bell	3	-27.057200914092228
+W	ibran stadium relationshipsbell	1	-	ibran stadium relationships bell	iran stadium relationships bell	2	-18.756435754521267
+W	ibran stadium relationshipsbell	1	11	ibran stadium relation ships bell	iran stadium relation ships bell	3	-23.141664725116165
+W	ibran stadium relationshipsbell	2	-	ibran stadium relationships bell	iran stadium relationships bell	2	-18.756435754521267
+W	ibran stadium relationshipsbell	2	11	ibran stadium relation ships bell	iran stadium relation ships bell	3	-23.141664725116165
+W	٣٤heroU.S. slightly	0	-	٣٤ hero U.S. slightly	٣٤ hero U.S. slightly	8	-37.47425138468151
+W	٣٤heroU.S. slightly	0	11	٣٤ hero U.S. slightly	٣٤ hero U.S. slightly	8	-37.47425138468151
+W	٣٤heroU.S. slightly	1	-	٣ ٤her oU. S. slightly	a her our So slightly	7	-16.204800177934416
+W	٣٤heroU.S. slightly	1	11	٣ ٤her oU. S. slightly	a her our So slightly	7	-16.204800177934416
+W	٣٤heroU.S. slightly	2	-	٣٤he roU.S. slightly	the rouse slightly	5	-12.280973892012993
+W	٣٤heroU.S. slightly	2	11	٣٤he roU.S. slightly	the rouse slightly	5	-12.280973892012993
+W	meta maturecemevtery	0	-	meta mature cemev ter y	meta mature cemev ter y	9	-42.54460351244011
+W	meta maturecemevtery	0	11	meta mature cemev ter y	meta mature cemev ter y	9	-42.54460351244011
+W	meta maturecemevtery	1	-	meta mature cemevtery	meta mature cemetery	2	-14.025266866788261
+W	meta maturecemevtery	1	11	meta mature cemevtery	meta mature cemetery	2	-14.025266866788261
+W	meta maturecemevtery	2	-	meta mature cemevtery	meta mature cemetery	2	-14.025266866788261
+W	meta maturecemevtery	2	11	meta mature cemevtery	meta mature cemetery	2	-14.025266866788261
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	0	-	percentage norfolk edward cross lao d cont in jo us confirmation cooperation coalition	percentage norfolk edward cross lao d cont in jo us confirmation cooperation coalition	15	-74.02115811666151
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	0	11	percentage norfolk edward cross lao d cont in jo us confirm at ion cooperation coalition	percentage norfolk edward cross lao d cont in jo us confirm at ion cooperation coalition	17	-81.33396543663012
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	1	-	percentage norfolk edward crossl aod continjous confirmation cooperation coalition	percentage norfolk edward cross and continuous confirmation cooperation coalition	11	-39.515477950274644
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	1	11	percentage norfolk edward crossl aod continjous confirmatio n cooperation coalition	percentage norfolk edward cross and continuous confirmation a cooperation coalition	14	-41.56802091613048
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	2	-	percentage norfolk edward crossl aod continjous confirmation cooperation coalition	percentage norfolk edward cross and continuous confirmation cooperation coalition	11	-39.515477950274644
+W	percentagenorfolkedwardcrosslaodcontinjousconfirmationcooperationcoalition	2	11	percentage norfolk edward crossl aod continjousc onfirmation cooperation coalition	percentage norfolk edward cross and continuous confirmation cooperation coalition	13	-39.515477950274644
+W	compositiondirectory cellsfisher! environments	0	-	composition directory cells fisher! environments	composition directory cells fisher! environments	3	-34.73809304111665
+W	compositiondirectory cellsfisher! environments	0	11	composition directory cells fisher!  environment s	composition directory cells fisher!  environment s	6	-56.87591741374379
+W	compositiondirectory cellsfisher! environments	1	-	composition directory cells fisher! environments	composition directory cells fisher environments	3	-22.727408044816645
+W	compositiondirectory cellsfisher! environments	1	11	composition directory cells fisher! environmen ts	composition directory cells fisher environment to	6	-23.77043675415587
+W	compositiondirectory cellsfisher! environments	2	-	composition directory cells fisher! environments	composition directory cells fisher environments	3	-22.727408044816645
+W	compositiondirectory cellsfisher! environments	2	11	composition directory cells fisher! environmen ts	composition directory cells fisher environment to	6	-23.77043675415587
+W	deletetabletbonus sessionskendomestic ptachey s	0	-	delete tablet bonus sessions ken domestic ptac hey s	delete tablet bonus sessions ken domestic ptac hey s	10	-59.55654616310514
+W	deletetabletbonus sessionskendomestic ptachey s	0	11	delete tablet bonus sessions ken domestic ptac hey s	delete tablet bonus sessions ken domestic ptac hey s	10	-59.55654616310514
+W	deletetabletbonus sessionskendomestic ptachey s	1	-	delete tablet bonus sessions ken domestic ptach eys	delete tablet bonus sessions ken domestic patch yes	8	-36.1827201397323
+W	deletetabletbonus sessionskendomestic ptachey s	1	11	delete tablet bonus sessions ken domestic ptach eys	delete tablet bonus sessions ken domestic patch yes	8	-36.1827201397323
+W	deletetabletbonus sessionskendomestic ptachey s	2	-	delete tablet bonus sessions ken domestic ptacheys	delete tablet bonus sessions ken domestic patches	7	-32.85149806079865
+W	deletetabletbonus sessionskendomestic ptachey s	2	11	delete tablet bonus sessions ken domestic ptacheys	delete tablet bonus sessions ken domestic patches	7	-32.85149806079865
+W	FigurefreeJEan	0	-	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	FigurefreeJEan	0	11	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	FigurefreeJEan	1	-	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	FigurefreeJEan	1	11	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	FigurefreeJEan	2	-	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	FigurefreeJEan	2	11	Figure free JEan	Figure free Jean	2	-11.741634495962607
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	0	-	DROPPER FH ME LYRICS 1 ST MEANS COMPLETED GENRE A TO	Dropper FH Me Lyrics 1 St Means Completed Genre A To	10	-59.712409736018316
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	0	11	DROPPER FH ME LYRICS 1 ST MEANS COMPLETED GENRE A TO	Dropper FH Me Lyrics 1 St Means Completed Genre A To	10	-59.712409736018316
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	1	-	DROPPERF HME LYRICS 1ST MEANS COMPLETED GENRE ATO	Dropper Home Lyrics st Means Completed Genre To	8	-32.28564626948673
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	1	11	DROPPERF HME LYRICS 1ST MEANS COMPLETED GENRE ATO	Dropper Home Lyrics st Means Completed Genre To	8	-32.28564626948673
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	2	-	DROPPERF HME LYRICS1ST MEANS COMPLETED GENREATO	Dropper Home Lyricist Means Completed Generate	8	-28.860306632020027
+W	DROPPERFHME LYRICS1ST MEANSCOMPLETED GENREATO	2	11	DROPPERF HME LYRICS1ST MEANS COMPLETED GENREATO	Dropper Home Lyricist Means Completed Generate	8	-28.860306632020027
+W	SPOKESALARYHOWEJVRHURRICANE	0	-	SPOKE SALARY HOWE JVR HURRICANE	Spoke Salary Howe JVR Hurricane	7	-34.046896752025795
+W	SPOKESALARYHOWEJVRHURRICANE	0	11	SPOKE SALARY HOWE JVR HURRICANE	Spoke Salary Howe JVR Hurricane	7	-34.046896752025795
+W	SPOKESALARYHOWEJVRHURRICANE	1	-	SPOKE SALARYH OWEJ VR HURRICANE	Spoke Salary Owen Or Hurricane	7	-22.244020086742687
+W	SPOKESALARYHOWEJVRHURRICANE	1	11	SPOKE SALARYH OWEJ VR HURRICANE	Spoke Salary Owen Or Hurricane	7	-22.244020086742687
+W	SPOKESALARYHOWEJVRHURRICANE	2	-	SPOKE SALARY HOWEJVR HURRICANE	Spoke Salary However Hurricane	5	-18.214743549329746
+W	SPOKESALARYHOWEJVRHURRICANE	2	11	SPOKE SALARY HOWEJVR HURRICANE	Spoke Salary However Hurricane	5	-18.214743549329746
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	0	-	cmm and sU.S. odds websites look pizza diary paying citizens	cmm and sU.S. odds websites look pizza diary paying citizens	17	-64.00198882636239
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	0	11	cmm and sU.S. odds websites look pizza diary paying citizens	cmm and sU.S. odds websites look pizza diary paying citizens	17	-64.00198882636239
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	1	-	cmmands U.S .odds websites look pizza diary paying citizens	commands Us odds websites look pizza diary paying citizens	11	-39.782075693760596
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	1	11	cmmands U.S .odds websites look pizza diary paying citizens	commands Us odds websites look pizza diary paying citizens	11	-39.782075693760596
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	2	-	cmmandsU .S .odds websites look pizza diary paying citizens	commands is odds websites look pizza diary paying citizens	12	-39.199039092125226
+W	cmmandsU.S.oddswebsiteslookpizzadiarypayingcitizens	2	11	cmmandsU .S .odds websites look pizza diary paying citizens	commands is odds websites look pizza diary paying citizens	12	-39.199039092125226
+W	mysteryfightingofrmaion on	0	-	mystery fighting of r mai on on	mystery fighting of r mai on on	6	-33.47628207800262
+W	mysteryfightingofrmaion on	0	11	mystery fighting of r mai on on	mystery fighting of r mai on on	6	-33.47628207800262
+W	mysteryfightingofrmaion on	1	-	mystery fighting ofr maion on	mystery fighting of main on	5	-17.473217216476748
+W	mysteryfightingofrmaion on	1	11	mystery fighting ofr maion on	mystery fighting of main on	5	-17.473217216476748
+W	mysteryfightingofrmaion on	2	-	mystery fighting ofrmaion on	mystery fighting formation on	4	-16.63748728690959
+W	mysteryfightingofrmaion on	2	11	mystery fighting ofrmaion on	mystery fighting formation on	4	-16.63748728690959
+W	blidnprayercrldarmontrealsupportedpaper!	0	-	blidn prayer crldar montreal supported paper!	blidn prayer crldar montreal supported paper!	17	-63.039096366741624
+W	blidnprayercrldarmontrealsupportedpaper!	0	11	blidn prayer crldar montreal supported paper!	blidn prayer crldar montreal supported paper!	17	-63.039096366741624
+W	blidnprayercrldarmontrealsupportedpaper!	1	-	blidn prayerc rldar montreal supported paper!	blind prayer radar montreal supported paper	9	-27.63572911062385
+W	blidnprayercrldarmontrealsupportedpaper!	1	11	blidn prayerc rldar montreal supported paper!	blind prayer radar montreal supported paper	9	-27.63572911062385
+W	blidnprayercrldarmontrealsupportedpaper!	2	-	blidn prayer crldar montreal supported paper!	blind prayer clear montreal supported paper	9	-26.86462367157676
+W	blidnprayercrldarmontrealsupportedpaper!	2	11	blidn prayer crldar montreal supported paper!	blind prayer clear montreal supported paper	9	-26.86462367157676
+W	vermo ntvers ionconsists paristhreatsfeatured	0	-	vermont version consists paris threats featured	vermont version consists paris threats featured	6	-26.691406832706164
+W	vermo ntvers ionconsists paristhreatsfeatured	0	11	vermont version consists paris threats featured	vermont version consists paris threats featured	6	-26.691406832706164
+W	vermo ntvers ionconsists paristhreatsfeatured	1	-	vermontvers ion consists paris threats featured	vermonters ion consists paris threats featured	5	-30.29729448191769
+W	vermo ntvers ionconsists paristhreatsfeatured	1	11	vermont version consists paris threats featured	vermont version consists paris threats featured	6	-26.691406832706164
+W	vermo ntvers ionconsists paristhreatsfeatured	2	-	vermontvers ion consists paris threats featured	vermonters ion consists paris threats featured	5	-30.29729448191769
+W	vermo ntvers ionconsists paristhreatsfeatured	2	11	vermont version consists paris threats featured	vermont version consists paris threats featured	6	-26.691406832706164
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	0	-	toOl Ght bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTions FUnny	tool Ght bars alberta workshops fraud conference Competition destinations Funny	10	-54.88836846721602
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	0	11	toOl Ght bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTion s FUnny	tool Ght bars alberta workshops fraud conference Competition destination s Funny	12	-66.60064518274584
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	1	-	toOlG ht bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTions FUnny	tools it bars alberta workshops fraud conference Competition destinations Funny	9	-42.98367709751961
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	1	11	toOlG ht bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTion sFUnny	tools it bars alberta workshops fraud conference Competition destination funny	10	-42.68526881674943
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	2	-	toOlGht bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTions FUnny	thought bars alberta workshops fraud conference Competition destinations Funny	8	-40.77917814252127
+W	toOlGhtbArsalbertA woRksHopsfrAuD confeREnceCoMpetitiondestinaTionsFUnny	2	11	toOlGht bArs albertA woRksHops frAuD confeREnce CoMpetition destinaTion sFUnny	thought bars alberta workshops fraud conference Competition destination funny	9	-40.48076986175109
+W	jchetsmedicalspots1stangledeanprayer	0	-	jchets medical spots 1s tangle dean prayer	jchets medical spots 1s tangle dean prayer	14	-54.53824182493637
+W	jchetsmedicalspots1stangledeanprayer	0	11	jchets medical spots 1s tangle dean prayer	jchets medical spots 1s tangle dean prayer	14	-54.53824182493637
+W	jchetsmedicalspots1stangledeanprayer	1	-	j chets medical spots1 stangled ean prayer	a cheats medical spots tangled an prayer	11	-29.11674617388313
+W	jchetsmedicalspots1stangledeanprayer	1	11	j chets medical spots1 stangled ean prayer	a cheats medical spots tangled an prayer	11	-29.11674617388313
+W	jchetsmedicalspots1stangledeanprayer	2	-	jchets medical spots 1stangled ean prayer	cheats medical spots tangled an prayer	10	-27.0642032080273
+W	jchetsmedicalspots1stangledeanprayer	2	11	jchets medical spots 1stangled ean prayer	cheats medical spots tangled an prayer	10	-27.0642032080273
+W	residence	0	-	residence	residence	0	-4.746737034057725
+W	residence	0	11	residence	residence	0	-4.746737034057725
+W	residence	1	-	residence	residence	0	-4.746737034057725
+W	residence	1	11	residence	residence	0	-4.746737034057725
+W	residence	2	-	residence	residence	0	-4.746737034057725
+W	residence	2	11	residence	residence	0	-4.746737034057725
+W	walkerhouses offshoremacrostored	0	-	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	walkerhouses offshoremacrostored	0	11	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	walkerhouses offshoremacrostored	1	-	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	walkerhouses offshoremacrostored	1	11	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	walkerhouses offshoremacrostored	2	-	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	walkerhouses offshoremacrostored	2	11	walker houses offshore macro stored	walker houses offshore macro stored	3	-24.161338956310757
+W	ship equivalentrepublicit’smakelook	0	-	ship equivalent republic it ’s make look	ship equivalent republic it ’s make look	7	-35.87517513330592
+W	ship equivalentrepublicit’smakelook	0	11	ship equivalent republic it ’s make look	ship equivalent republic it ’s make look	7	-35.87517513330592
+W	ship equivalentrepublicit’smakelook	1	-	ship equivalent republic it’s make look	ship equivalent republic its make look	5	-23.59300687758317
+W	ship equivalentrepublicit’smakelook	1	11	ship equivalent republic it’s make look	ship equivalent republic its make look	5	-23.59300687758317
+W	ship equivalentrepublicit’smakelook	2	-	ship equivalent republic it’s make look	ship equivalent republic its make look	5	-23.59300687758317
+W	ship equivalentrepublicit’smakelook	2	11	ship equivalent republic it’s make look	ship equivalent republic its make look	5	-23.59300687758317
+W	tracking	0	-	tracking	tracking	0	-4.607661438328455
+W	tracking	0	11	tracking	tracking	0	-4.607661438328455
+W	tracking	1	-	tracking	tracking	0	-4.607661438328455
+W	tracking	1	11	tracking	tracking	0	-4.607661438328455
+W	tracking	2	-	tracking	tracking	0	-4.607661438328455
+W	tracking	2	11	tracking	tracking	0	-4.607661438328455
+W	validposterholdersubmission nrtags happenedport	0	-	valid poster holder submission nr tags happened port	valid poster holder submission nr tags happened port	7	-44.25403204811904
+W	validposterholdersubmission nrtags happenedport	0	11	valid poster holder submission nr tags happened port	valid poster holder submission nr tags happened port	7	-44.25403204811904
+W	validposterholdersubmission nrtags happenedport	1	-	valid posterh older submission nrt ags happened port	valid poster older submission not as happened port	8	-31.655678580260602
+W	validposterholdersubmission nrtags happenedport	1	11	valid posterh older submission nrt ags happened port	valid poster older submission not as happened port	8	-31.655678580260602
+W	validposterholdersubmission nrtags happenedport	2	-	valid posterh older submission nrtags happened port	valid poster older submission tags happened port	7	-30.840496762749346
+W	validposterholdersubmission nrtags happenedport	2	11	valid posterh older submission nrtags happened port	valid poster older submission tags happened port	7	-30.840496762749346
+W	wantsimperialexpertsx2stages want,	0	-	wants imperial experts x2 stages want,	wants imperial experts x2 stages want,	7	-47.55380877564399
+W	wantsimperialexpertsx2stages want,	0	11	wants imperial experts x2 stages want,	wants imperial experts x2 stages want,	7	-47.55380877564399
+W	wantsimperialexpertsx2stages want,	1	-	wants imperial expertsx 2stages want,	wants imperial experts stages want	6	-22.532438783043986
+W	wantsimperialexpertsx2stages want,	1	11	wants imperial expertsx 2stages want,	wants imperial experts stages want	6	-22.532438783043986
+W	wantsimperialexpertsx2stages want,	2	-	wants imperial experts x2stages want,	wants imperial experts stages want	6	-22.532438783043986
+W	wantsimperialexpertsx2stages want,	2	11	wants imperial experts x2stages want,	wants imperial experts stages want	6	-22.532438783043986
+W	thankNASApirptablemorning	0	-	thank N ASAp i rpt able morning	thank N Asap i rpt able morning	7	-38.53559705862489
+W	thankNASApirptablemorning	0	11	thank N ASAp i rpt able morning	thank N Asap i rpt able morning	7	-38.53559705862489
+W	thankNASApirptablemorning	1	-	thankN ASAp irpt able morning	thanks Asap rpt able morning	6	-23.8436704768532
+W	thankNASApirptablemorning	1	11	thankN ASAp irpt able morning	thanks Asap rpt able morning	6	-23.8436704768532
+W	thankNASApirptablemorning	2	-	thankNAS A pirptable morning	thanks A portable morning	7	-14.861635673267763
+W	thankNASApirptablemorning	2	11	thankNAS A pirptable morning	thanks A portable morning	7	-14.861635673267763
+W	NASAguestsdeaild	0	-	N AS A guests de ail d	N As A guests de ail d	8	-43.25707923172854
+W	NASAguestsdeaild	0	11	N AS A guests de ail d	N As A guests de ail d	8	-43.25707923172854
+W	NASAguestsdeaild	1	-	NAS Aguests deail d	As Guests deal a	7	-13.54619672673285
+W	NASAguestsdeaild	1	11	NAS Aguests deail d	As Guests deal a	7	-13.54619672673285
+W	NASAguestsdeaild	2	-	NAS Aguests de aild	As Guests de aid	6	-15.112437213247972
+W	NASAguestsdeaild	2	11	NAS Aguests de aild	As Guests de aid	6	-15.112437213247972
+W	headlinestaiwanbrokersimulationduringnovemberfiled	0	-	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	headlinestaiwanbrokersimulationduringnovemberfiled	0	11	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	headlinestaiwanbrokersimulationduringnovemberfiled	1	-	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	headlinestaiwanbrokersimulationduringnovemberfiled	1	11	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	headlinestaiwanbrokersimulationduringnovemberfiled	2	-	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	headlinestaiwanbrokersimulationduringnovemberfiled	2	11	headlines taiwan broker simulation during november filed	headlines taiwan broker simulation during november filed	6	-30.839896005761506
+W	findspremierzonebe ll	0	-	finds premier zone bell	finds premier zone bell	4	-18.43504968601394
+W	findspremierzonebe ll	0	11	finds premier zone bell	finds premier zone bell	4	-18.43504968601394
+W	findspremierzonebe ll	1	-	finds premierz one bell	finds premier one bell	5	-17.10901427182356
+W	findspremierzonebe ll	1	11	finds premierz one bell	finds premier one bell	5	-17.10901427182356
+W	findspremierzonebe ll	2	-	finds premierz one bell	finds premier one bell	5	-17.10901427182356
+W	findspremierzonebe ll	2	11	finds premierz one bell	finds premier one bell	5	-17.10901427182356
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	0	-	water ejacul at on logical com fission q additional raised threats de uf in it in	water ejacul at on logical com fission q additional raised threats de uf in it in	24	-89.75605813109055
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	0	11	water ejacul at on logical com fission q additional raised threats de uf in it in	water ejacul at on logical com fission q additional raised threats de uf in it in	24	-89.75605813109055
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	1	-	water ejaculaton logical comfission qadditional raised threats deu finiti n	water ejaculation logical commission additional raised threats de finite a	15	-42.027772568784016
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	1	11	water ejaculaton logical comfission qadditional raised threats deu finiti n	water ejaculation logical commission additional raised threats de finite a	15	-42.027772568784016
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	2	-	water ejaculaton logical comfission qadditional raised threats deufinitin	water ejaculation logical commission additional raised threats definition	12	-35.675289314232444
+W	waterejaculatonlogicalcomfissionqadditionalraisedthreatsdeufinitin	2	11	water ejaculaton logical comfission qadditional raised threats deufinitin	water ejaculation logical commission additional raised threats definition	12	-35.675289314232444
+W	infobowlingobservedproducesquestion24 bugs	0	-	info bowling observed produces question 24 bugs	info bowling observed produces question 24 bugs	7	-39.797350531123406
+W	infobowlingobservedproducesquestion24 bugs	0	11	info bowling observed produces question 24 bugs	info bowling observed produces question 24 bugs	7	-39.797350531123406
+W	infobowlingobservedproducesquestion24 bugs	1	-	info bowling observed produces question2 4 bugs	info bowling observed produces questions a bugs	7	-28.76022038085085
+W	infobowlingobservedproducesquestion24 bugs	1	11	info bowling observed produces question2 4 bugs	info bowling observed produces questions a bugs	7	-28.76022038085085
+W	infobowlingobservedproducesquestion24 bugs	2	-	info bowling observed produces question24 bugs	info bowling observed produces questions bugs	6	-26.70767741499502
+W	infobowlingobservedproducesquestion24 bugs	2	11	info bowling observed produces question24 bugs	info bowling observed produces questions bugs	6	-26.70767741499502
+W	massagteshcedulesupremesupplyjamessoon	0	-	mas sag teshcedule supreme supply james soon	mas sag teshcedule supreme supply james soon	16	-49.114911488272675
+W	massagteshcedulesupremesupplyjamessoon	0	11	mas sag teshcedule supreme supply james soon	mas sag teshcedule supreme supply james soon	16	-49.114911488272675
+W	massagteshcedulesupremesupplyjamessoon	1	-	massagte shcedule supreme supply james soon	massage schedule supreme supply james soon	7	-25.95425803159936
+W	massagteshcedulesupremesupplyjamessoon	1	11	massagte shcedule supreme supply james soon	massage schedule supreme supply james soon	7	-25.95425803159936
+W	massagteshcedulesupremesupplyjamessoon	2	-	massagte shcedule supreme supply james soon	massage schedule supreme supply james soon	7	-25.95425803159936
+W	massagteshcedulesupremesupplyjamessoon	2	11	massagte shcedule supreme supply james soon	massage schedule supreme supply james soon	7	-25.95425803159936
+W	defauetmrirorsfeelhadcoye	0	-	def auetmrirors feel had coy e	def auetmrirors feel had coy e	17	-52.3121906811977
+W	defauetmrirorsfeelhadcoye	0	11	def auetmrirors feel had coy e	def auetmrirors feel had coy e	17	-52.3121906811977
+W	defauetmrirorsfeelhadcoye	1	-	defauet mrirors feel hadc oye	default mirrors feel had one	8	-19.6818185940623
+W	defauetmrirorsfeelhadcoye	1	11	defauet mrirors feel hadc oye	default mirrors feel had one	8	-19.6818185940623
+W	defauetmrirorsfeelhadcoye	2	-	defauet mrirors feel hadcoye	default mirrors feel hardcore	7	-17.735659619844444
+W	defauetmrirorsfeelhadcoye	2	11	defauet mrirors feel hadcoye	default mirrors feel hardcore	7	-17.735659619844444
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	0	-	emevry day disorder headlines workshops population b per camel ground	emevry day disorder headlines workshops population b per camel ground	17	-63.63809516728657
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	0	11	emevry day disorder headlines workshops population b per camel ground	emevry day disorder headlines workshops population b per camel ground	17	-63.63809516728657
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	1	-	emevry day disorder headlines workshops population bper camelg round	emery day disorder headlines workshops population per camel round	12	-40.52192888096387
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	1	11	emevry day disorder headlines workshops population bper camelg round	emery day disorder headlines workshops population per camel round	12	-40.52192888096387
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	2	-	emevryday disorder headlines workshops population bper camel ground	everyday disorder headlines workshops population per camel ground	11	-36.06708341609368
+W	emevrydaydisorderheadl inesworkshopspopulationbpercamelground	2	11	emevryday disorder headlines workshops population bper camel ground	everyday disorder headlines workshops population per camel ground	11	-36.06708341609368
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	0	-	third places lesbians want char thinking piano ٣٤!	third places lesbians want char thinking piano ٣٤!	9	-44.384589395023454
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	0	11	third places lesbians want char thinking piano ٣٤!	third places lesbians want char thinking piano ٣٤!	9	-44.384589395023454
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	1	-	third places lesbians want char thinking piano٣ ٤ !	third places lesbians want char thinking piano a a	10	-34.47899033043511
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	1	11	third places lesbians want char thinking piano٣ ٤ !	third places lesbians want char thinking piano a a	10	-34.47899033043511
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	2	-	third places lesbians want char thinking piano٣ ٤!	third places lesbians want char thinking piano of	9	-32.265599484435256
+W	thirdplaces lesbianswantcharthinkingpiano٣٤!	2	11	third places lesbians want char thinking piano٣ ٤!	third places lesbians want char thinking piano of	9	-32.265599484435256
+W	whorayseAB12unabletrackingstartsafeavluesystem,	0	-	who ray seA B12 unable tracking start safe avlue system,	who ray sea B12 unable tracking start safe avlue system,	18	-74.70278502701534
+W	whorayseAB12unabletrackingstartsafeavluesystem,	0	11	who ray seA B12 unable tracking start safe avlue system,	who ray sea B12 unable tracking start safe avlue system,	18	-74.70278502701534
+W	whorayseAB12unabletrackingstartsafeavluesystem,	1	-	who rayse AB 1 2unable tracking start safea vlue system,	who raise A a unable tracking start safe value system	16	-36.48711854136774
+W	whorayseAB12unabletrackingstartsafeavluesystem,	1	11	who rayse AB 1 2unable tracking start safea vlue system,	who raise A a unable tracking start safe value system	16	-36.48711854136774
+W	whorayseAB12unabletrackingstartsafeavluesystem,	2	-	who rayse AB12 unable tracking start safeav lue system,	who raise Able unable tracking start safety blue system	15	-36.26795919549173
+W	whorayseAB12unabletrackingstartsafeavluesystem,	2	11	who rayse AB12 unable tracking start safeav lue system,	who raise Able unable tracking start safety blue system	15	-36.26795919549173
+W	expanded damaged	0	-	expanded damaged	expanded damaged	0	-9.884921080703029
+W	expanded damaged	0	11	expanded damaged	expanded damaged	0	-9.884921080703029
+W	expanded damaged	1	-	expanded damaged	expanded damaged	0	-9.884921080703029
+W	expanded damaged	1	11	expanded damaged	expanded damaged	0	-9.884921080703029
+W	expanded damaged	2	-	expanded damaged	expanded damaged	0	-9.884921080703029
+W	expanded damaged	2	11	expanded damaged	expanded damaged	0	-9.884921080703029
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	0	-	che ud led dictionary approval single second ne pen q dent patient	che ud led dictionary approval single second ne pen q dent patient	14	-78.95272272797266
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	0	11	che ud led dictionary approval single second ne pen q dent patient	che ud led dictionary approval single second ne pen q dent patient	14	-78.95272272797266
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	1	-	cheu dled dictionary approval single second ne penqdent patient	chef led dictionary approval single second be pendent patient	10	-39.39145353409834
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	1	11	cheu dled dictionary approval single second ne penqdent patient	chef led dictionary approval single second be pendent patient	10	-39.39145353409834
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	2	-	cheudled dictionary approval single second nepenqdent patient	scheduled dictionary approval single second dependent patient	8	-30.357554535969122
+W	cheudleddictionary approvalsinglesecond nepenqdentpatient	2	11	cheudled dictionary approval single second nepenqdent patient	scheduled dictionary approval single second dependent patient	8	-30.357554535969122
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	0	-	ec mod ingle ave sAB 12 perhaps 3.14 independent mathematics authorized	ec mod ingle ave sab 12 perhaps 3.14 independent mathematics authorized	18	-80.87631672155652
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	0	11	ec mod ingle ave sAB 12 perhaps 3.14 independent mathematics authorized	ec mod ingle ave sab 12 perhaps 3.14 independent mathematics authorized	18	-80.87631672155652
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	1	-	ecmo ding leavesA B1 2perhaps 3.1 4independent mathematics authorized	echo ding leaves By perhaps 3.1 independent mathematics authorized	16	-49.530225720270224
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	1	11	ecmo ding leavesA B1 2perhaps 3.14 independent mathematics authorized	echo ding leaves By perhaps 3.14 independent mathematics authorized	16	-50.530225720270224
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	2	-	ecmoding leavesA B12 perhaps3. 14independent mathematics authorized	coding leaves By perhaps independent mathematics authorized	15	-29.959299496891713
+W	ecmodingleavesAB12perhaps3.14independentmathematicsauthorized	2	11	ecmoding leavesA B12 perhaps3. 14 independent mathematics authorized	coding leaves By perhaps of independent mathematics authorized	16	-31.850994582603516
+W	campusphtoograplheractsentries switche s	0	-	campus ph too g rap l her acts entries switches	campus ph too g rap l her acts entries switches	13	-67.53104170102328
+W	campusphtoograplheractsentries switche s	0	11	campus ph too g rap l her acts entries switches	campus ph too g rap l her acts entries switches	13	-67.53104170102328
+W	campusphtoograplheractsentries switche s	1	-	campus phtoo graplh eracts entries switches	campus photo graph tracts entries switches	8	-28.019300899515986
+W	campusphtoograplheractsentries switche s	1	11	campus phtoo graplh eracts entries switches	campus photo graph tracts entries switches	8	-28.019300899515986
+W	campusphtoograplheractsentries switche s	2	-	campus phtoograplher acts entries switches	campus photographer acts entries switches	6	-23.281322394178616
+W	campusphtoograplheractsentries switche s	2	11	campus phtoograplh eracts entries switches	campus photograph tracts entries switches	7	-24.513988424804243
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	0	-	marketplace direction regime moore odg swap pevr examples sounds pottery	marketplace direction regime moore odg swap pevr examples sounds pottery	16	-66.71917626751633
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	0	11	marketplace direction regime moore odg swap pevr examples sounds pottery	marketplace direction regime moore odg swap pevr examples sounds pottery	16	-66.71917626751633
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	1	-	marketplace direction regime mooreo dg swappevr examples sounds pottery	marketplace direction regime moore do swapper examples sounds pottery	11	-42.39658404563659
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	1	11	marketplace direction regime mooreo dg swappevr examples sounds pottery	marketplace direction regime moore do swapper examples sounds pottery	11	-42.39658404563659
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	2	-	marketplace direction regime mooreod gswappevr examples sounds pottery	marketplace direction regime moored swapper examples sounds pottery	10	-41.1933900436043
+W	marketplacedirectionregimemooreodgswappevrexamplessoundspottery	2	11	marketplace direction regime mooreod gswappevr examples sounds pottery	marketplace direction regime moored swapper examples sounds pottery	10	-41.1933900436043
+W	delete	0	-	delete	delete	0	-4.482194499145949
+W	delete	0	11	delete	delete	0	-4.482194499145949
+W	delete	1	-	delete	delete	0	-4.482194499145949
+W	delete	1	11	delete	delete	0	-4.482194499145949
+W	delete	2	-	delete	delete	0	-4.482194499145949
+W	delete	2	11	delete	delete	0	-4.482194499145949
+W	warcommentssomtedgaywave	0	-	war comments som ted gay wave	war comments som ted gay wave	5	-26.402858977641102
+W	warcommentssomtedgaywave	0	11	war comments som ted gay wave	war comments som ted gay wave	5	-26.402858977641102
+W	warcommentssomtedgaywave	1	-	war comments somted gayw ave	war comments sorted gay ave	6	-20.148085744254637
+W	warcommentssomtedgaywave	1	11	war comments somted gayw ave	war comments sorted gay ave	6	-20.148085744254637
+W	warcommentssomtedgaywave	2	-	war comments somtedgay wave	war comments someday wave	5	-17.61904226976854
+W	warcommentssomtedgaywave	2	11	war comments somtedgay wave	war comments someday wave	5	-17.61904226976854
+W	fhiscal	0	-	f his cal	f his cal	3	-20.099543689010964
+W	fhiscal	0	11	f his cal	f his cal	3	-20.099543689010964
+W	fhiscal	1	-	fhiscal	fiscal	1	-4.639505525448383
+W	fhiscal	1	11	fhiscal	fiscal	1	-4.639505525448383
+W	fhiscal	2	-	fhiscal	fiscal	1	-4.639505525448383
+W	fhiscal	2	11	fhiscal	fiscal	1	-4.639505525448383
+W	MAnaginGmeRchAntraymeATneArNASA!	0	-	MAnaginG meRchAnt ray meAT neAr NASA!	Managing merchant ray meat near NASA!	10	-38.42491911522916
+W	MAnaginGmeRchAntraymeATneArNASA!	0	11	MAnaginG meRchAnt ray meAT neAr NASA!	Managing merchant ray meat near NASA!	10	-38.42491911522916
+W	MAnaginGmeRchAntraymeATneArNASA!	1	-	MAnaginG meRchAnt ray meATn eArNAS A!	Managing merchant ray mean earns A	8	-25.500153264420412
+W	MAnaginGmeRchAntraymeATneArNASA!	1	11	MAnaginG meRchAnt ray meATn eArNAS A!	Managing merchant ray mean earns A	8	-25.500153264420412
+W	MAnaginGmeRchAntraymeATneArNASA!	2	-	MAnaginG meRchAnt ray meAT neArN AS A!	Managing merchant ray meat learn As A	8	-26.783855568972086
+W	MAnaginGmeRchAntraymeATneArNASA!	2	11	MAnaginG meRchAnt ray meAT neArN AS A!	Managing merchant ray meat learn As A	8	-26.783855568972086
+W	Brokersannaprettyexecutive٣٤kids	0	-	Brokers anna pretty executive ٣٤ kids	Brokers anna pretty executive ٣٤ kids	7	-35.26347940782079
+W	Brokersannaprettyexecutive٣٤kids	0	11	Brokers anna pretty executive ٣٤ kids	Brokers anna pretty executive ٣٤ kids	7	-35.26347940782079
+W	Brokersannaprettyexecutive٣٤kids	1	-	Brokers anna pretty executive٣ ٤kids	Brokers anna pretty executive kids	6	-22.252794411520785
+W	Brokersannaprettyexecutive٣٤kids	1	11	Brokers anna pretty executive٣ ٤kids	Brokers anna pretty executive kids	6	-22.252794411520785
+W	Brokersannaprettyexecutive٣٤kids	2	-	Brokers anna pretty executive ٣٤kids	Brokers anna pretty executive kids	6	-22.252794411520785
+W	Brokersannaprettyexecutive٣٤kids	2	11	Brokers anna pretty executive ٣٤kids	Brokers anna pretty executive kids	6	-22.252794411520785
+W	brianefightinglocstthhujouraal!	0	-	brian e fighting locstthhuj our a al!	brian e fighting locstthhuj our a al!	18	-63.24841034986021
+W	brianefightinglocstthhujouraal!	0	11	brian e fighting locstthhuj our a al!	brian e fighting locstthhuj our a al!	18	-63.24841034986021
+W	brianefightinglocstthhujouraal!	1	-	briane fightingl ocst thhu jouraal !	brian fighting cost thu journal a	11	-23.276381973553715
+W	brianefightinglocstthhujouraal!	1	11	briane fightingl ocst thhu jouraal !	brian fighting cost thu journal a	11	-23.276381973553715
+W	brianefightinglocstthhujouraal!	2	-	brian efightingl ocst thhu jouraal!	brian fighting cost thu journal	10	-21.223839007697883
+W	brianefightinglocstthhujouraal!	2	11	brian efightingl ocst thhu jouraal!	brian fighting cost thu journal	10	-21.223839007697883
+W	weddingpasslrs noadmassivehi tsinksamuel	0	-	wedding pass lrs no ad massive hits ink samuel	wedding pass lrs no ad massive hits ink samuel	13	-57.121058757399055
+W	weddingpasslrs noadmassivehi tsinksamuel	0	11	wedding pass lrs no ad massive hits ink samuel	wedding pass lrs no ad massive hits ink samuel	13	-57.121058757399055
+W	weddingpasslrs noadmassivehi tsinksamuel	1	-	wedding passlrs noad massiveh i tsink samuel	wedding passers road massive i think samuel	8	-30.51984874231602
+W	weddingpasslrs noadmassivehi tsinksamuel	1	11	wedding passlrs noad massiveh i tsink samuel	wedding passers road massive i think samuel	8	-30.51984874231602
+W	weddingpasslrs noadmassivehi tsinksamuel	2	-	wedding passlrs noad massiveh i tsink samuel	wedding passers road massive i think samuel	8	-30.51984874231602
+W	weddingpasslrs noadmassivehi tsinksamuel	2	11	wedding passlrs noad massiveh i tsink samuel	wedding passers road massive i think samuel	8	-30.51984874231602
+W	deifed dmprovingclip	0	-	de i fed dm proving clip	de i fed dm proving clip	6	-33.95839852722815
+W	deifed dmprovingclip	0	11	de i fed dm proving clip	de i fed dm proving clip	6	-33.95839852722815
+W	deifed dmprovingclip	1	-	deifed dmproving clip	defied improving clip	3	-15.745168402986469
+W	deifed dmprovingclip	1	11	deifed dmproving clip	defied improving clip	3	-15.745168402986469
+W	deifed dmprovingclip	2	-	deifed dmproving clip	defied improving clip	3	-15.745168402986469
+W	deifed dmprovingclip	2	11	deifed dmproving clip	defied improving clip	3	-15.745168402986469
+W	thezis	0	-	the z is	the z is	3	-15.995141227001355
+W	thezis	0	11	the z is	the z is	3	-15.995141227001355
+W	thezis	1	-	the zis	the is	2	-3.9844562307013516
+W	thezis	1	11	the zis	the is	2	-3.9844562307013516
+W	thezis	2	-	the zis	the is	2	-3.9844562307013516
+W	thezis	2	11	the zis	the is	2	-3.9844562307013516
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	0	-	ending massage intense everything tel abs w numbers updated mai yin g finder	ending massage intense everything tel abs w numbers updated mai yin g finder	13	-75.55442161699851
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	0	11	ending massage intense everything tel abs w numbers updated mai yin g finder	ending massage intense everything tel abs w numbers updated mai yin g finder	13	-75.55442161699851
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	1	-	ending massage intense everything tel abs wnumbers updated maiying finder	ending massage intense everything tel abs numbers updated mailing finder	10	-44.77113576799451
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	1	11	ending massage intense everything tel abs wnumbers updated maiying finder	ending massage intense everything tel abs numbers updated mailing finder	10	-44.77113576799451
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	2	-	ending massage intense everything tel abs wnumbers updated maiying finder	ending massage intense everything tel abs numbers updated mailing finder	10	-44.77113576799451
+W	ending massageintenseeverythingtelabswnumbersupdatedmaiyingfinder	2	11	ending massage intense everything tel abs wnumbers updated maiying finder	ending massage intense everything tel abs numbers updated mailing finder	10	-44.77113576799451
+W	Edtliorselegantsize balancedtheatrewagemet	0	-	Edtliors elegant size balanced theatre wage met	Edtliors elegant size balanced theatre wage met	13	-46.50864399942969
+W	Edtliorselegantsize balancedtheatrewagemet	0	11	Edtliors elegant size balanced theatre wage met	Edtliors elegant size balanced theatre wage met	13	-46.50864399942969
+W	Edtliorselegantsize balancedtheatrewagemet	1	-	Edt liors elegant size balanced theatrew age met	Edit lions elegant size balanced theatre age met	9	-35.66653367268225
+W	Edtliorselegantsize balancedtheatrewagemet	1	11	Edt liors elegant size balanced theatrew age met	Edit lions elegant size balanced theatre age met	9	-35.66653367268225
+W	Edtliorselegantsize balancedtheatrewagemet	2	-	Edtlio rselegant size balanced theatrew age met	Emilio relevant size balanced theatre age met	10	-31.93241356396775
+W	Edtliorselegantsize balancedtheatrewagemet	2	11	Edtlio rselegant size balanced theatrew age met	Emilio relevant size balanced theatre age met	10	-31.93241356396775
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	0	-	reduce teeth remaining roots difficulties jump apr a dis e registry	reduce teeth remaining roots difficulties jump apr a dis e registry	8	-56.344448312612506
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	0	11	reduce teeth remaining roots difficult ies jump apr a dis e registry	reduce teeth remaining roots difficult ies jump apr a dis e registry	12	-69.74676553808017
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	1	-	reduce teeth remaining roots difficulties jump apradise registry	reduce teeth remaining roots difficulties jump paradise registry	5	-37.99579199378113
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	1	11	reduce teeth remaining rootsd ifficulties jump apradise registry	reduce teeth remaining roots difficulties jump paradise registry	7	-37.99579199378113
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	2	-	reduce teeth remaining roots difficulties jump apradise registry	reduce teeth remaining roots difficulties jump paradise registry	5	-37.99579199378113
+W	reduce teethremainingrootsdifficulties jump apradiseregistry	2	11	reduce teeth remaining rootsd ifficulties jump apradise registry	reduce teeth remaining roots difficulties jump paradise registry	7	-37.99579199378113
+W	misshealing laptopobservation philosophyorgv	0	-	miss healing laptop observation philosophy org v	miss healing laptop observation philosophy org v	5	-40.05351947126229
+W	misshealing laptopobservation philosophyorgv	0	11	miss healing laptop observation philosophy org v	miss healing laptop observation philosophy org v	5	-40.05351947126229
+W	misshealing laptopobservation philosophyorgv	1	-	miss healing laptop observation philosophy orgv	miss healing laptop observation philosophy org	4	-28.04283447496229
+W	misshealing laptopobservation philosophyorgv	1	11	miss healing laptop observation philosophy orgv	miss healing laptop observation philosophy org	4	-28.04283447496229
+W	misshealing laptopobservation philosophyorgv	2	-	miss healing laptop observation philosophy orgv	miss healing laptop observation philosophy org	4	-28.04283447496229
+W	misshealing laptopobservation philosophyorgv	2	11	miss healing laptop observation philosophy orgv	miss healing laptop observation philosophy org	4	-28.04283447496229
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	0	-	should information tu disc uy ions companies shape everybody guidelines aznd vitamins	should information tu disc uy ions companies shape everybody guidelines aznd vitamins	19	-80.25066610758584
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	0	11	should information tu disc uy ions companies shape everybody guidelines aznd vitamins	should information tu disc uy ions companies shape everybody guidelines aznd vitamins	19	-80.25066610758584
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	1	-	should informationt udisc uyions companies shape everybody guidelines aznd vitamins	should information disc unions companies shape everybody guidelines and vitamins	13	-40.61511822008387
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	1	11	should information tu disc uyions companies shape everybody guidelines aznd vitamins	should information to disc unions companies shape everybody guidelines and vitamins	13	-42.54169254939595
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	2	-	should informationtu discuyions companies shape everybody guidelines aznd vitamins	should information discussions companies shape everybody guidelines and vitamins	13	-35.59500051437648
+W	shouldinformationtudiscuyionscompaniesshapeeverybodyguidelinesazndvitamins	2	11	should information tu discuyions companies shape everybody guidelines aznd vitamins	should information to discussions companies shape everybody guidelines and vitamins	13	-37.521574843688555
+W	searches couldboyshusbandgovrnance investment	0	-	searches could boys husband gov r nance investment	searches could boys husband gov r nance investment	6	-44.531959670011496
+W	searches couldboyshusbandgovrnance investment	0	11	searches could boys husband gov r nance investment	searches could boys husband gov r nance investment	6	-44.531959670011496
+W	searches couldboyshusbandgovrnance investment	1	-	searches could boys husband govrnance investment	searches could boys husband governance investment	4	-25.759293804382757
+W	searches couldboyshusbandgovrnance investment	1	11	searches could boys husband govrnance investment	searches could boys husband governance investment	4	-25.759293804382757
+W	searches couldboyshusbandgovrnance investment	2	-	searches could boys husband govrnance investment	searches could boys husband governance investment	4	-25.759293804382757
+W	searches couldboyshusbandgovrnance investment	2	11	searches could boys husband govrnance investment	searches could boys husband governance investment	4	-25.759293804382757
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	0	-	vegas lmtig at i one comp um ting near eventually regulatory madrid	vegas lmtig at i one comp um ting near eventually regulatory madrid	17	-71.0379498503473
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	0	11	vegas lmtig at i one comp um ting near eventually regulatory madrid	vegas lmtig at i one comp um ting near eventually regulatory madrid	17	-71.0379498503473
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	1	-	vegas lmtigation e compumting near eventually regulatory madrid	vegas litigation a computing near eventually regulatory madrid	9	-34.378622991672586
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	1	11	vegas lmtigation e compumting near eventually regulatory madrid	vegas litigation a computing near eventually regulatory madrid	9	-34.378622991672586
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	2	-	vegas lmtigation ecompumting near eventually regulatory madrid	vegas litigation computing near eventually regulatory madrid	8	-32.32608002581675
+W	vegaslmtigationecompumtingnear eventuallyregulatorymadrid	2	11	vegas lmtigation ecompumting near eventually regulatory madrid	vegas litigation computing near eventually regulatory madrid	8	-32.32608002581675
+W	wisdom	0	-	wisdom	wisdom	0	-4.907012609437325
+W	wisdom	0	11	wisdom	wisdom	0	-4.907012609437325
+W	wisdom	1	-	wisdom	wisdom	0	-4.907012609437325
+W	wisdom	1	11	wisdom	wisdom	0	-4.907012609437325
+W	wisdom	2	-	wisdom	wisdom	0	-4.907012609437325
+W	wisdom	2	11	wisdom	wisdom	0	-4.907012609437325
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	0	-	broad uj asti over ngiht product roof chains streets han cd le	broad uj asti over ngiht product roof chains streets han cd le	19	-83.85120635138863
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	0	11	broad uj asti over ngiht product roof chains streets han cd le	broad uj asti over ngiht product roof chains streets han cd le	19	-83.85120635138863
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	1	-	broadu jast iover ngiht product roof chains streets hancdle	broad just over night product roof chains streets handle	12	-37.84307110597703
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	1	11	broadu jast iover ngiht product roof chains streets hancdle	broad just over night product roof chains streets handle	12	-37.84307110597703
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	2	-	broadujast ioverngiht product roof chains streets hancdle	broadcast overnight product roof chains streets handle	10	-32.20331877333096
+W	broadujastioverngihtprod uctroof chainsstreets hancdle	2	11	broadujast ioverngiht product roof chains streets hancdle	broadcast overnight product roof chains streets handle	10	-32.20331877333096
+W	taks24/7thomaskminds	0	-	taks24/7 tho mask minds	taks24/7 tho mask minds	11	-34.60464767773054
+W	taks24/7thomaskminds	0	11	taks24/7 tho mask minds	taks24/7 tho mask minds	11	-34.60464767773054
+W	taks24/7thomaskminds	1	-	taks 24/ 7thomas kminds	take 24/ thomas kinds	9	-26.268893614978516
+W	taks24/7thomaskminds	1	11	taks 24/ 7thomas kminds	take 24/ thomas kinds	9	-26.268893614978516
+W	taks24/7thomaskminds	2	-	taks 24 /7thomas kminds	take of thomas kinds	9	-14.149903704390319
+W	taks24/7thomaskminds	2	11	taks 24 /7thomas kminds	take of thomas kinds	9	-14.149903704390319
+W	templates	0	-	templates	templates	0	-4.732289104125261
+W	templates	0	11	templates	templates	0	-4.732289104125261
+W	templates	1	-	templates	templates	0	-4.732289104125261
+W	templates	1	11	templates	templates	0	-4.732289104125261
+W	templates	2	-	templates	templates	0	-4.732289104125261
+W	templates	2	11	templates	templates	0	-4.732289104125261
+W	regionunfortunatelygladjesus biggestpromptdepending	0	-	region unfortunately glad jesus biggest prompt depending	region unfortunately glad jesus biggest prompt depending	5	-32.522048918272354
+W	regionunfortunatelygladjesus biggestpromptdepending	0	11	region un fortunately glad jesus biggest prompt depending	region un fortunately glad jesus biggest prompt depending	8	-46.15805557642424
+W	regionunfortunatelygladjesus biggestpromptdepending	1	-	region unfortunately glad jesus biggest prompt depending	region unfortunately glad jesus biggest prompt depending	5	-32.522048918272354
+W	regionunfortunatelygladjesus biggestpromptdepending	1	11	region unfortunate lyg ladjes us biggest prompt depending	region unfortunate log ladies us biggest prompt depending	8	-35.34208835914846
+W	regionunfortunatelygladjesus biggestpromptdepending	2	-	region unfortunately glad jesus biggest prompt depending	region unfortunately glad jesus biggest prompt depending	5	-32.522048918272354
+W	regionunfortunatelygladjesus biggestpromptdepending	2	11	regionun fortunately glad jesus biggest prompt depending	region fortunately glad jesus biggest prompt depending	7	-33.14737058012423
+W	DraftzteLLanXeiYSupPOrTs	0	-	Draft z teLL an XeiY SupPOrTs	Draft z tell an XeiY Supports	10	-42.83754313499134
+W	DraftzteLLanXeiYSupPOrTs	0	11	Draft z teLL an XeiY SupPOrTs	Draft z tell an XeiY Supports	10	-42.83754313499134
+W	DraftzteLLanXeiYSupPOrTs	1	-	Draft zteLL anXe iY SupPOrTs	Draft tell anne in Supports	7	-19.81413501490249
+W	DraftzteLLanXeiYSupPOrTs	1	11	Draft zteLL anXe iY SupPOrTs	Draft tell anne in Supports	7	-19.81413501490249
+W	DraftzteLLanXeiYSupPOrTs	2	-	Draft zteLL anXe iYSupPOrTs	Draft tell anne supports	7	-17.73130291808446
+W	DraftzteLLanXeiYSupPOrTs	2	11	Draft zteLL anXe iYSupPOrTs	Draft tell anne supports	7	-17.73130291808446
+W	ANALDISCLOSURE	0	-	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	ANALDISCLOSURE	0	11	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	ANALDISCLOSURE	1	-	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	ANALDISCLOSURE	1	11	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	ANALDISCLOSURE	2	-	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	ANALDISCLOSURE	2	11	ANAL DISCLOSURE	Anal Disclosure	1	-9.066645582026215
+W	directlysend NASArodNASA!cag ersstantfinall	0	-	directly send N AS A rod NASA! cagers st ant fin all	directly send N As A rod NASA! cagers st ant fin all	17	-70.16585035894441
+W	directlysend NASArodNASA!cag ersstantfinall	0	11	directly send N AS A rod NASA! cagers st ant fin all	directly send N As A rod NASA! cagers st ant fin all	17	-70.16585035894441
+W	directlysend NASArodNASA!cag ersstantfinall	1	-	directly send NASAr odN AS A! cag ersst antfi nall	directly send Nasal on As A can ernst anti all	14	-35.99369912817847
+W	directlysend NASArodNASA!cag ersstantfinall	1	11	directly send NASAr odN AS A! cag ersst antfi nall	directly send Nasal on As A can ernst anti all	14	-35.99369912817847
+W	directlysend NASArodNASA!cag ersstantfinall	2	-	directly send NASAr odNASA !cagers stant finall	directly send Nasal odessa cagers start final	12	-34.540185213181644
+W	directlysend NASArodNASA!cag ersstantfinall	2	11	directly send NASAr odNASA !cagers stant finall	directly send Nasal odessa cagers start final	12	-34.540185213181644
+W	servesvisualpointscountieswiki	0	-	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	servesvisualpointscountieswiki	0	11	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	servesvisualpointscountieswiki	1	-	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	servesvisualpointscountieswiki	1	11	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	servesvisualpointscountieswiki	2	-	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	servesvisualpointscountieswiki	2	11	serves visual points counties wiki	serves visual points counties wiki	4	-22.776837557233918
+W	receivercustomizestocks atersramcorder	0	-	receiver customize stocks a ter sra mc order	receiver customize stocks a ter sra mc order	8	-44.49567709584546
+W	receivercustomizestocks atersramcorder	0	11	receiver customize stocks a ter sra mc order	receiver customize stocks a ter sra mc order	8	-44.49567709584546
+W	receivercustomizestocks atersramcorder	1	-	receiver customize stocks aters ramcorder	receiver customize stocks waters camcorder	5	-24.050508659147155
+W	receivercustomizestocks atersramcorder	1	11	receiver customize stocks aters ramcorder	receiver customize stocks waters camcorder	5	-24.050508659147155
+W	receivercustomizestocks atersramcorder	2	-	receiver customize stocks aters ramcorder	receiver customize stocks waters camcorder	5	-24.050508659147155
+W	receivercustomizestocks atersramcorder	2	11	receiver customize stocks aters ramcorder	receiver customize stocks waters camcorder	5	-24.050508659147155
+W	malwishesrepvesintativejewiah villageturnerdogcables	0	-	m al wishes rep ves int a tiv e jew iah village turner dog cables	m al wishes rep ves int a tiv e jew iah village turner dog cables	21	-102.7295226831836
+W	malwishesrepvesintativejewiah villageturnerdogcables	0	11	m al wishes rep ves int a tiv e jew iah village turner dog cables	m al wishes rep ves int a tiv e jew iah village turner dog cables	21	-102.7295226831836
+W	malwishesrepvesintativejewiah villageturnerdogcables	1	-	mal wishes repves inta tive jewiah village turner dog cables	may wishes reeves into time jewish village turner dog cables	13	-42.91833690499993
+W	malwishesrepvesintativejewiah villageturnerdogcables	1	11	mal wishes repves inta tive jewiah village turner dog cables	may wishes reeves into time jewish village turner dog cables	13	-42.91833690499993
+W	malwishesrepvesintativejewiah villageturnerdogcables	2	-	mal wishes repvesintative jewiah village turner dog cables	may wishes representative jewish village turner dog cables	10	-35.428582647543436
+W	malwishesrepvesintativejewiah villageturnerdogcables	2	11	mal wishes repvesint ative jewiah village turner dog cables	may wishes represent active jewish village turner dog cables	12	-39.57329509577695
+W	x2democratickatsesimon	0	-	x2 democratic kat se simon	x2 democratic kat se simon	8	-40.99714209482271
+W	x2democratickatsesimon	0	11	x2 democratic kat se simon	x2 democratic kat se simon	8	-40.99714209482271
+W	x2democratickatsesimon	1	-	x 2democratic katse simon	a democratic kate simon	6	-16.32374773160608
+W	x2democratickatsesimon	1	11	x 2democratic katse simon	a democratic kate simon	6	-16.32374773160608
+W	x2democratickatsesimon	2	-	x2democratic katse simon	democratic kate simon	5	-14.271204765750248
+W	x2democratickatsesimon	2	11	x2 democratic katse simon	of democratic kate simon	6	-16.16289985146205
+W	portaberecordingsoperating3.14signdoorssinger	0	-	port a be recordings operating 3.14 sign doors singer	port a be recordings operating 3.14 sign doors singer	12	-46.215028248161076
+W	portaberecordingsoperating3.14signdoorssinger	0	11	port a be recordings operating 3.14 sign doors singer	port a be recordings operating 3.14 sign doors singer	12	-46.215028248161076
+W	portaberecordingsoperating3.14signdoorssinger	1	-	portabe recordings operating3 .14 sign doors singer	portable recordings operating .14 sign doors singer	11	-40.89003895896176
+W	portaberecordingsoperating3.14signdoorssinger	1	11	portabe recordings operating3 .14 sign doors singer	portable recordings operating .14 sign doors singer	11	-40.89003895896176
+W	portaberecordingsoperating3.14signdoorssinger	2	-	portabe recordings operating3. 14sign doors singer	portable recordings operating design doors singer	10	-26.841349645075177
+W	portaberecordingsoperating3.14signdoorssinger	2	11	portabe recordings operating3. 14sign doors singer	portable recordings operating design doors singer	10	-26.841349645075177
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	0	-	parent curriculum ended shaved con vrsu on pills sand arrived	parent curriculum ended shaved con vrsu on pills sand arrived	12	-54.74310541334708
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	0	11	parent curriculum ended shaved con vrsu on pills sand arrived	parent curriculum ended shaved con vrsu on pills sand arrived	12	-54.74310541334708
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	1	-	parent curriculum ended shaved convr suon pillss and arrived	parent curriculum ended shaved contr sun pills and arrived	10	-40.196826116347836
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	1	11	parent curriculum ended shaved convr suon pillss and arrived	parent curriculum ended shaved contr sun pills and arrived	10	-40.196826116347836
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	2	-	parent curriculum ended shaved convrsuon pillss and arrived	parent curriculum ended shaved conversion pills and arrived	9	-34.46843492734341
+W	parentcurriculumendedshavedconvrsuon pillssandarrived	2	11	parent curriculum ended shaved convrsuon pillss and arrived	parent curriculum ended shaved conversion pills and arrived	9	-34.46843492734341
+W	DISTANCE	0	-	DISTANCE	Distance	0	-4.235066444936576
+W	DISTANCE	0	11	DISTANCE	Distance	0	-4.235066444936576
+W	DISTANCE	1	-	DISTANCE	Distance	0	-4.235066444936576
+W	DISTANCE	1	11	DISTANCE	Distance	0	-4.235066444936576
+W	DISTANCE	2	-	DISTANCE	Distance	0	-4.235066444936576
+W	DISTANCE	2	11	DISTANCE	Distance	0	-4.235066444936576
+W	majorintervalunittropical tdhan d oorsbritish	0	-	major interval unit tropical tdh an doors british	major interval unit tropical tdh an doors british	9	-43.48340925406899
+W	majorintervalunittropical tdhan d oorsbritish	0	11	major interval unit tropical tdh an doors british	major interval unit tropical tdh an doors british	9	-43.48340925406899
+W	majorintervalunittropical tdhan d oorsbritish	1	-	major interval unit tropical tdhan doors british	major interval unit tropical than doors british	6	-29.95284182131543
+W	majorintervalunittropical tdhan d oorsbritish	1	11	major interval unit tropical tdhan doors british	major interval unit tropical than doors british	6	-29.95284182131543
+W	majorintervalunittropical tdhan d oorsbritish	2	-	major interval unit tropical tdhan doors british	major interval unit tropical than doors british	6	-29.95284182131543
+W	majorintervalunittropical tdhan d oorsbritish	2	11	major interval unit tropical tdhan doors british	major interval unit tropical than doors british	6	-29.95284182131543
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	0	-	anybody brain flk worker U.S. doors favourites upon	anybody brain flk worker U.S. doors favourites upon	14	-56.71976325131337
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	0	11	anybody brain flk worker U.S. doors favourites upon	anybody brain flk worker U.S. doors favourites upon	14	-56.71976325131337
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	1	-	anybody brainf lkw orker U.S .doors favourites upon	anybody brain law order Us doors favourites upon	12	-32.97441261833513
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	1	11	anybody brainf lkw orker U.S .doors favourites upon	anybody brain law order Us doors favourites upon	12	-32.97441261833513
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	2	-	anybody brainfl kworkerU .S .doors favourites upon	anybody brain workers is doors favourites upon	12	-29.561719182270547
+W	anybodybrainflkworkerU.S.doorsfavouritesupon	2	11	anybody brainfl kworkerU .S .doors favourites upon	anybody brain workers is doors favourites upon	12	-29.561719182270547
+W	eggsterritorysuppliergraintrademark	0	-	eggs territory supplier grain trademark	eggs territory supplier grain trademark	4	-23.867616520304118
+W	eggsterritorysuppliergraintrademark	0	11	eggs territory supplier grain trademark	eggs territory supplier grain trademark	4	-23.867616520304118
+W	eggsterritorysuppliergraintrademark	1	-	eggs territory supplier graint rademark	eggs territory supplier grant trademark	6	-23.200417749768533
+W	eggsterritorysuppliergraintrademark	1	11	eggs territory supplier graint rademark	eggs territory supplier grant trademark	6	-23.200417749768533
+W	eggsterritorysuppliergraintrademark	2	-	eggs territory supplier graint rademark	eggs territory supplier grant trademark	6	-23.200417749768533
+W	eggsterritorysuppliergraintrademark	2	11	eggs territory supplier graint rademark	eggs territory supplier grant trademark	6	-23.200417749768533
+W	residentspour	0	-	residents pour	residents pour	1	-9.371487046276261
+W	residentspour	0	11	residents pour	residents pour	1	-9.371487046276261
+W	residentspour	1	-	residentsp our	residents our	2	-7.548195773902089
+W	residentspour	1	11	residentsp our	residents our	2	-7.548195773902089
+W	residentspour	2	-	residentsp our	residents our	2	-7.548195773902089
+W	residentspour	2	11	residentsp our	residents our	2	-7.548195773902089
+W	Oaklandmusicalattitude crmniechart containplanner motion	0	-	Oakland musical attitude crmnie chart contain planner motion	Oakland musical attitude crmnie chart contain planner motion	10	-49.59821376642893
+W	Oaklandmusicalattitude crmniechart containplanner motion	0	11	Oakland musical attitude crmnie chart contain planner motion	Oakland musical attitude crmnie chart contain planner motion	10	-49.59821376642893
+W	Oaklandmusicalattitude crmniechart containplanner motion	1	-	Oakland musical attitude cr mnie chart contain planner motion	Oakland musical attitude or mine chart contain planner motion	7	-39.73615067076512
+W	Oaklandmusicalattitude crmniechart containplanner motion	1	11	Oakland musical attitude cr mnie chart contain planner motion	Oakland musical attitude or mine chart contain planner motion	7	-39.73615067076512
+W	Oaklandmusicalattitude crmniechart containplanner motion	2	-	Oakland musical attitude crmnie chart contain planner motion	Oakland musical attitude crane chart contain planner motion	6	-37.90899719358569
+W	Oaklandmusicalattitude crmniechart containplanner motion	2	11	Oakland musical attitude crmnie chart contain planner motion	Oakland musical attitude crane chart contain planner motion	6	-37.90899719358569
+W	occur?	0	-	occur?	occur?	1	-16.629038703912837
+W	occur?	0	11	occur?	occur?	1	-16.629038703912837
+W	occur?	1	-	occur?	occur	1	-4.618353707612834
+W	occur?	1	11	occur?	occur	1	-4.618353707612834
+W	occur?	2	-	occur?	occur	1	-4.618353707612834
+W	occur?	2	11	occur?	occur	1	-4.618353707612834
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	0	-	Al n gulf driving aside permission U.S. involvement pc don't	Al n gulf driving aside permission U.S. involvement pc don't	13	-64.74755372036829
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	0	11	Al n gulf driving aside permission U.S. involvement pc don't	Al n gulf driving aside permission U.S. involvement pc don't	13	-64.74755372036829
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	1	-	Aln gulf drivinga side permissionU .S .involvement pc don't	All gulf driving side permission is involvement pc don't	12	-37.77902736597696
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	1	11	Aln gulf drivinga side permissionU .S . involvement pc don't	All gulf driving side permission is a involvement pc don't	13	-39.83157033183279
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	2	-	Alngulf drivinga side permissionU.S .involvement pc don't	Engulf driving side permissions involvement pc don't	11	-35.26612269934358
+W	Alngulf drivingasidepermissionU.S.involvementpcdon't	2	11	Alngulf drivinga side permissionU .S. involvement pc don't	Engulf driving side permission is involvement pc don't	12	-36.98550083400051
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	0	-	MaRGAreT ethicaL sF lek Storm eMPloyER ChaNNel?	Margaret ethical sF lek Storm employer Channel?	8	-54.57664292055536
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	0	11	MaRGAreT ethicaL sF lek Storm eMPloyER ChaNNel?	Margaret ethical sF lek Storm employer Channel?	8	-54.57664292055536
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	1	-	MaRGAreT ethicaL sFle kStorm eMPloyER ChaNNel?	Margaret ethical sale storm employer Channel	7	-27.101036660681604
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	1	11	MaRGAreT ethicaL sFle kStorm eMPloyER ChaNNel?	Margaret ethical sale storm employer Channel	7	-27.101036660681604
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	2	-	MaRGAreT ethicaL sFle kStorme MPloyER ChaNNel?	Margaret ethical sale store Employer Channel	9	-25.98385993112616
+W	MaRGAreTethicaL sFlekStormeMPloyERChaNNel?	2	11	MaRGAreT ethicaL sFle kStorme MPloyER ChaNNel?	Margaret ethical sale store Employer Channel	9	-25.98385993112616
+W	AnproachesIntegeLayouti	0	-	An pro aches Int ege Layout i	An pro aches Int ege Layout i	9	-38.40421317378776
+W	AnproachesIntegeLayouti	0	11	An pro aches Int ege Layout i	An pro aches Int ege Layout i	9	-38.40421317378776
+W	AnproachesIntegeLayouti	1	-	Anproaches Intege Layouti	Approaches Integer Layout	5	-14.499989725176528
+W	AnproachesIntegeLayouti	1	11	Anproaches Intege Layouti	Approaches Integer Layout	5	-14.499989725176528
+W	AnproachesIntegeLayouti	2	-	Anproaches IntegeLay outi	Approaches Interplay out	6	-13.908274679667288
+W	AnproachesIntegeLayouti	2	11	Anproaches IntegeLay outi	Approaches Interplay out	6	-13.908274679667288
+W	lotusgeanjobsdenmarkmany٣٤	0	-	lotus gean jobs denmark many ٣٤	lotus gean jobs denmark many ٣٤	7	-37.747719697336
+W	lotusgeanjobsdenmarkmany٣٤	0	11	lotus gean jobs denmark many ٣٤	lotus gean jobs denmark many ٣٤	7	-37.747719697336
+W	lotusgeanjobsdenmarkmany٣٤	1	-	lotus gean jobs denmarkm any٣ ٤	lotus gean jobs denmark any a	8	-26.44161111146232
+W	lotusgeanjobsdenmarkmany٣٤	1	11	lotus gean jobs denmarkm any٣ ٤	lotus gean jobs denmark any a	8	-26.44161111146232
+W	lotusgeanjobsdenmarkmany٣٤	2	-	lotus gean jobs denmarkm any٣٤	lotus gean jobs denmark any	7	-24.389068145606487
+W	lotusgeanjobsdenmarkmany٣٤	2	11	lotus gean jobs denmarkm any٣٤	lotus gean jobs denmark any	7	-24.389068145606487
+W	past againstcolumbiabrige	0	-	past against columbia brig e	past against columbia brig e	4	-30.289276119938307
+W	past againstcolumbiabrige	0	11	past against columbia brig e	past against columbia brig e	4	-30.289276119938307
+W	past againstcolumbiabrige	1	-	past against columbia brige	past against columbia bridge	3	-16.638372509741735
+W	past againstcolumbiabrige	1	11	past against columbia brige	past against columbia bridge	3	-16.638372509741735
+W	past againstcolumbiabrige	2	-	past against columbia brige	past against columbia bridge	3	-16.638372509741735
+W	past againstcolumbiabrige	2	11	past against columbia brige	past against columbia bridge	3	-16.638372509741735
+W	escapecaptainfailurgraduate analyst resistant althougcustom	0	-	escape captain fail ur graduate analyst resistant al thou g custom	escape captain fail ur graduate analyst resistant al thou g custom	10	-66.32187155785797
+W	escapecaptainfailurgraduate analyst resistant althougcustom	0	11	escape captain fail ur graduate analyst resistant al thou g custom	escape captain fail ur graduate analyst resistant al thou g custom	10	-66.32187155785797
+W	escapecaptainfailurgraduate analyst resistant althougcustom	1	-	escape captain failur graduate analyst resistant althoug custom	escape captain failure graduate analyst resistant although custom	6	-36.48659551435871
+W	escapecaptainfailurgraduate analyst resistant althougcustom	1	11	escape captain failur graduate analyst resistant althoug custom	escape captain failure graduate analyst resistant although custom	6	-36.48659551435871
+W	escapecaptainfailurgraduate analyst resistant althougcustom	2	-	escape captain failur graduate analyst resistant althoug custom	escape captain failure graduate analyst resistant although custom	6	-36.48659551435871
+W	escapecaptainfailurgraduate analyst resistant althougcustom	2	11	escape captain failur graduate analyst resistant althoug custom	escape captain failure graduate analyst resistant although custom	6	-36.48659551435871
+W	likedestruction bread	0	-	like destruction bread	like destruction bread	1	-13.087511321549755
+W	likedestruction bread	0	11	like destruction bread	like destruction bread	1	-13.087511321549755
+W	likedestruction bread	1	-	like destruction bread	like destruction bread	1	-13.087511321549755
+W	likedestruction bread	1	11	like destruction bread	like destruction bread	1	-13.087511321549755
+W	likedestruction bread	2	-	like destruction bread	like destruction bread	1	-13.087511321549755
+W	likedestruction bread	2	11	like destruction bread	like destruction bread	1	-13.087511321549755
+W	starringgladarrangedswitchingprovedsum,	0	-	starring glad arranged switching proved sum,	starring glad arranged switching proved sum,	6	-41.61708934223156
+W	starringgladarrangedswitchingprovedsum,	0	11	starring glad arranged switching proved sum,	starring glad arranged switching proved sum,	6	-41.61708934223156
+W	starringgladarrangedswitchingprovedsum,	1	-	starring glad arranged switching proved sum,	starring glad arranged switching proved sum	6	-29.60640434593156
+W	starringgladarrangedswitchingprovedsum,	1	11	starring glad arranged switching proved sum,	starring glad arranged switching proved sum	6	-29.60640434593156
+W	starringgladarrangedswitchingprovedsum,	2	-	starring glad arranged switching proved sum,	starring glad arranged switching proved sum	6	-29.60640434593156
+W	starringgladarrangedswitchingprovedsum,	2	11	starring glad arranged switching proved sum,	starring glad arranged switching proved sum	6	-29.60640434593156
+W	mounted	0	-	mounted	mounted	0	-4.917544397615859
+W	mounted	0	11	mounted	mounted	0	-4.917544397615859
+W	mounted	1	-	mounted	mounted	0	-4.917544397615859
+W	mounted	1	11	mounted	mounted	0	-4.917544397615859
+W	mounted	2	-	mounted	mounted	0	-4.917544397615859
+W	mounted	2	11	mounted	mounted	0	-4.917544397615859
+W	sellersaccessoriescheapgonemait’sinjuries	0	-	sellers accessories cheap gone mai t’s injuries	sellers accessories cheap gone mai t’s injuries	9	-40.52476007327316
+W	sellersaccessoriescheapgonemait’sinjuries	0	11	sellers accessories cheap gone mai t’s injuries	sellers accessories cheap gone mai t’s injuries	9	-40.52476007327316
+W	sellersaccessoriescheapgonemait’sinjuries	1	-	sellers accessories cheap gon emait ’s injuries	sellers accessories cheap on email is injuries	9	-24.913097542527538
+W	sellersaccessoriescheapgonemait’sinjuries	1	11	sellers accessories cheap gon emait ’s injuries	sellers accessories cheap on email is injuries	9	-24.913097542527538
+W	sellersaccessoriescheapgonemait’sinjuries	2	-	sellers accessories cheap gonema it’s injuries	sellers accessories cheap gone its injuries	8	-24.53781862970795
+W	sellersaccessoriescheapgonemait’sinjuries	2	11	sellers accessories cheap gonema it’s injuries	sellers accessories cheap gone its injuries	8	-24.53781862970795
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	0	-	Hobbies moa hl church ends max glad cpl an certified	Hobbies moa hl church ends max glad cpl an certified	10	-54.660632600473804
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	0	11	Hobbies moa hl church ends max glad cpl an certified	Hobbies moa hl church ends max glad cpl an certified	10	-54.660632600473804
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	1	-	Hobbiesm oahl church ends max glad cplan certified	Hobbies oahu church ends max glad plan certified	9	-36.4058215844378
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	1	11	Hobbiesm oahl church ends max glad cplan certified	Hobbies oahu church ends max glad plan certified	9	-36.4058215844378
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	2	-	Hobbies moa hlchurch ends max glad cplan certified	Hobbies moa church ends max glad plan certified	9	-36.93468302750797
+W	Hobbiesmoahlchurchendsmaxglad cplancertified	2	11	Hobbies moa hlchurch ends max glad cplan certified	Hobbies moa church ends max glad plan certified	9	-36.93468302750797
+W	greatlycolleaguesuxicesortmajorktycjrimse	0	-	greatly colleagues ux ice sort major ktycj rims e	greatly colleagues ux ice sort major ktycj rims e	16	-69.03161692884782
+W	greatlycolleaguesuxicesortmajorktycjrimse	0	11	greatly colleagues ux ice sort major ktycj rims e	greatly colleagues ux ice sort major ktycj rims e	16	-69.03161692884782
+W	greatlycolleaguesuxicesortmajorktycjrimse	1	-	greatly colleaguesu xice sort majorkty cj rimse	greatly colleagues nice sort majority cd rise	11	-31.032370578096074
+W	greatlycolleaguesuxicesortmajorktycjrimse	1	11	greatly colleaguesu xice sort majorkty cj rimse	greatly colleagues nice sort majority cd rise	11	-31.032370578096074
+W	greatlycolleaguesuxicesortmajorktycjrimse	2	-	greatly colleagues uxice sort majorkty cjrimse	greatly colleagues price sort majority crime	10	-26.307699704256997
+W	greatlycolleaguesuxicesortmajorktycjrimse	2	11	greatly colleagues uxice sort majorkty cjrimse	greatly colleagues price sort majority crime	10	-26.307699704256997
+W	videos	0	-	videos	videos	0	-4.037237947321538
+W	videos	0	11	videos	videos	0	-4.037237947321538
+W	videos	1	-	videos	videos	0	-4.037237947321538
+W	videos	1	11	videos	videos	0	-4.037237947321538
+W	videos	2	-	videos	videos	0	-4.037237947321538
+W	videos	2	11	videos	videos	0	-4.037237947321538
+W	Connectivity	0	-	Connectivity	Connectivity	0	-5.00576573985341
+W	Connectivity	0	11	Connect ivity	Connect ivity	6	-20.36687096960482
+W	Connectivity	1	-	Connectivity	Connectivity	0	-5.00576573985341
+W	Connectivity	1	11	Connectivit y	Connectivity a	3	-7.058308705709241
+W	Connectivity	2	-	Connectivity	Connectivity	0	-5.00576573985341
+W	Connectivity	2	11	Connectivit y	Connectivity a	3	-7.058308705709241
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	0	-	pro avid ng variation reproduced details plug minutes recruiting hidden	pro avid ng variation reproduced details plug minutes recruiting hidden	11	-54.28434288175579
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	0	11	pro avid ng variation reproduced details plug minutes recruiting hidden	pro avid ng variation reproduced details plug minutes recruiting hidden	11	-54.28434288175579
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	1	-	proav idng variation reproduced details plug minutes recruiting hidden	prov ding variation reproduced details plug minutes recruiting hidden	10	-43.4244886567335
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	1	11	proav idng variation reproduced details plug minutes recruiting hidden	prov ding variation reproduced details plug minutes recruiting hidden	10	-43.4244886567335
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	2	-	proavidng variation reproduced details plug minutes recruiting hidden	providing variation reproduced details plug minutes recruiting hidden	9	-36.069846805860315
+W	proavidngvariationreproduceddetailsplug m inutesrecruitinghidden	2	11	proavidng variation reproduced details plug minutes recruiting hidden	providing variation reproduced details plug minutes recruiting hidden	9	-36.069846805860315
+W	echom offshorematrix difficulty	0	-	echo m offshore matrix difficulty	echo m offshore matrix difficulty	3	-31.23849322040497
+W	echom offshorematrix difficulty	0	11	echo m offshore matrix difficulty	echo m offshore matrix difficulty	3	-31.23849322040497
+W	echom offshorematrix difficulty	1	-	echom offshore matrix difficulty	echo offshore matrix difficulty	2	-19.22780822410497
+W	echom offshorematrix difficulty	1	11	echom offshore matrix difficulty	echo offshore matrix difficulty	2	-19.22780822410497
+W	echom offshorematrix difficulty	2	-	echom offshore matrix difficulty	echo offshore matrix difficulty	2	-19.22780822410497
+W	echom offshorematrix difficulty	2	11	echom offshore matrix difficulty	echo offshore matrix difficulty	2	-19.22780822410497
+W	discover rawpartnershipscourseswinner	0	-	discover raw partnerships courses winner	discover raw partnerships courses winner	3	-22.97830052223148
+W	discover rawpartnershipscourseswinner	0	11	discover raw partner ships courses winner	discover raw partner ships courses winner	4	-26.60916535523124
+W	discover rawpartnershipscourseswinner	1	-	discover raw partnerships courses winner	discover raw partnerships courses winner	3	-22.97830052223148
+W	discover rawpartnershipscourseswinner	1	11	discover raw partnership scourses winner	discover raw partnership courses winner	4	-22.578958822154107
+W	discover rawpartnershipscourseswinner	2	-	discover raw partnerships courses winner	discover raw partnerships courses winner	3	-22.97830052223148
+W	discover rawpartnershipscourseswinner	2	11	discover raw partnership scourses winner	discover raw partnership courses winner	4	-22.578958822154107
+W	ltaenwtendedwidegainsindicators	0	-	ltaenwt ended wide gains indicators	ltaenwt ended wide gains indicators	11	-36.453690416278256
+W	ltaenwtendedwidegainsindicators	0	11	ltaenwt ended wide gains indicators	ltaenwt ended wide gains indicators	11	-36.453690416278256
+W	ltaenwtendedwidegainsindicators	1	-	ltae nwt ended wide gains indicators	late not ended wide gains indicators	7	-25.22710852064206
+W	ltaenwtendedwidegainsindicators	1	11	ltae nwt ended wide gains indicators	late not ended wide gains indicators	7	-25.22710852064206
+W	ltaenwtendedwidegainsindicators	2	-	ltaenwt ended wide gains indicators	latent ended wide gains indicators	6	-24.185283528340218
+W	ltaenwtendedwidegainsindicators	2	11	ltaenwt ended wide gains indicators	latent ended wide gains indicators	6	-24.185283528340218
+W	wefighting	0	-	we fighting	we fighting	1	-7.576315864276843
+W	wefighting	0	11	we fighting	we fighting	1	-7.576315864276843
+W	wefighting	1	-	wefighting	weighting	1	-5.786236366469162
+W	wefighting	1	11	wefighting	weighting	1	-5.786236366469162
+W	wefighting	2	-	wefighting	weighting	1	-5.786236366469162
+W	wefighting	2	11	wefighting	weighting	1	-5.786236366469162
+W	it’ssta rsentireinjury wellagin	0	-	it ’s stars entire injury well a gin	it ’s stars entire injury well a gin	9	-39.830770160886495
+W	it’ssta rsentireinjury wellagin	0	11	it ’s stars entire injury well a gin	it ’s stars entire injury well a gin	9	-39.830770160886495
+W	it’ssta rsentireinjury wellagin	1	-	it’s stars entire injury well agin	its stars entire injury well again	7	-23.60850497312352
+W	it’ssta rsentireinjury wellagin	1	11	it’s stars entire injury well agin	its stars entire injury well again	7	-23.60850497312352
+W	it’ssta rsentireinjury wellagin	2	-	it’s stars entire injury wellag in	its stars entire injury well in	8	-21.858999891130164
+W	it’ssta rsentireinjury wellagin	2	11	it’s stars entire injury wellag in	its stars entire injury well in	8	-21.858999891130164
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	0	-	Salary vertical Representation Medication Greek St Plats Flpght	Salary vertical Representation Medication Greek St Plats Flpght	11	-51.236273220999195
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	0	11	Salary vertical Represent at ion Medication Greek St Plats Flpght	Salary vertical Represent at ion Medication Greek St Plats Flpght	13	-58.67438403441837
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	1	-	Salary vertical Representation Medication GreekSt Plats Flpght	Salary vertical Representation Medication Greeks Plats Flight	6	-35.82343785618555
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	1	11	Salary vertical Represent ation Medication GreekSt Plats Flpght	Salary vertical Represent action Medication Greeks Plats Flight	8	-39.47960385130618
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	2	-	Salary vertical Representation Medication GreekSt Plats Flpght	Salary vertical Representation Medication Greeks Plats Flight	6	-35.82343785618555
+W	SalaryverticalRepresentationMedicationGreekSt Plats Flpght	2	11	Salary vertical Represent ation Medication GreekSt Plats Flpght	Salary vertical Represent action Medication Greeks Plats Flight	8	-39.47960385130618
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	0	-	3.14 image tiffany appears malaysia turns upon thailand talent	3.14 image tiffany appears malaysia turns upon thailand talent	12	-51.07301911248335
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	0	11	3.14 image tiffany appears malaysia turns upon thailand talent	3.14 image tiffany appears malaysia turns upon thailand talent	12	-51.07301911248335
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	1	-	3.1 4image tiffany appears malaysia turns upon thailand talent	3.1 image tiffany appears malaysia turns upon thailand talent	12	-50.07301911248335
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	1	11	3.1 4image tiffany appears malaysia turns upon thailand talent	3.1 image tiffany appears malaysia turns upon thailand talent	12	-50.07301911248335
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	2	-	3. 14image tiffany appears malaysia turns upon thailand talent	of image tiffany appears malaysia turns upon thailand talent	12	-37.95402920189515
+W	3.14imagetiffanyappearsmalaysiaturnsuponthailandtalent	2	11	3. 14image tiffany appears malaysia turns upon thailand talent	of image tiffany appears malaysia turns upon thailand talent	12	-37.95402920189515
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	0	-	vehicle de fino coordinator cog para tiv e package slip fingering mystery	vehicle de fino coordinator cog para tiv e package slip fingering mystery	11	-67.51441695108885
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	0	11	vehicle de fino coordinator cog para tiv e package slip fingering mystery	vehicle de fino coordinator cog para tiv e package slip fingering mystery	11	-67.51441695108885
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	1	-	vehicle defino coordinator cogparative package slip fingering mystery	vehicle define coordinator comparative package slip fingering mystery	8	-37.325754459254924
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	1	11	vehicle defino coordinator cogparative package slip fingering mystery	vehicle define coordinator comparative package slip fingering mystery	8	-37.325754459254924
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	2	-	vehicle defino coordinator cogparative package slip fingering mystery	vehicle define coordinator comparative package slip fingering mystery	8	-37.325754459254924
+W	vehicledefinocoordinatorcogparativepackageslip fingeringmystery	2	11	vehicle defino coordinator cogparative package slip fingering mystery	vehicle define coordinator comparative package slip fingering mystery	8	-37.325754459254924
+W	paindreamsilver	0	-	pain dream silver	pain dream silver	2	-13.011971412449487
+W	paindreamsilver	0	11	pain dream silver	pain dream silver	2	-13.011971412449487
+W	paindreamsilver	1	-	pain dream silver	pain dream silver	2	-13.011971412449487
+W	paindreamsilver	1	11	pain dream silver	pain dream silver	2	-13.011971412449487
+W	paindreamsilver	2	-	pain dream silver	pain dream silver	2	-13.011971412449487
+W	paindreamsilver	2	11	pain dream silver	pain dream silver	2	-13.011971412449487
+W	rule	0	-	rule	rule	0	-4.247913268022826
+W	rule	0	11	rule	rule	0	-4.247913268022826
+W	rule	1	-	rule	rule	0	-4.247913268022826
+W	rule	1	11	rule	rule	0	-4.247913268022826
+W	rule	2	-	rule	rule	0	-4.247913268022826
+W	rule	2	11	rule	rule	0	-4.247913268022826
+W	Rulesboardinspiredconstructionmotorolasuchleads	0	-	Rules board inspired construction motorola such leads	Rules board inspired construction motorola such leads	6	-29.115609043751945
+W	Rulesboardinspiredconstructionmotorolasuchleads	0	11	Rules board inspired construct ion motorola such leads	Rules board inspired construct ion motorola such leads	7	-35.06473896043893
+W	Rulesboardinspiredconstructionmotorolasuchleads	1	-	Rules board inspired construction motorola such leads	Rules board inspired construction motorola such leads	6	-29.115609043751945
+W	Rulesboardinspiredconstructionmotorolasuchleads	1	11	Rules board inspired constructio nmotorola such leads	Rules board inspired construction motorola such leads	8	-29.115609043751945
+W	Rulesboardinspiredconstructionmotorolasuchleads	2	-	Rules board inspired construction motorola such leads	Rules board inspired construction motorola such leads	6	-29.115609043751945
+W	Rulesboardinspiredconstructionmotorolasuchleads	2	11	Rules board inspired constructio nmotorola such leads	Rules board inspired construction motorola such leads	8	-29.115609043751945
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	0	-	navigation wave signal essen ital sediy or i all pei u re profit suggestions	navigation wave signal essen ital sediy or i all pei u re profit suggestions	18	-79.55462921041253
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	0	11	navigation wave signal essen ital sediy or i all pei u re profit suggestions	navigation wave signal essen ital sediy or i all pei u re profit suggestions	18	-79.55462921041253
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	1	-	navigationw ave signal essenitals ediyorial lpei ure profit suggestions	navigation ave signal essentials editorial lei are profit suggestions	12	-39.92191322015526
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	1	11	navigationw ave signal essenitals ediyorial lpei ure profit suggestions	navigation ave signal essentials editorial lei are profit suggestions	12	-39.92191322015526
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	2	-	navigationw ave signal essenitals ediyorial lpeiu reprofit suggestions	navigation ave signal essentials editorial peru retrofit suggestions	12	-38.22336925784268
+W	navigationwave signalessenitalsediyoriallpeiureprofitsuggestions	2	11	navigationw ave signal essenitals ediyorial lpeiu reprofit suggestions	navigation ave signal essentials editorial peru retrofit suggestions	12	-38.22336925784268
+W	24 ehlpnisnsaexercise	0	-	24 ehlpnisnsa exercise	24 ehlpnisnsa exercise	13	-38.43327148341419
+W	24 ehlpnisnsaexercise	0	11	24 ehlpnisnsa exercise	24 ehlpnisnsa exercise	13	-38.43327148341419
+W	24 ehlpnisnsaexercise	1	-	2 4 ehlp nisns aexercise	a a help nisus exercise	8	-18.69263108995623
+W	24 ehlpnisnsaexercise	1	11	2 4 ehlp nisns aexercise	a a help nisus exercise	8	-18.69263108995623
+W	24 ehlpnisnsaexercise	2	-	24 ehlp nisnsa exercise	of help nissan exercise	7	-14.50186350055613
+W	24 ehlpnisnsaexercise	2	11	24 ehlp nisnsa exercise	of help nissan exercise	7	-14.50186350055613
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	0	-	RETAILERS QUIZ POEMS CRAZY FOOD COMP AS Q INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Comp As Q Include Charity	10	-51.5761872884069
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	0	11	RETAILERS QUIZ POEMS CRAZY FOOD COMP AS Q INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Comp As Q Include Charity	10	-51.5761872884069
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	1	-	RETAILERS QUIZ POEMS CRAZY FOOD COMPASQ INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Compaq Include Charity	8	-36.778011697909776
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	1	11	RETAILERS QUIZ POEMS CRAZY FOOD COMPASQ INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Compaq Include Charity	8	-36.778011697909776
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	2	-	RETAILERS QUIZ POEMS CRAZY FOOD COMPASQ INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Compaq Include Charity	8	-36.778011697909776
+W	RETAILERSQUIZPOEMSCRAZYFOODCOMPASQ INCLUDECHARIT Y	2	11	RETAILERS QUIZ POEMS CRAZY FOOD COMPASQ INCLUDE CHARITY	Retailers Quiz Poems Crazy Food Compaq Include Charity	8	-36.778011697909776
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	0	-	font sop port uni eies digest experiment enough she somewhere	font sop port uni eies digest experiment enough she somewhere	12	-56.988360639777085
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	0	11	font sop port uni eies digest experiment enough she somewhere	font sop port uni eies digest experiment enough she somewhere	12	-56.988360639777085
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	1	-	fonts opportunieies digest experiment enoughs he somewhere	fonts opportunities digest experiment enough he somewhere	7	-30.80500869534908
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	1	11	fonts opportunie ies digest experiment enoughs he somewhere	fonts opportune is digest experiment enough he somewhere	9	-35.644725156675186
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	2	-	fonts opportunieies digest experiment enoughs he somewhere	fonts opportunities digest experiment enough he somewhere	7	-30.80500869534908
+W	fontsopportunieiesdigestexperimentenoughshe somewhere	2	11	fonts opportuniei esdigest experiment enoughs he somewhere	fonts opportunity digest experiment enough he somewhere	10	-30.871923419612152
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	0	-	GLOVES BACKUP SOLVE CAFE STAMP SALES U.S. CREATE DODOS R	Gloves Backup Solve Cafe Stamp Sales U.S. Create Dodos R	15	-66.66840732193867
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	0	11	GLOVES BACKUP SOLVE CAFE STAMP SALES U.S. CREATE DODOS R	Gloves Backup Solve Cafe Stamp Sales U.S. Create Dodos R	15	-66.66840732193867
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	1	-	GLOVES BACKUP SOLVEC AFE STAMP SALES U.S .CREATED ODOSR	Gloves Backup Solve Are Stamp Sales Us created Odour	12	-39.09740555241767
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	1	11	GLOVES BACKUP SOLVEC AFE STAMP SALES U.S .CREATED ODOSR	Gloves Backup Solve Are Stamp Sales Us created Odour	12	-39.09740555241767
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	2	-	GLOVES BACKUP SOLVECA FESTAMP SALESU. S.CREATED ODOSR	Gloves Backup Solve Stamp Sales Created Odour	14	-33.544681512556
+W	GLOVESBACKUPSOLVECAFESTAMPSALESU.S.CREATED ODOSR	2	11	GLOVES BACKUP SOLVECA FESTAMP SALESU. S.CREATED ODOSR	Gloves Backup Solve Stamp Sales Created Odour	14	-33.544681512556
+W	safe	0	-	safe	safe	0	-4.210187072120616
+W	safe	0	11	safe	safe	0	-4.210187072120616
+W	safe	1	-	safe	safe	0	-4.210187072120616
+W	safe	1	11	safe	safe	0	-4.210187072120616
+W	safe	2	-	safe	safe	0	-4.210187072120616
+W	safe	2	11	safe	safe	0	-4.210187072120616
+W	safari cuosel lady	0	-	safari cuosel lady	safari cuosel lady	6	-26.212694516567744
+W	safari cuosel lady	0	11	safari cuosel lady	safari cuosel lady	6	-26.212694516567744
+W	safari cuosel lady	1	-	safari cuose l lady	safari close a lady	3	-15.232404978821645
+W	safari cuosel lady	1	11	safari cuose l lady	safari close a lady	3	-15.232404978821645
+W	safari cuosel lady	2	-	safari cuosel lady	safari close lady	2	-13.179862012965815
+W	safari cuosel lady	2	11	safari cuosel lady	safari close lady	2	-13.179862012965815
+W	Wavesnation servesthere24visitorexternalh	0	-	Waves nation serves there 24 visitor external h	Waves nation serves there 24 visitor external h	9	-51.37565580556641
+W	Wavesnation servesthere24visitorexternalh	0	11	Waves nation serves there 24 visitor external h	Waves nation serves there 24 visitor external h	9	-51.37565580556641
+W	Wavesnation servesthere24visitorexternalh	1	-	Waves nation serves there2 4visitor externalh	Waves nation serves there visitor external	7	-26.35428581296641
+W	Wavesnation servesthere24visitorexternalh	1	11	Waves nation serves there2 4visitor externalh	Waves nation serves there visitor external	7	-26.35428581296641
+W	Wavesnation servesthere24visitorexternalh	2	-	Waves nation serves there 24visitor externalh	Waves nation serves there visitor external	7	-26.35428581296641
+W	Wavesnation servesthere24visitorexternalh	2	11	Waves nation serves there 24visitor externalh	Waves nation serves there visitor external	7	-26.35428581296641
+W	Essays portrait	0	-	Essays portrait	Essays portrait	0	-9.842338298562588
+W	Essays portrait	0	11	Essays portrait	Essays portrait	0	-9.842338298562588
+W	Essays portrait	1	-	Essays portrait	Essays portrait	0	-9.842338298562588
+W	Essays portrait	1	11	Essays portrait	Essays portrait	0	-9.842338298562588
+W	Essays portrait	2	-	Essays portrait	Essays portrait	0	-9.842338298562588
+W	Essays portrait	2	11	Essays portrait	Essays portrait	0	-9.842338298562588
+W	passenger stroke24	0	-	passenger stroke 24	passenger stroke 24	3	-22.866247847409156
+W	passenger stroke24	0	11	passenger stroke 24	passenger stroke 24	3	-22.866247847409156
+W	passenger stroke24	1	-	passenger stroke2 4	passenger stroke a	3	-11.908105816964985
+W	passenger stroke24	1	11	passenger stroke2 4	passenger stroke a	3	-11.908105816964985
+W	passenger stroke24	2	-	passenger stroke24	passenger stroke	2	-9.855562851109156
+W	passenger stroke24	2	11	passenger stroke24	passenger stroke	2	-9.855562851109156
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	0	-	as es normally looks quantum N AS A happen story trans j mission wick i ped i a	as es normally looks quantum N As A happen story trans j mission wick i ped i a	19	-95.11519500595915
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	0	11	as es normally looks quantum N AS A happen story trans j mission wick i ped i a	as es normally looks quantum N As A happen story trans j mission wick i ped i a	19	-95.11519500595915
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	1	-	ases normally looks quantum NAS Ahappen story transjmission wickipedia	cases normally looks quantum As Happen story transmission wikipedia	11	-38.543908794144784
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	1	11	ases normally looks quantum NAS Ahappen story trans jmission wickipedia	cases normally looks quantum As Happen story trans mission wikipedia	12	-43.062923074563685
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	2	-	ases normally looks quantum NAS Ahappen story transjmission wickipedia	cases normally looks quantum As Happen story transmission wikipedia	11	-38.543908794144784
+W	asesnormallylooks quantumNASAhappenstory transjmissionwickipedia	2	11	ases normally looks quantum NAS Ahappen story trans jmission wickipedia	cases normally looks quantum As Happen story trans mission wikipedia	12	-43.062923074563685
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	0	-	advice phys i cains mgr eater introduced bruce communication products	advice phys i cains mgr eater introduced bruce communication products	9	-47.70349910518938
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	0	11	advice phys i cains mgr eater introduced bruce comm uni cation products	advice phys i cains mgr eater introduced bruce comm uni cation products	11	-59.62873977898428
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	1	-	advice physicains mgreater introduced bruce communication products	advice physicians greater introduced bruce communication products	8	-30.137813472121902
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	1	11	advice physicains mgreater introduced bruce communicati on products	advice physicians greater introduced bruce communicate on products	10	-33.26945585424856
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	2	-	advice physicains mgreater introduced bruce communication products	advice physicians greater introduced bruce communication products	8	-30.137813472121902
+W	advicephysicainsmgreaterintroducedbrucecommunicationproducts	2	11	advice physicains mgreater introduced bruce communicati on products	advice physicians greater introduced bruce communicate on products	10	-33.26945585424856
+W	damgechildhoodsoup	0	-	dam ge childhood soup	dam ge childhood soup	5	-27.950598822285343
+W	damgechildhoodsoup	0	11	dam ge childhood soup	dam ge childhood soup	5	-27.950598822285343
+W	damgechildhoodsoup	1	-	damge childhood soup	damage childhood soup	3	-14.35330804263914
+W	damgechildhoodsoup	1	11	damge childhood soup	damage childhood soup	3	-14.35330804263914
+W	damgechildhoodsoup	2	-	damge childhood soup	damage childhood soup	3	-14.35330804263914
+W	damgechildhoodsoup	2	11	damge childhood soup	damage childhood soup	3	-14.35330804263914
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	0	-	tell sports r mark r tic hard park ii y den douglas representative orleans	tell sports r mark r tic hard park ii y den douglas representative orleans	16	-83.94333480108148
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	0	11	tell sports r mark r tic hard park ii y den douglas represent a tiv e orleans	tell sports r mark r tic hard park ii y den douglas represent a tiv e orleans	20	-104.9499975628166
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	1	-	tell sportsr markrt ichard parki iyde ndouglas representative orleans	tell sports market richard park hyde douglas representative orleans	14	-38.98360330940863
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	1	11	tell sportsr markrt ichard parki iyde ndouglas representa tive orleans	tell sports market richard park hyde douglas represent time orleans	17	-42.09460987711973
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	2	-	tell sports rmarkrt ichard parkiiy den douglas representative orleans	tell sports market richard parking den douglas representative orleans	13	-39.072890420193445
+W	tellsportsrmarkrtichardparkiiydendouglasrepresentativeorleans	2	11	tell sports rmarkrt ichard parkiiy den douglas representa tive orleans	tell sports market richard parking den douglas represent time orleans	16	-42.18389698790455
+W	tomuchjewellryoutputrestrictedmechanisms	0	-	to much jewell ry output restricted mechanisms	to much jewell ry output restricted mechanisms	8	-38.68127123401911
+W	tomuchjewellryoutputrestrictedmechanisms	0	11	to much jewell ry output restricted mechanisms	to much jewell ry output restricted mechanisms	8	-38.68127123401911
+W	tomuchjewellryoutputrestrictedmechanisms	1	-	tomuch jewellry output restricted mechanisms	touch jewellery output restricted mechanisms	6	-23.202949838824914
+W	tomuchjewellryoutputrestrictedmechanisms	1	11	tomuch jewellry output restricted mechanisms	touch jewellery output restricted mechanisms	6	-23.202949838824914
+W	tomuchjewellryoutputrestrictedmechanisms	2	-	tomuch jewellry output restricted mechanisms	touch jewellery output restricted mechanisms	6	-23.202949838824914
+W	tomuchjewellryoutputrestrictedmechanisms	2	11	tomuch jewellry output restricted mechanisms	touch jewellery output restricted mechanisms	6	-23.202949838824914
+W	alreadysolutions databases	0	-	already solutions databases	already solutions databases	1	-12.636785869783507
+W	alreadysolutions databases	0	11	already solutions databases	already solutions databases	1	-12.636785869783507
+W	alreadysolutions databases	1	-	already solutions databases	already solutions databases	1	-12.636785869783507
+W	alreadysolutions databases	1	11	already solutions databases	already solutions databases	1	-12.636785869783507
+W	alreadysolutions databases	2	-	already solutions databases	already solutions databases	1	-12.636785869783507
+W	alreadysolutions databases	2	11	already solutions databases	already solutions databases	1	-12.636785869783507
+W	sziromanseveralcrisisstudyingoptionnightsviwing	0	-	szi roman several crisis studying option nights vi wing	szi roman several crisis studying option nights vi wing	13	-59.18688340662028
+W	sziromanseveralcrisisstudyingoptionnightsviwing	0	11	szi roman several crisis studying option nights vi wing	szi roman several crisis studying option nights vi wing	13	-59.18688340662028
+W	sziromanseveralcrisisstudyingoptionnightsviwing	1	-	szi roman several crisis studying option nights viwing	ski roman several crisis studying option nights viewing	9	-36.50314834447575
+W	sziromanseveralcrisisstudyingoptionnightsviwing	1	11	szi roman several crisis studying option nights viwing	ski roman several crisis studying option nights viewing	9	-36.50314834447575
+W	sziromanseveralcrisisstudyingoptionnightsviwing	2	-	szi roman several crisis studying option nights viwing	ski roman several crisis studying option nights viewing	9	-36.50314834447575
+W	sziromanseveralcrisisstudyingoptionnightsviwing	2	11	szi roman several crisis studying option nights viwing	ski roman several crisis studying option nights viewing	9	-36.50314834447575
+W	invitedhoward	0	-	invited howard	invited howard	1	-9.497731288594654
+W	invitedhoward	0	11	invited howard	invited howard	1	-9.497731288594654
+W	invitedhoward	1	-	invited howard	invited howard	1	-9.497731288594654
+W	invitedhoward	1	11	invited howard	invited howard	1	-9.497731288594654
+W	invitedhoward	2	-	invited howard	invited howard	1	-9.497731288594654
+W	invitedhoward	2	11	invited howard	invited howard	1	-9.497731288594654
+W	WsaDefObjects DeskForAppliances	0	-	Wsa Def Objects Desk For Appliances	Wsa Def Objects Desk For Appliances	7	-34.67344441485621
+W	WsaDefObjects DeskForAppliances	0	11	Wsa Def Objects Desk For Appliances	Wsa Def Objects Desk For Appliances	7	-34.67344441485621
+W	WsaDefObjects DeskForAppliances	1	-	WsaDe fObjects Desk For Appliances	Wade objects Desk For Appliances	5	-21.18333404964714
+W	WsaDefObjects DeskForAppliances	1	11	WsaDe fObjects Desk For Appliances	Wade objects Desk For Appliances	5	-21.18333404964714
+W	WsaDefObjects DeskForAppliances	2	-	WsaDe fObjects Desk For Appliances	Wade objects Desk For Appliances	5	-21.18333404964714
+W	WsaDefObjects DeskForAppliances	2	11	WsaDe fObjects Desk For Appliances	Wade objects Desk For Appliances	5	-21.18333404964714
+W	MAcarcHive٣٤iit	0	-	MAc arcHive ٣٤i it	Mac archive ٣٤i it	6	-24.781937826349438
+W	MAcarcHive٣٤iit	0	11	MAc arcHive ٣٤i it	Mac archive ٣٤i it	6	-24.781937826349438
+W	MAcarcHive٣٤iit	1	-	MAc arcHive٣ ٤i it	Mac archive i it	5	-13.29251020242297
+W	MAcarcHive٣٤iit	1	11	MAc arcHive٣ ٤i it	Mac archive i it	5	-13.29251020242297
+W	MAcarcHive٣٤iit	2	-	MAc arcHive٣ ٤iit	Mac archive it	5	-10.771252830049434
+W	MAcarcHive٣٤iit	2	11	MAc arcHive٣ ٤iit	Mac archive it	5	-10.771252830049434
+W	hallbayhelyardpostage24 unioshousnhgeurope	0	-	hall bay hel yard postage 24 uni oshousnhg europe	hall bay hel yard postage 24 uni oshousnhg europe	18	-66.54134603480802
+W	hallbayhelyardpostage24 unioshousnhgeurope	0	11	hall bay hel yard postage 24 uni oshousnhg europe	hall bay hel yard postage 24 uni oshousnhg europe	18	-66.54134603480802
+W	hallbayhelyardpostage24 unioshousnhgeurope	1	-	hallbay helyard postage2 4 unios housn hg europe	hallway halyard postage a union house he europe	13	-34.62589109380488
+W	hallbayhelyardpostage24 unioshousnhgeurope	1	11	hallbay helyard postage2 4 unios housn hg europe	hallway halyard postage a union house he europe	13	-34.62589109380488
+W	hallbayhelyardpostage24 unioshousnhgeurope	2	-	hallbay helyard postage24 unios housnhg europe	hallway halyard postage union housing europe	11	-30.090754041639585
+W	hallbayhelyardpostage24 unioshousnhgeurope	2	11	hallbay helyard postage24 unios housnhg europe	hallway halyard postage union housing europe	11	-30.090754041639585
+W	shopbugne wscommonwealthheardbinearparameter	0	-	shop bug news commonwealth heard bin ear parameter	shop bug news commonwealth heard bin ear parameter	8	-34.2958267475497
+W	shopbugne wscommonwealthheardbinearparameter	0	11	shop bug news common wealth heard bin ear parameter	shop bug news common wealth heard bin ear parameter	9	-38.16806699601079
+W	shopbugne wscommonwealthheardbinearparameter	1	-	shop bug news commonwealth heardb inear parameter	shop bug news commonwealth heard near parameter	9	-29.302020946008795
+W	shopbugne wscommonwealthheardbinearparameter	1	11	shop bug news commonwealt hheard binear parameter	shop bug news commonwealth heard linear parameter	10	-29.853307348820238
+W	shopbugne wscommonwealthheardbinearparameter	2	-	shop bugne wscommonwealth heardb inear parameter	shop bugle commonwealth heard near parameter	9	-28.00170571278387
+W	shopbugne wscommonwealthheardbinearparameter	2	11	shop bugne wscommon wealth heardb inear parameter	shop bugle common wealth heard near parameter	10	-31.873945961244967
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	0	-	BUTTONS EMPTY SN TIES INDUSTRY STARS JACK IMDD LET E	Buttons Empty SN Ties Industry Stars Jack IMDD Let E	15	-70.68426784773712
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	0	11	BUTTONS EMPTY SN TIES INDUSTRY STARS JACK IMDD LET E	Buttons Empty SN Ties Industry Stars Jack IMDD Let E	15	-70.68426784773712
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	1	-	BUTTONS EMPTYS NTIES INDUSTRY STARS JACKIM DDLETE	Buttons Empty Ties Industry Stars Jackie Delete	9	-32.19347621822095
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	1	11	BUTTONS EMPTYS NTIES INDUSTRY STARS JACKIM DDLETE	Buttons Empty Ties Industry Stars Jackie Delete	9	-32.19347621822095
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	2	-	BUTTONS EMPTYSNT IES INDUSTRY STARS JACKIM DDLETE	Buttons Emptying Is Industry Stars Jackie Delete	10	-31.21110333372291
+W	BUTTONSEMPTYSNTIESINDUSTRY STARSJACKIMDDLETE	2	11	BUTTONS EMPTYSNT IES INDUSTRY STARS JACKIM DDLETE	Buttons Emptying Is Industry Stars Jackie Delete	10	-31.21110333372291
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	0	-	sessions condition lock consists seasons whether efficient credits h sir t?	sessions condition lock consists seasons whether efficient credits h sir t?	13	-66.06674295013725
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	0	11	sessions condition lock consists seasons whether efficient credits h sir t?	sessions condition lock consists seasons whether efficient credits h sir t?	13	-66.06674295013725
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	1	-	sessions condition lock consists seasons whether efficient credit shsirt ?	sessions condition lock consists seasons whether efficient credit shirt a	11	-42.06316727321167
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	1	11	sessions condition lock consists seasons whether efficient credit shsirt ?	sessions condition lock consists seasons whether efficient credit shirt a	11	-42.06316727321167
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	2	-	sessions condition lock consists seasons whether efficient credit shsirt ?	sessions condition lock consists seasons whether efficient credit shirt a	11	-42.06316727321167
+W	sessionsconditionlockconsistsseasonswhetherefficientcreditshsirt?	2	11	sessions condition lock consists seasons whether efficient credit shsirt ?	sessions condition lock consists seasons whether efficient credit shirt a	11	-42.06316727321167
+W	acting inchburdenreservedjoinedassociated	0	-	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	acting inchburdenreservedjoinedassociated	0	11	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	acting inchburdenreservedjoinedassociated	1	-	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	acting inchburdenreservedjoinedassociated	1	11	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	acting inchburdenreservedjoinedassociated	2	-	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	acting inchburdenreservedjoinedassociated	2	11	acting inch burden reserved joined associated	acting inch burden reserved joined associated	4	-26.27875836875068
+W	basketballfootball	0	-	basketball football	basketball football	1	-8.743850501387264
+W	basketballfootball	0	11	basketball football	basketball football	1	-8.743850501387264
+W	basketballfootball	1	-	basketball football	basketball football	1	-8.743850501387264
+W	basketballfootball	1	11	basketball football	basketball football	1	-8.743850501387264
+W	basketballfootball	2	-	basketball football	basketball football	1	-8.743850501387264
+W	basketballfootball	2	11	basketball football	basketball football	1	-8.743850501387264
+W	growingdeleted	0	-	growing deleted	growing deleted	1	-9.34668997780294
+W	growingdeleted	0	11	growing deleted	growing deleted	1	-9.34668997780294
+W	growingdeleted	1	-	growing deleted	growing deleted	1	-9.34668997780294
+W	growingdeleted	1	11	growing deleted	growing deleted	1	-9.34668997780294
+W	growingdeleted	2	-	growing deleted	growing deleted	1	-9.34668997780294
+W	growingdeleted	2	11	growing deleted	growing deleted	1	-9.34668997780294
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	0	-	enhanced jrys left wet oven prem sges bearing gwo beN AS A	enhanced jrys left wet oven prem sges bearing gwo ben As A	22	-82.51756049511357
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	0	11	enhanced jrys left wet oven prem sges bearing gwo beN AS A	enhanced jrys left wet oven prem sges bearing gwo ben As A	22	-82.51756049511357
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	1	-	enhancedj rys left wet oven prems ges bearingg wobeN AS A	enhanced res left wet oven press get bearing women As A	16	-43.19491239119265
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	1	11	enhancedj rys left wet oven prems ges bearingg wobeN AS A	enhanced res left wet oven press get bearing women As A	16	-43.19491239119265
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	2	-	enhancedjr ysleft wet oven premsges bearing gwobeN AS A	enhanced left wet oven premises bearing women As A	16	-36.516373493502414
+W	enhancedjrysleftwetovenpremsgesbearinggwobeNASA	2	11	enhancedjr ysleft wet oven premsges bearing gwobeN AS A	enhanced left wet oven premises bearing women As A	16	-36.516373493502414
+W	spdarateapproychbiologicalhostinglibpurchase	0	-	spda rate app roy ch biological hosting lib purchase	spda rate app roy ch biological hosting lib purchase	14	-59.008641756160394
+W	spdarateapproychbiologicalhostinglibpurchase	0	11	spda rate app roy ch biological hosting lib purchase	spda rate app roy ch biological hosting lib purchase	14	-59.008641756160394
+W	spdarateapproychbiologicalhostinglibpurchase	1	-	spda rate approych biological hosting lib purchase	spa rate approach biological hosting lib purchase	8	-29.845459328380645
+W	spdarateapproychbiologicalhostinglibpurchase	1	11	spda rate approych biological hosting lib purchase	spa rate approach biological hosting lib purchase	8	-29.845459328380645
+W	spdarateapproychbiologicalhostinglibpurchase	2	-	spdarate approych biological hosting lib purchase	separate approach biological hosting lib purchase	8	-26.095362573838816
+W	spdarateapproychbiologicalhostinglibpurchase	2	11	spdarate approych biological hosting lib purchase	separate approach biological hosting lib purchase	8	-26.095362573838816
+W	ordervzgamendment24/7 tiffanyaomn	0	-	order vzg amendment 24/7 tiffany aomn	order vzg amendment 24/7 tiffany aomn	15	-56.8847512659762
+W	ordervzgamendment24/7 tiffanyaomn	0	11	order vzg amendment 24/7 tiffany aomn	order vzg amendment 24/7 tiffany aomn	15	-56.8847512659762
+W	ordervzgamendment24/7 tiffanyaomn	1	-	order vzg amendment2 4/7 tiffanya omn	order veg amendment 4/7 tiffany on	11	-35.214072390450355
+W	ordervzgamendment24/7 tiffanyaomn	1	11	order vzg amendment2 4/7 tiffanya omn	order veg amendment 4/7 tiffany on	11	-35.214072390450355
+W	ordervzgamendment24/7 tiffanyaomn	2	-	ordervzg amendment24 /7 tiffanyao mn	ordering amendment of tiffany in	12	-17.909444555188415
+W	ordervzgamendment24/7 tiffanyaomn	2	11	ordervzg amendment24 /7 tiffanyao mn	ordering amendment of tiffany in	12	-17.909444555188415
+W	noon	0	-	noon	noon	0	-5.014270525924837
+W	noon	0	11	noon	noon	0	-5.014270525924837
+W	noon	1	-	noon	noon	0	-5.014270525924837
+W	noon	1	11	noon	noon	0	-5.014270525924837
+W	noon	2	-	noon	noon	0	-5.014270525924837
+W	noon	2	11	noon	noon	0	-5.014270525924837
+W	indicated flowsaustinmurraysituationscherrysea masters	0	-	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	indicated flowsaustinmurraysituationscherrysea masters	0	11	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	indicated flowsaustinmurraysituationscherrysea masters	1	-	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	indicated flowsaustinmurraysituationscherrysea masters	1	11	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	indicated flowsaustinmurraysituationscherrysea masters	2	-	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	indicated flowsaustinmurraysituationscherrysea masters	2	11	indicated flows austin murray situations cherry sea masters	indicated flows austin murray situations cherry sea masters	5	-37.85373363341324
+W	moorefirm	0	-	moore firm	moore firm	1	-9.083574867119378
+W	moorefirm	0	11	moore firm	moore firm	1	-9.083574867119378
+W	moorefirm	1	-	moore firm	moore firm	1	-9.083574867119378
+W	moorefirm	1	11	moore firm	moore firm	1	-9.083574867119378
+W	moorefirm	2	-	moore firm	moore firm	1	-9.083574867119378
+W	moorefirm	2	11	moore firm	moore firm	1	-9.083574867119378
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	0	-	A tot rney Heard N as a Republican MusicaL Vacation Iii jan	A tot rney Heard N as a Republican Musical Vacation Iii jan	15	-64.65273256342186
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	0	11	A tot rney Heard N as a Republican MusicaL Vacation Iii jan	A tot rney Heard N as a Republican Musical Vacation Iii jan	15	-64.65273256342186
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	1	-	Atotrney Heard Nas aRepublican MusicaL VacationI iij an	Attorney Heard As republican Musical Vacation ii an	11	-31.63115895774959
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	1	11	Atotrney Heard Nas aRepublican MusicaL VacationI iij an	Attorney Heard As republican Musical Vacation ii an	11	-31.63115895774959
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	2	-	Atotrney HeardNas aRepublican MusicaL VacationI iij an	Attorney Hearings republican Musical Vacation ii an	11	-29.82731275457364
+W	AtotrneyHeardNasaRepublican MusicaLVacationIiijan	2	11	Atotrney HeardNas aRepublican MusicaL VacationI iij an	Attorney Hearings republican Musical Vacation ii an	11	-29.82731275457364
+W	scanwinningautomaticallymetrooes	0	-	scan winning automatically metro oes	scan winning automatically metro oes	7	-32.461565773978904
+W	scanwinningautomaticallymetrooes	0	11	scan winning automatic ally metro oes	scan winning automatic ally metro oes	8	-38.05450065164653
+W	scanwinningautomaticallymetrooes	1	-	scan winning automatically metroo es	scan winning automatically metro is	6	-20.788937493792112
+W	scanwinningautomaticallymetrooes	1	11	scan winning automatic ally metroo es	scan winning automatic ally metro is	7	-26.381872371459735
+W	scanwinningautomaticallymetrooes	2	-	scan winning automatically metroo es	scan winning automatically metro is	6	-20.788937493792112
+W	scanwinningautomaticallymetrooes	2	11	scan winning automatic ally metroo es	scan winning automatic ally metro is	7	-26.381872371459735
+W	dhe	0	-	d he	d he	2	-15.095621134414893
+W	dhe	0	11	d he	d he	2	-15.095621134414893
+W	dhe	1	-	dhe	the	1	-1.6463995145881412
+W	dhe	1	11	dhe	the	1	-1.6463995145881412
+W	dhe	2	-	dhe	the	1	-1.6463995145881412
+W	dhe	2	11	dhe	the	1	-1.6463995145881412
+W	var NASA	0	-	var N ASA	var N Asa	2	-21.973975567852698
+W	var NASA	0	11	var N ASA	var N Asa	2	-21.973975567852698
+W	var NASA	1	-	var NAS A	var As A	2	-9.23957967147575
+W	var NASA	1	11	var NAS A	var As A	2	-9.23957967147575
+W	var NASA	2	-	var NAS A	var As A	2	-9.23957967147575
+W	var NASA	2	11	var NAS A	var As A	2	-9.23957967147575
+W	ProposlsResRenatlsDigest	0	-	Pro pos ls Res Re natl s Digest	Pro pos ls Res Re natl s Digest	10	-52.508058627278245
+W	ProposlsResRenatlsDigest	0	11	Pro pos ls Res Re natl s Digest	Pro pos ls Res Re natl s Digest	10	-52.508058627278245
+W	ProposlsResRenatlsDigest	1	-	Proposls Res Renatls Digest	Proposals Res Rentals Digest	5	-18.53822290401491
+W	ProposlsResRenatlsDigest	1	11	Proposls Res Renatls Digest	Proposals Res Rentals Digest	5	-18.53822290401491
+W	ProposlsResRenatlsDigest	2	-	Proposls Res Renatls Digest	Proposals Res Rentals Digest	5	-18.53822290401491
+W	ProposlsResRenatlsDigest	2	11	Proposls Res Renatls Digest	Proposals Res Rentals Digest	5	-18.53822290401491
+W	CLUMBUS 24/7SHAREWARETEENAGE	0	-	CLUMB US 24/7 SHAREWARE TEENAGE	CLUMB Us 24/7 Shareware Teenage	12	-43.70517302353021
+W	CLUMBUS 24/7SHAREWARETEENAGE	0	11	CLUMB US 24/7 SHAREWARE TEENAGE	CLUMB Us 24/7 Shareware Teenage	12	-43.70517302353021
+W	CLUMBUS 24/7SHAREWARETEENAGE	1	-	CLUMBUS 24/ 7SHAREWARE TEENAGE	Columbus 24/ shareware Teenage	7	-28.559481672194558
+W	CLUMBUS 24/7SHAREWARETEENAGE	1	11	CLUMBUS 24/ 7SHAREWARE TEENAGE	Columbus 24/ shareware Teenage	7	-28.559481672194558
+W	CLUMBUS 24/7SHAREWARETEENAGE	2	-	CLUMBUS 24 /7SHAREWARE TEENAGE	Columbus of shareware Teenage	7	-16.44049176160636
+W	CLUMBUS 24/7SHAREWARETEENAGE	2	11	CLUMBUS 24 /7SHAREWARE TEENAGE	Columbus of shareware Teenage	7	-16.44049176160636
+W	jasoncubliivarywrighttagcookiesturner	0	-	jason cub lii vary wright tag cookies turner	jason cub lii vary wright tag cookies turner	7	-40.31175591393619
+W	jasoncubliivarywrighttagcookiesturner	0	11	jason cub lii vary wright tag cookies turner	jason cub lii vary wright tag cookies turner	7	-40.31175591393619
+W	jasoncubliivarywrighttagcookiesturner	1	-	jason cubli ivary wright tag cookies turner	jason hubli vary wright tag cookies turner	8	-35.5808185020265
+W	jasoncubliivarywrighttagcookiesturner	1	11	jason cubli ivary wright tag cookies turner	jason hubli vary wright tag cookies turner	8	-35.5808185020265
+W	jasoncubliivarywrighttagcookiesturner	2	-	jason cubliivar ywright tag cookies turner	jason cultivar wright tag cookies turner	8	-30.04278860049324
+W	jasoncubliivarywrighttagcookiesturner	2	11	jason cubliivar ywright tag cookies turner	jason cultivar wright tag cookies turner	8	-30.04278860049324
+W	teeth	0	-	teeth	teeth	0	-5.0208154596885475
+W	teeth	0	11	teeth	teeth	0	-5.0208154596885475
+W	teeth	1	-	teeth	teeth	0	-5.0208154596885475
+W	teeth	1	11	teeth	teeth	0	-5.0208154596885475
+W	teeth	2	-	teeth	teeth	0	-5.0208154596885475
+W	teeth	2	11	teeth	teeth	0	-5.0208154596885475
+W	rtayassurance	0	-	rtay assurance	rtay assurance	5	-19.944769084996363
+W	rtayassurance	0	11	rtay assurance	rtay assurance	5	-19.944769084996363
+W	rtayassurance	1	-	rtay assurance	stay assurance	2	-9.037927448142009
+W	rtayassurance	1	11	rtay assurance	stay assurance	2	-9.037927448142009
+W	rtayassurance	2	-	rtay assurance	stay assurance	2	-9.037927448142009
+W	rtayassurance	2	11	rtay assurance	stay assurance	2	-9.037927448142009
+W	categorieshoste d1st teachcartoons	0	-	categories hosted 1 st teach cartoons	categories hosted 1 st teach cartoons	6	-33.97980132811386
+W	categorieshoste d1st teachcartoons	0	11	categories hosted 1 st teach cartoons	categories hosted 1 st teach cartoons	6	-33.97980132811386
+W	categorieshoste d1st teachcartoons	1	-	categories hosted 1st teach cartoons	categories hosted st teach cartoons	5	-21.969116331813854
+W	categorieshoste d1st teachcartoons	1	11	categories hosted 1st teach cartoons	categories hosted st teach cartoons	5	-21.969116331813854
+W	categorieshoste d1st teachcartoons	2	-	categories hosted 1st teach cartoons	categories hosted st teach cartoons	5	-21.969116331813854
+W	categorieshoste d1st teachcartoons	2	11	categories hosted 1st teach cartoons	categories hosted st teach cartoons	5	-21.969116331813854
+W	histricaleasierbet biviniprincipalomga bo ys	0	-	hi str i cal easier bet biv in i principal omga boys	hi str i cal easier bet biv in i principal omga boys	17	-70.9881736310667
+W	histricaleasierbet biviniprincipalomga bo ys	0	11	hi str i cal easier bet biv in i principal omga boys	hi str i cal easier bet biv in i principal omga boys	17	-70.9881736310667
+W	histricaleasierbet biviniprincipalomga bo ys	1	-	histrical easier bet bivini principal omga boys	historical easier bet bikini principal omega boys	8	-32.54473606681301
+W	histricaleasierbet biviniprincipalomga bo ys	1	11	histrical easier bet bivini principal omga boys	historical easier bet bikini principal omega boys	8	-32.54473606681301
+W	histricaleasierbet biviniprincipalomga bo ys	2	-	histrical easier bet bivini principal omga boys	historical easier bet bikini principal omega boys	8	-32.54473606681301
+W	histricaleasierbet biviniprincipalomga bo ys	2	11	histrical easier bet bivini principal omga boys	historical easier bet bikini principal omega boys	8	-32.54473606681301
+W	Estimates	0	-	Estimates	Estimates	0	-4.528719923475601
+W	Estimates	0	11	Estimates	Estimates	0	-4.528719923475601
+W	Estimates	1	-	Estimates	Estimates	0	-4.528719923475601
+W	Estimates	1	11	Estimates	Estimates	0	-4.528719923475601
+W	Estimates	2	-	Estimates	Estimates	0	-4.528719923475601
+W	Estimates	2	11	Estimates	Estimates	0	-4.528719923475601
+W	utilitiens!	0	-	u til it i ens!	u til it i ens!	6	-40.51387171347092
+W	utilitiens!	0	11	u til it i ens!	u til it i ens!	6	-40.51387171347092
+W	utilitiens!	1	-	utilitiens !	utilities a	3	-6.601341040092581
+W	utilitiens!	1	11	utilitiens !	utilities a	3	-6.601341040092581
+W	utilitiens!	2	-	utilitiens!	utilities	2	-4.548798074236751
+W	utilitiens!	2	11	utilitiens!	utilities	2	-4.548798074236751
+W	GRAWTHHEARZEALNAD	0	-	G RAW TH HEAR ZEAL NAD	G Raw TH Hear Zeal NAD	11	-53.95454062844135
+W	GRAWTHHEARZEALNAD	0	11	G RAW TH HEAR ZEAL NAD	G Raw TH Hear Zeal NAD	11	-53.95454062844135
+W	GRAWTHHEARZEALNAD	1	-	GRAWTH HEAR ZEALNAD	Growth Hear Zealand	4	-12.833051786253902
+W	GRAWTHHEARZEALNAD	1	11	GRAWTH HEAR ZEALNAD	Growth Hear Zealand	4	-12.833051786253902
+W	GRAWTHHEARZEALNAD	2	-	GRAWTH HEAR ZEALNAD	Growth Hear Zealand	4	-12.833051786253902
+W	GRAWTHHEARZEALNAD	2	11	GRAWTH HEAR ZEALNAD	Growth Hear Zealand	4	-12.833051786253902
+W	anidaletcfantasticethernetwhetherdestination	0	-	an id al etc fantastic ethernet whether destination	an id al etc fantastic ethernet whether destination	7	-33.05490613985171
+W	anidaletcfantasticethernetwhetherdestination	0	11	an id al etc fantastic ethernet whether destination	an id al etc fantastic ethernet whether destination	7	-33.05490613985171
+W	anidaletcfantasticethernetwhetherdestination	1	-	anidal etc fantastic ethernet whether destination	animal etc fantastic ethernet whether destination	6	-26.597267172704115
+W	anidaletcfantasticethernetwhetherdestination	1	11	anidal etc fantastic ethernet whether destination	animal etc fantastic ethernet whether destination	6	-26.597267172704115
+W	anidaletcfantasticethernetwhetherdestination	2	-	anidal etc fantastic ethernet whether destination	animal etc fantastic ethernet whether destination	6	-26.597267172704115
+W	anidaletcfantasticethernetwhetherdestination	2	11	anidal etc fantastic ethernet whether destination	animal etc fantastic ethernet whether destination	6	-26.597267172704115
+W	chevroletwaters	0	-	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	chevroletwaters	0	11	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	chevroletwaters	1	-	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	chevroletwaters	1	11	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	chevroletwaters	2	-	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	chevroletwaters	2	11	chevrolet waters	chevrolet waters	1	-9.7003048468881
+W	evaluatechestobanatbitsamerican shorts?	0	-	evaluate che stob an at bits american shorts?	evaluate che stob an at bits american shorts?	7	-48.14986223858978
+W	evaluatechestobanatbitsamerican shorts?	0	11	evaluate che stob an at bits american shorts?	evaluate che stob an at bits american shorts?	7	-48.14986223858978
+W	evaluatechestobanatbitsamerican shorts?	1	-	evaluate chesto banat bits american shorts?	evaluate chest anat bits american shorts	7	-29.424050190101113
+W	evaluatechestobanatbitsamerican shorts?	1	11	evaluate chesto banat bits american shorts?	evaluate chest anat bits american shorts	7	-29.424050190101113
+W	evaluatechestobanatbitsamerican shorts?	2	-	evaluate chesto bana tbits american shorts?	evaluate chest bank tits american shorts	8	-26.720474555171844
+W	evaluatechestobanatbitsamerican shorts?	2	11	evaluate chesto bana tbits american shorts?	evaluate chest bank tits american shorts	8	-26.720474555171844
+W	endedtruckinteraction --oxymentowns	0	-	ended truck interaction oxy men towns	ended truck interaction oxy men towns	7	-36.38789596178766
+W	endedtruckinteraction --oxymentowns	0	11	ended truck interaction oxy men towns	ended truck interaction oxy men towns	7	-36.38789596178766
+W	endedtruckinteraction --oxymentowns	1	-	ended truck interaction oxymen towns	ended truck interaction oxygen towns	4	-23.556362117713952
+W	endedtruckinteraction --oxymentowns	1	11	ended truck interaction oxymen towns	ended truck interaction oxygen towns	4	-23.556362117713952
+W	endedtruckinteraction --oxymentowns	2	-	ended truck interaction oxyment owns	ended truck interaction payment owns	5	-22.82663083227076
+W	endedtruckinteraction --oxymentowns	2	11	ended truck interaction oxyment owns	ended truck interaction payment owns	5	-22.82663083227076
+W	There'resomewords	0	-	There' re some words	There' re some words	4	-25.875228134985054
+W	There'resomewords	0	11	There' re some words	There' re some words	4	-25.875228134985054
+W	There'resomewords	1	-	There' resome words	There resume words	4	-11.903177520487922
+W	There'resomewords	1	11	There' resome words	There resume words	4	-11.903177520487922
+W	There'resomewords	2	-	There're some words	Therefore some words	4	-11.54103620110493
+W	There'resomewords	2	11	There're some words	Therefore some words	4	-11.54103620110493
+W	thequickbrownfoxjumpsoverthelazydog	0	-	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	thequickbrownfoxjumpsoverthelazydog	0	11	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	thequickbrownfoxjumpsoverthelazydog	1	-	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	thequickbrownfoxjumpsoverthelazydog	1	11	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	thequickbrownfoxjumpsoverthelazydog	2	-	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	thequickbrownfoxjumpsoverthelazydog	2	11	the quick brown fox jumps over the lazy dog	the quick brown fox jumps over the lazy dog	8	-34.491167981910635
+W	a	0	-	a	a	0	-2.0525429658558303
+W	a	0	11	a	a	0	-2.0525429658558303
+W	a	1	-	a	a	0	-2.0525429658558303
+W	a	1	11	a	a	0	-2.0525429658558303
+W	a	2	-	a	a	0	-2.0525429658558303
+W	a	2	11	a	a	0	-2.0525429658558303
+W	 	0	-			0	-11.0106849963
+W	 	0	11			0	-11.0106849963
+W	 	1	-		a	1	-2.0525429658558303
+W	 	1	11		a	1	-2.0525429658558303
+W	 	2	-		a	1	-2.0525429658558303
+W	 	2	11		a	1	-2.0525429658558303
+W	-	0	-	E	IndexError: list index out of range		
+W	-	0	11	E	IndexError: list index out of range		
+W	-	1	-	E	IndexError: list index out of range		
+W	-	1	11	E	IndexError: list index out of range		
+W	-	2	-	E	IndexError: list index out of range		
+W	-	2	11	E	IndexError: list index out of range		
+W	a-b	0	-	ab	ab	2	-13.0106849963
+W	a-b	0	11	ab	ab	2	-13.0106849963
+W	a-b	1	-	ab	a	1	-2.0525429658558303
+W	a-b	1	11	ab	a	1	-2.0525429658558303
+W	a-b	2	-	ab	a	1	-2.0525429658558303
+W	a-b	2	11	ab	a	1	-2.0525429658558303
+W		0	-	E	IndexError: list index out of range		
+W		0	11	E	IndexError: list index out of range		
+W		1	-	E	IndexError: list index out of range		
+W		1	11	E	IndexError: list index out of range		
+W		2	-	E	IndexError: list index out of range		
+W		2	11	E	IndexError: list index out of range		

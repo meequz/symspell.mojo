@@ -1,0 +1,63 @@
+# Converts symspellpy's JSON test fixtures to the TSV fixture format.
+# 
+# This is a plain format conversion; the values are symspellpy's own.
+# 
+# lookup_compound*.tsv records:
+#     F  typo  dictionary("bigram"/"unigram")  num_results  term  distance  count
+#     r  key  term                       (replacement, only in replaced_words data)
+# word_segmentation.tsv records:
+#     F  typo  edit_distance  term
+F	whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixthgrade and ins pired him	bigram		where is the love he had dated for much of the past who couldn't read in sixth grade and inspired him		
+r	whereis	where is
+r	th	the
+r	elove	love
+r	hehad	he had
+r	forimuch	for much
+r	thepast	the past
+r	couqdn'tread	couldn't read
+r	sixthgrade	sixth grade
+r	ins	inspired
+F	whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixthgrade and ins pired him	unigram		whereas the love head dated for much of the past who couldn't read in sixth grade and inspired him		
+r	whereis	whereas
+r	th	the
+r	elove	love
+r	hehad	head
+r	forimuch	for much
+r	thepast	the past
+r	couqdn'tread	couldn't read
+r	sixthgrade	sixth grade
+r	ins	inspired
+F	in te dhird qarter oflast jear he hadlearned ofca sekretplan	bigram		in the third quarter of last year he had learned of a secret plan		
+r	te	the
+r	dhird	third
+r	qarter	quarter
+r	oflast	of last
+r	jear	year
+r	hadlearned	had learned
+r	ofca	of a
+r	sekretplan	secret plan
+F	in te dhird qarter oflast jear he hadlearned ofca sekretplan	unigram		in the third quarter of last year he had learned of a secret plan		
+r	te	the
+r	dhird	third
+r	qarter	quarter
+r	oflast	of last
+r	jear	year
+r	hadlearned	had learned
+r	ofca	of a
+r	sekretplan	secret plan
+F	the bigjest playrs in te strogsommer film slatew ith plety of funn	bigram		the biggest players in the strong summer film slate with plenty of fun		
+r	bigjest	biggest
+r	playrs	players
+r	strogsommer	strong summer
+r	slatew	slate
+r	ith	with
+r	plety	plenty
+r	funn	fun
+F	the bigjest playrs in te strogsommer film slatew ith plety of funn	unigram		the biggest players in the strong summer film slate with plenty of fun		
+r	bigjest	biggest
+r	playrs	players
+r	strogsommer	strong summer
+r	slatew	slate
+r	ith	with
+r	plety	plenty
+r	funn	fun

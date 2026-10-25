@@ -1,0 +1,4 @@
+* text=auto
+# Fixtures and data are stored byte-for-byte (some use CRLF on purpose).
+tests/fixtures/** -text
+data/** -text

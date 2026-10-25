@@ -1,0 +1,23 @@
+# Converts symspellpy's JSON test fixtures to the TSV fixture format.
+# 
+# This is a plain format conversion; the values are symspellpy's own.
+# 
+# lookup_compound*.tsv records:
+#     F  typo  dictionary("bigram"/"unigram")  num_results  term  distance  count
+#     r  key  term                       (replacement, only in replaced_words data)
+# word_segmentation.tsv records:
+#     F  typo  edit_distance  term
+F	whereis th elove	bigram	1	where is the love	2	585
+F	whereis th elove	unigram	1	whereas the love	2	64
+F	the bigjest playrs	bigram	1	the biggest players	2	34
+F	the bigjest playrs	unigram	1	the biggest players	2	34
+F	Can yu readthis	bigram	1	can you read this	3	11440
+F	Can yu readthis	unigram	1	can you read this	3	3
+F	whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixthgrade and ins pired him	bigram	1	where is the love he had dated for much of the past who couldn't read in sixth grade and inspired him	9	0
+F	whereis th elove hehad dated forImuch of thepast who couqdn'tread in sixthgrade and ins pired him	unigram	1	whereas the love head dated for much of the past who couldn't read in sixth grade and inspired him	9	0
+F	in te dhird qarter oflast jear he hadlearned ofca sekretplan	bigram	1	in the third quarter of last year he had learned of a secret plan	9	0
+F	in te dhird qarter oflast jear he hadlearned ofca sekretplan	unigram	1	in the third quarter of last year he had learned of a secret plan	9	0
+F	the bigjest playrs in te strogsommer film slatew ith plety of funn	bigram	1	the biggest players in the strong summer film slate with plenty of fun	9	0
+F	the bigjest playrs in te strogsommer film slatew ith plety of funn	unigram	1	the biggest players in the strong summer film slate with plenty of fun	9	0
+F	Can yu readthis messa ge despite thehorible sppelingmsitakes	bigram	1	can you read this message despite the horrible spelling mistakes	10	0
+F	Can yu readthis messa ge despite thehorible sppelingmsitakes	unigram	1	can you read this message despite the horrible spelling mistakes	10	0
