@@ -133,3 +133,18 @@ the exact symspellpy value for every fixture. Lookups are not affected by collis
 - If `mmap` fails, or with `use_mmap=False`, the file is read into memory instead.
 - Only little-endian machines are supported (all current Mojo targets). A file with a different
   endianness marker is rejected.
+
+## D18. `lookup_compound` and `word_segmentation`
+
+- Both are line-by-line ports, in `compound.mojo` and `segmentation.mojo`. `SymSpell` has thin methods
+  that call them (the modules import each other, which Mojo allows).
+- symspellpy keeps `replaced_words` as instance state. The index is read-only, so
+  `lookup_compound(..., replaced_words=my_dict)` takes the dict as a `mut` keyword argument. Entries
+  accumulate across calls that share the dict, as in symspellpy.
+- Float arithmetic follows Python's evaluation order in IEEE doubles. Python compares an `int` with a
+  `float` exactly, so `int_gt_float` does the same without rounding the integer. `int(float)` raises on
+  infinity and NaN, and `math.log10` raises for zero, as in Python.
+- Python's `count / N` is a correctly rounded division of two integers. We compute
+  `Float64(count) / Float64(N)`, which is identical for counts below 2**53 (about 9 * 10**15) and may
+  differ in the last bit above that. Real counts are far smaller.
+- `word_segmentation` removes `-` but does not NFKC-normalize (D7).

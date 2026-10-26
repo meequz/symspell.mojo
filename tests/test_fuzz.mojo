@@ -268,5 +268,81 @@ def test_fuzz_queries() raises:
                     )
 
 
+def test_fuzz_compound_and_segmentation() raises:
+    var builder = SymSpellBuilder(SymSpellConfig(2, 7))
+    builder.load_dictionary(String(FIXTURES, "dict_intl.txt"))
+    builder.load_bigram_dictionary(String(FIXTURES, "bigrams_intl.txt"))
+    _ = builder.create_dictionary_entry("a", 3)
+    var index = builder^.build()
+    var rng = Rng(4242)
+    var pieces: List[String] = [
+        " ",
+        "  ",
+        "a",
+        "сям'я",
+        "λόγος",
+        "ΟΔΟΣ",
+        "İ",
+        "12",
+        "AB12",
+        "NASA",
+        "-",
+        "'",
+        "’",
+        ".",
+        "😀",
+        "e\u0301",
+        "ß",
+        "\t",
+        "x",
+        "Straße",
+        "٣",
+        "_",
+    ]
+    var allowed: List[String] = [
+        "IndexError",
+        "OverflowError",
+        "ValueError",
+        "cased_text",
+        "StopIteration",
+    ]
+    for _ in range(600):
+        var text = String()
+        for _ in range(rng.between(0, 10)):
+            text += pieces[rng.below(len(pieces))]
+        var flags = rng.below(16)
+        try:
+            var r = index.lookup_compound(
+                text,
+                rng.between(0, 2),
+                flags & 1 != 0,
+                flags & 2 != 0,
+                flags & 4 != 0,
+                flags & 8 != 0,
+            )
+            assert_true(len(r) == 1, text)
+        except e:
+            var message = String(e)
+            var ok = False
+            for a in allowed:
+                if a in message:
+                    ok = True
+            assert_true(ok, String("lookup_compound ", text, ": ", message))
+        try:
+            _ = index.word_segmentation(
+                text,
+                rng.between(0, 2),
+                Optional[Int](rng.between(1, 12)) if rng.below(2)
+                == 0 else None,
+            )
+        except e:
+            var message = String(e)
+            var ok = False
+            for a in allowed:
+                if a in message:
+                    ok = True
+            assert_true(ok, String("word_segmentation ", text, ": ", message))
+
+
 def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

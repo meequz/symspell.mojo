@@ -8,5 +8,5 @@ from .builder import SymSpellBuilder
 from .config import DistanceAlgorithm, SymSpellConfig
 from .index import SymSpell
 from .scratch import LookupScratch
-from .suggestion import Suggestion
+from .suggestion import Composition, Suggestion
 from .verbosity import Verbosity

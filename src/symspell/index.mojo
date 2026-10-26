@@ -33,7 +33,9 @@ from symspell.casing import case_transfer_similar
 from symspell.config import DistanceAlgorithm, SymSpellConfig
 from symspell.delete_index import EMPTY, find_slot, is_delete_of, probe_start
 from symspell.scratch import Hit, LookupScratch
-from symspell.suggestion import Suggestion, sort_suggestions
+from symspell.suggestion import Composition, Suggestion, sort_suggestions
+from symspell.compound import lookup_compound as compound_impl
+from symspell.segmentation import word_segmentation as segmentation_impl
 from symspell.text import decode, lower, to_codepoints, to_string
 from symspell.tokenize import TokenPredicate
 from symspell.verbosity import Verbosity
@@ -610,3 +612,81 @@ struct SymSpell(Movable):
             ) if transfer_casing else String(phrase)
             suggestions.append(Suggestion(unknown^, med + 1, 0))
         return suggestions^
+
+    # --- Multi-word ---
+
+    def lookup_compound(
+        self,
+        phrase: StringSlice,
+        max_edit_distance: Int,
+        ignore_non_words: Bool = False,
+        transfer_casing: Bool = False,
+        split_by_space: Bool = False,
+        ignore_term_with_digits: Bool = False,
+    ) raises -> List[Suggestion]:
+        """Corrects a multi-word text, also splitting and merging words.
+
+        Returns one suggestion: the corrected text, its edit distance to
+        `phrase`, and an estimated count. With `ignore_non_words`, numbers and
+        acronyms are kept; with `ignore_term_with_digits` as well, so is any
+        term containing a digit. See docs/BEHAVIOR.md, section 8.
+        """
+        var replaced_words = Dict[String, Suggestion]()
+        return self.lookup_compound(
+            phrase,
+            max_edit_distance,
+            ignore_non_words,
+            transfer_casing,
+            split_by_space,
+            ignore_term_with_digits,
+            replaced_words=replaced_words,
+        )
+
+    def lookup_compound(
+        self,
+        phrase: StringSlice,
+        max_edit_distance: Int,
+        ignore_non_words: Bool = False,
+        transfer_casing: Bool = False,
+        split_by_space: Bool = False,
+        ignore_term_with_digits: Bool = False,
+        *,
+        mut replaced_words: Dict[String, Suggestion],
+    ) raises -> List[Suggestion]:
+        """Like `lookup_compound`, also recording each replaced input term.
+
+        `replaced_words` maps an input term to its replacement, like
+        symspellpy's `replaced_words` attribute. Entries accumulate over calls
+        that share the same dict.
+        """
+        return compound_impl(
+            self,
+            phrase,
+            max_edit_distance,
+            ignore_non_words,
+            transfer_casing,
+            split_by_space,
+            ignore_term_with_digits,
+            replaced_words,
+        )
+
+    def word_segmentation(
+        self,
+        phrase: StringSlice,
+        max_edit_distance: Optional[Int] = None,
+        max_segmentation_word_length: Optional[Int] = None,
+        ignore_token: Optional[TokenPredicate] = None,
+    ) raises -> Composition:
+        """Splits text without spaces into words and corrects their spelling.
+
+        Existing spaces are kept and considered. Runs in time linear in the
+        text length. Unlike symspellpy, the text is not NFKC-normalized.
+        See docs/BEHAVIOR.md, section 9.
+        """
+        return segmentation_impl(
+            self,
+            phrase,
+            max_edit_distance,
+            max_segmentation_word_length,
+            ignore_token,
+        )
