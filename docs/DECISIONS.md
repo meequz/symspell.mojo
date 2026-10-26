@@ -84,3 +84,32 @@ Faster variants (ASCII bytes, bit-parallel) are for phase 6, and only if benchma
 
 `mojo format` would put every number of `_unicode_data.mojo` on its own line (17,000 lines instead of
 1,500). The generator wraps the tables in `# fmt: off` / `# fmt: on`.
+
+## D13. `Suggestion.term` is an owned `String`
+
+The task suggested a zero-copy `StringSlice` into the index arena. But some suggestion terms are not
+in the arena: the phrase itself (`include_unknown`, exact matches with `transfer_casing`, `ignore_token`)
+and every case-transferred term. A slice type would need a union of origins (index, scratch, caller's
+phrase), which makes the API much harder to use. Mojo's `String` stores up to 23 bytes inline, so
+a typical word costs no heap allocation. `SymSpell.term(id)` still gives zero-copy access to the arena.
+
+## D14. `ignore_token` is a `def(String) thin -> Bool`
+
+Mojo has no regex in its stdlib. `lookup` takes an optional predicate instead, with ready-made ones in
+`symspell.tokenize`: `has_digits`, `is_punctuation`, `is_url_like`. The predicate receives the
+(lowercased, with `transfer_casing`) phrase, as symspellpy's `re.match` does. It takes a `String`
+rather than a `StringSlice` to avoid origin parameters in the function type.
+
+## D15. The builder computes deletes once, in `build()`
+
+symspellpy updates its deletes dict on every `create_dictionary_entry`. The builder only records
+terms and counts; `build()` (consuming) or `snapshot()` (keeping the builder) generates all deletes in
+two passes. This is faster and uses far less memory, but the incremental workflow (add words after
+lookups) needs a new `snapshot()`, which costs a full build.
+
+## D16. `entry_count` counts distinct 64-bit delete hashes
+
+symspellpy's `entry_count` is the number of distinct delete strings. The index only stores their
+64-bit hashes, so two different deletes with the same hash would count once. For the English
+dictionary (676,094 deletes) the chance of any such collision is about 1 in 10^8, and the tests check
+the exact symspellpy value for every fixture. Lookups are not affected by collisions (D3).

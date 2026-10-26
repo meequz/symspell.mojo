@@ -392,3 +392,13 @@ We generate these tables from Python's `unicodedata` so they match exactly.
 - `lookup_compound` counts can exceed `2**63 - 1` in Python (unbounded ints). We saturate at
   `2**63 - 1` (see DECISIONS.md). This only happens with counts near `MAXSIZE`.
 - The `include_unknown` item uses distance `med + 1` and count `0`.
+- An early exit (steps 4 to 7 of section 4) returns before sorting and before casing transfer.
+  So `lookup("Steam", TOP, transfer_casing=True)` with "steam" in the dictionary returns the
+  phrase as typed, `"Steam"`, and `ALL` with `max_edit_distance=0` returns its (at most two)
+  items unsorted.
+- `ALL` can return the same term twice. One-codepoint terms (section 4.1, `suggestion_len == 1`)
+  and terms found through the empty candidate (`candidate_len == 0`) are never added to
+  `considered_suggestions`, so a later candidate can report them again, with a larger distance:
+  in a dictionary {a, ma, am, m}, `lookup("ma", ALL, 2)` returns
+  `ma 0, a 1, am 1, m 1, a 2, m 2`. The second distance is `max(phrase_len, suggestion_len)`,
+  not the true distance.

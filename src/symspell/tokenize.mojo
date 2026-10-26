@@ -14,6 +14,9 @@ from symspell.text import (
     to_string,
 )
 
+comptime TokenPredicate = def(String) thin -> Bool
+"""Decides whether a token is left unchanged (replaces symspellpy's `ignore_token` regex)."""
+
 comptime _APOSTROPHE: UInt32 = 0x27
 comptime _RIGHT_QUOTE: UInt32 = 0x2019
 comptime _INT64_MAX: UInt64 = 0x7FFFFFFFFFFFFFFF
@@ -161,3 +164,46 @@ def try_parse_int64(text: StringSlice) -> Optional[Int]:
     if negative and value > 0:
         return -Int(value - 1) - 1
     return Int(value)
+
+
+# ===----------------------------------------------------------------------=== #
+# Ready-made `ignore_token` predicates
+# ===----------------------------------------------------------------------=== #
+
+
+def has_digits(token: String) -> Bool:
+    """True if any codepoint is a digit (`str.isdigit`)."""
+    for c in token.codepoints():
+        if is_digit(c.to_u32()):
+            return True
+    return False
+
+
+def is_punctuation(token: String) -> Bool:
+    """True if the token is non-empty and all ASCII punctuation (`string.punctuation`).
+    """
+    if token.byte_length() == 0:
+        return False
+    for b in token.as_bytes():
+        var is_punct = (
+            (b >= 0x21 and b <= 0x2F)
+            or (b >= 0x3A and b <= 0x40)
+            or (b >= 0x5B and b <= 0x60)
+            or (b >= 0x7B and b <= 0x7E)
+        )
+        if not is_punct:
+            return False
+    return True
+
+
+def is_url_like(token: String) -> Bool:
+    """True for tokens that look like URLs or e-mail addresses."""
+    var lowered = token.lower()
+    if (
+        lowered.startswith("http://")
+        or lowered.startswith("https://")
+        or lowered.startswith("www.")
+    ):
+        return True
+    var at = token.find("@")
+    return at > 0 and token.find(".", at) > at + 1
