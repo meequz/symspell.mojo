@@ -15,6 +15,7 @@ build = "mkdir -p build && mojo precompile src/symspell -o build/symspell.mojoc"
 fixtures = "bash reference/ensure_fixtures.sh"
 test = { cmd = "bash tests/run_all.sh", depends-on = ["build", "fixtures"] }
 test-debug = { cmd = "MOJO_FLAGS='-D ASSERT=all' bash tests/run_all.sh", depends-on = ["build", "fixtures"] }
+bench = { cmd = "bash bench/run.sh", depends-on = ["build"] }
 fmt = "mojo format src tests bench examples"
 
 [feature.ref.dependencies]

@@ -7,3 +7,4 @@ bench/data/
 
 # Large generated fixtures (pixi run fixtures)
 tests/fixtures/lookup_*.tsv
+bench/results/

@@ -6,7 +6,7 @@ once the buffers have grown to their working size. Sets are cleared in O(1)
 by bumping a generation number instead of wiping their arrays.
 """
 
-from symspell._hash import hash_codepoints
+from symspell._hash import hash_finish, hash_start, hash_step
 from symspell.distance import DamerauOsa, Levenshtein
 
 
@@ -41,7 +41,11 @@ struct _StampedSet(Movable):
         return (i + 1) & (len(self.keys) - 1)
 
     def occupied(self, i: Int) -> Bool:
-        return self.stamps[i] == self.generation
+        # `i` always comes from `start` or `next`, so it is in range.
+        return self.stamps.unsafe_ptr()[unsafe_offset=i] == self.generation
+
+    def key_at(self, i: Int) -> UInt64:
+        return self.keys.unsafe_ptr()[unsafe_offset=i]
 
     def put(mut self, i: Int, key: UInt64, value: Int):
         """Stores at free slot `i` (found by probing), growing if needed."""
@@ -56,7 +60,7 @@ struct _StampedSet(Movable):
         """Adds `key`; returns False if it was already present."""
         var i = self.start(key)
         while self.occupied(i):
-            if self.keys[i] == key:
+            if self.key_at(i) == key:
                 return False
             i = self.next(i)
         self.put(i, key, 0)
@@ -97,6 +101,45 @@ struct Hit(ImplicitlyCopyable):
     comptime ORIGINAL = 2
     """The phrase exactly as given."""
 
+    def precedes(self, other: Self) -> Bool:
+        """Order of symspellpy: distance ascending, then count descending."""
+        if self.distance == other.distance:
+            return self.count > other.count
+        return self.distance < other.distance
+
+
+def sort_hits(mut hits: List[Hit], mut buffer: List[Hit]):
+    """Stable merge sort, like Python's `list.sort` (ties keep their order)."""
+    var n = len(hits)
+    if n < 2:
+        return
+    buffer.resize(n, hits[0])
+    var src = hits.unsafe_ptr()
+    var dst = buffer.unsafe_ptr()
+    var width = 1
+    while width < n:
+        var lo = 0
+        while lo < n:
+            var mid = min(lo + width, n)
+            var hi = min(lo + 2 * width, n)
+            var i = lo
+            var j = mid
+            for k in range(lo, hi):
+                # Take from the right only if it strictly precedes: stable.
+                if j < hi and (
+                    i >= mid
+                    or src[unsafe_offset=j].precedes(src[unsafe_offset=i])
+                ):
+                    dst[unsafe_offset=k] = src[unsafe_offset=j]
+                    j += 1
+                else:
+                    dst[unsafe_offset=k] = src[unsafe_offset=i]
+                    i += 1
+            lo += 2 * width
+        for k in range(n):
+            src[unsafe_offset=k] = dst[unsafe_offset=k]
+        width *= 2
+
 
 struct LookupScratch(Movable):
     """Work buffers for `SymSpell.lookup`. Use one per thread."""
@@ -105,10 +148,10 @@ struct LookupScratch(Movable):
     var phrase: List[UInt32]
     var candidates: List[UInt32]
     var candidate_starts: List[Int]
-    var current: List[UInt32]
-    var delete: List[UInt32]
-    var term: List[UInt32]
+    var candidate_hashes: List[UInt64]
+    var survivors: List[Int]
     var hits: List[Hit]
+    var sort_buffer: List[Hit]
     var considered_deletes: _StampedSet
     var considered_terms: _StampedSet
     var osa: DamerauOsa
@@ -119,70 +162,117 @@ struct LookupScratch(Movable):
         self.phrase = List[UInt32]()
         self.candidates = List[UInt32]()
         self.candidate_starts = List[Int]()
-        self.current = List[UInt32]()
-        self.delete = List[UInt32]()
-        self.term = List[UInt32]()
+        self.candidate_hashes = List[UInt64]()
+        self.survivors = List[Int]()
         self.hits = List[Hit]()
+        self.sort_buffer = List[Hit]()
         self.considered_deletes = _StampedSet()
         self.considered_terms = _StampedSet()
         self.osa = DamerauOsa()
         self.levenshtein = Levenshtein()
 
-    def reset_candidates(mut self):
-        self.candidates.clear()
-        self.candidate_starts.clear()
-        self.candidate_starts.append(0)
-        self.considered_deletes.clear()
-        self.considered_terms.clear()
-
-    def candidate_count(self) -> Int:
-        return len(self.candidate_starts) - 1
-
-    def push_candidate(mut self, text: ImmSpan[UInt32, _]):
-        self.candidates.extend(text)
-        self.candidate_starts.append(len(self.candidates))
+    def set_phrase(mut self, text: ImmSpan[UInt32, _]):
+        """Uses `text` as both the original and the search phrase."""
+        self.original.clear()
+        self.phrase.clear()
+        for cp in text:
+            self.original.append(cp)
+            self.phrase.append(cp)
 
     def copy_original_to_phrase(mut self):
         self.phrase.clear()
         for cp in self.original:
             self.phrase.append(cp)
 
+    # --- Candidates: deletes of the phrase prefix, stored back to back ---
+
+    def reset_candidates(mut self):
+        self.candidates.clear()
+        self.candidate_starts.clear()
+        self.candidate_starts.append(0)
+        self.candidate_hashes.clear()
+        self.considered_deletes.clear()
+        self.considered_terms.clear()
+
+    def candidate_count(self) -> Int:
+        return len(self.candidate_hashes)
+
+    def candidate(self, k: Int) -> ImmSpan[UInt32, ImmUntrackedOrigin]:
+        """Candidate `k`. Valid until the next `add_deletes_of` call."""
+        var start = self.candidate_starts[k]
+        return ImmSpan[UInt32, ImmUntrackedOrigin](
+            unsafe_ptr=self.candidates.unsafe_ptr()
+            .as_imm()
+            .unsafe_origin_cast[ImmUntrackedOrigin]()
+            .unsafe_offset(start),
+            length=self.candidate_starts[k + 1] - start,
+        )
+
+    def candidate_hash(self, k: Int) -> UInt64:
+        return self.candidate_hashes[k]
+
     def push_phrase_prefix(mut self, length: Int):
         """Adds the first `length` codepoints of `self.phrase` as a candidate.
         """
-        for i in range(min(length, len(self.phrase))):
+        var n = min(length, len(self.phrase))
+        var h = hash_start()
+        for i in range(n):
             self.candidates.append(self.phrase[i])
+            h = hash_step(h, self.phrase[i])
         self.candidate_starts.append(len(self.candidates))
+        self.candidate_hashes.append(hash_finish(h, n))
 
-    def load_candidate(mut self, k: Int):
-        """Copies candidate `k` into `self.current`."""
-        self.current.clear()
-        for i in range(self.candidate_starts[k], self.candidate_starts[k + 1]):
-            self.current.append(self.candidates[i])
+    def add_deletes_of(mut self, k: Int):
+        """Adds each one-codepoint delete of candidate `k` not seen before.
 
-    def add_delete_if_new(mut self) -> Bool:
-        """Adds `self.delete` as a candidate unless it was seen before."""
-        var h = hash_codepoints(self.delete)
-        var i = self.considered_deletes.start(h)
-        while self.considered_deletes.occupied(i):
-            if self.considered_deletes.keys[i] == h and self._candidate_equals(
-                self.considered_deletes.values[i]
-            ):
-                return False
-            i = self.considered_deletes.next(i)
-        var k = self.candidate_count()
-        for cp in self.delete:
-            self.candidates.append(cp)
-        self.candidate_starts.append(len(self.candidates))
-        self.considered_deletes.put(i, h, k)
-        return True
-
-    def _candidate_equals(self, k: Int) -> Bool:
+        Deletes are written straight into the candidate buffer and hashed while
+        they are copied. A delete seen before is rolled back.
+        """
         var start = self.candidate_starts[k]
-        var end = self.candidate_starts[k + 1]
-        if end - start != len(self.delete):
-            return False
-        for i in range(len(self.delete)):
-            if self.candidates[start + i] != self.delete[i]:
-                return False
-        return True
+        var n = self.candidate_starts[k + 1] - start
+        # Enough room for all n deletes, so the buffer does not move while we
+        # read candidate `k` from it.
+        self.candidates.reserve(len(self.candidates) + n * n)
+        var source = self.candidates.unsafe_ptr().unsafe_offset(start)
+        for i in range(n):
+            var out = len(self.candidates)
+            var h = hash_start()
+            for j in range(n):
+                if j != i:
+                    var cp = source[unsafe_offset=j]
+                    self.candidates.append(cp)
+                    h = hash_step(h, cp)
+            h = hash_finish(h, n - 1)
+            var slot = self._find_delete(h, out, n - 1)
+            if slot < 0:
+                self.candidates.resize(out, 0)  # seen before
+                continue
+            self.considered_deletes.put(slot, h, self.candidate_count())
+            self.candidate_starts.append(len(self.candidates))
+            self.candidate_hashes.append(h)
+
+    def _find_delete(self, h: UInt64, start: Int, length: Int) -> Int:
+        """Returns a free slot for a new delete, or -1 if it was seen before.
+
+        The delete is `candidates[start:start + length]`.
+        """
+        ref seen = self.considered_deletes
+        var i = seen.start(h)
+        while seen.occupied(i):
+            if seen.key_at(i) == h:
+                var other = seen.values[i]
+                var other_start = self.candidate_starts[other]
+                if self.candidate_starts[other + 1] - other_start == length:
+                    var p = self.candidates.unsafe_ptr()
+                    var same = True
+                    for c in range(length):
+                        if (
+                            p[unsafe_offset=other_start + c]
+                            != p[unsafe_offset=start + c]
+                        ):
+                            same = False
+                            break
+                    if same:
+                        return -1
+            i = seen.next(i)
+        return i

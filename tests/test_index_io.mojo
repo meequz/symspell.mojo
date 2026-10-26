@@ -117,6 +117,13 @@ def test_round_trip() raises:
         queries,
         "no checksum",
     )
+    _assert_same(index, SymSpell.open(path, trusted=True), queries, "trusted")
+    _assert_same(
+        index,
+        SymSpell.open(path, use_mmap=False, trusted=True),
+        queries,
+        "trusted read",
+    )
     var read = SymSpell.open(path, use_mmap=False)
     assert_false(read.is_memory_mapped())
     _assert_same(index, read, queries, "read")
@@ -261,13 +268,13 @@ def test_structural_checks_without_checksum() raises:
     _reseal(bad)
     _corrupt_and_expect(bad, "word_count.idx", "corrupted index")
 
-    # A posting that points past the last term.
+    # A posting that points past the last term (POSTINGS is section 7).
     bad = good.copy()
     var postings_offset = (
-        Int(bad[128 + 8 * 8])
-        | (Int(bad[129 + 8 * 8]) << 8)
-        | (Int(bad[130 + 8 * 8]) << 16)
-        | (Int(bad[131 + 8 * 8]) << 24)
+        Int(bad[128 + 8 * 7])
+        | (Int(bad[129 + 8 * 7]) << 8)
+        | (Int(bad[130 + 8 * 7]) << 16)
+        | (Int(bad[131 + 8 * 7]) << 24)
     )
     _store_u32(bad, postings_offset, 0xFFFFFFF0)
     _reseal(bad)

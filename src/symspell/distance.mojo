@@ -7,6 +7,8 @@ This follows symspellpy's `editdistance.py` (from SoftWx.Match), including its
 special cases (docs/BEHAVIOR.md, section 3).
 
 A comparer keeps its work buffers between calls, so use one per thread.
+The inner loops index raw pointers: every index stays below the trimmed
+lengths, and the buffers are grown to that size first.
 """
 
 comptime _MAX_INT32 = 2**31 - 1
@@ -112,27 +114,29 @@ struct DamerauOsa(DistanceComparer):
     ) -> Int:
         var len_1 = len(s1)
         var len_2 = len(s2)
-        var costs = Span(self._costs)
-        var prev_costs = Span(self._prev_costs)
+        var p1 = s1.unsafe_ptr()
+        var p2 = s2.unsafe_ptr()
+        var costs = self._costs.unsafe_ptr()
+        var prev_costs = self._prev_costs.unsafe_ptr()
         for j in range(len_2):
-            costs[j] = j + 1
+            costs[unsafe_offset=j] = j + 1
         var char_1: UInt32 = 0x20
         var current_cost = 0
         for i in range(len_1):
             var prev_char_1 = char_1
-            char_1 = s1[i]
+            char_1 = p1[unsafe_offset=i]
             var char_2: UInt32 = 0x20
             var left_cost = i
             var above_cost = i
             var next_trans_cost = 0
             for j in range(len_2):
                 var this_trans_cost = next_trans_cost
-                next_trans_cost = prev_costs[j]
+                next_trans_cost = prev_costs[unsafe_offset=j]
                 current_cost = left_cost
-                prev_costs[j] = current_cost
-                left_cost = costs[j]
+                prev_costs[unsafe_offset=j] = current_cost
+                left_cost = costs[unsafe_offset=j]
                 var prev_char_2 = char_2
-                char_2 = s2[j]
+                char_2 = p2[unsafe_offset=j]
                 if char_1 != char_2:
                     if above_cost < current_cost:
                         current_cost = above_cost
@@ -147,7 +151,7 @@ struct DamerauOsa(DistanceComparer):
                         and this_trans_cost + 1 < current_cost
                     ):
                         current_cost = this_trans_cost + 1
-                costs[j] = current_cost
+                costs[unsafe_offset=j] = current_cost
                 above_cost = current_cost
         return current_cost
 
@@ -156,10 +160,12 @@ struct DamerauOsa(DistanceComparer):
     ) -> Int:
         var len_1 = len(s1)
         var len_2 = len(s2)
-        var costs = Span(self._costs)
-        var prev_costs = Span(self._prev_costs)
+        var p1 = s1.unsafe_ptr()
+        var p2 = s2.unsafe_ptr()
+        var costs = self._costs.unsafe_ptr()
+        var prev_costs = self._prev_costs.unsafe_ptr()
         for j in range(len_2):
-            costs[j] = j + 1 if j < max_d else max_d + 1
+            costs[unsafe_offset=j] = j + 1 if j < max_d else max_d + 1
         var len_diff = len_2 - len_1
         var j_start_offset = max_d - len_diff
         var j_start = 0
@@ -168,7 +174,7 @@ struct DamerauOsa(DistanceComparer):
         var current_cost = 0
         for i in range(len_1):
             var prev_char_1 = char_1
-            char_1 = s1[i]
+            char_1 = p1[unsafe_offset=i]
             var char_2: UInt32 = 0x20
             var left_cost = i
             var above_cost = i
@@ -179,12 +185,12 @@ struct DamerauOsa(DistanceComparer):
                 j_end += 1
             for j in range(j_start, j_end):
                 var this_trans_cost = next_trans_cost
-                next_trans_cost = prev_costs[j]
+                next_trans_cost = prev_costs[unsafe_offset=j]
                 current_cost = left_cost
-                prev_costs[j] = current_cost
-                left_cost = costs[j]
+                prev_costs[unsafe_offset=j] = current_cost
+                left_cost = costs[unsafe_offset=j]
                 var prev_char_2 = char_2
-                char_2 = s2[j]
+                char_2 = p2[unsafe_offset=j]
                 if char_1 != char_2:
                     if above_cost < current_cost:
                         current_cost = above_cost
@@ -199,9 +205,9 @@ struct DamerauOsa(DistanceComparer):
                         and this_trans_cost + 1 < current_cost
                     ):
                         current_cost = this_trans_cost + 1
-                costs[j] = current_cost
+                costs[unsafe_offset=j] = current_cost
                 above_cost = current_cost
-            if costs[i + len_diff] > max_d:
+            if costs[unsafe_offset=i + len_diff] > max_d:
                 return -1
         return current_cost if current_cost <= max_d else -1
 
@@ -246,24 +252,26 @@ struct Levenshtein(DistanceComparer):
         mut self, s1: ImmSpan[UInt32, _], s2: ImmSpan[UInt32, _]
     ) -> Int:
         var len_2 = len(s2)
-        var costs = Span(self._costs)
+        var p1 = s1.unsafe_ptr()
+        var p2 = s2.unsafe_ptr()
+        var costs = self._costs.unsafe_ptr()
         for j in range(len_2):
-            costs[j] = j + 1
+            costs[unsafe_offset=j] = j + 1
         var current_cost = 0
         for i in range(len(s1)):
             var left_cost = i
             var above_cost = i
-            var char_1 = s1[i]
+            var char_1 = p1[unsafe_offset=i]
             for j in range(len_2):
                 current_cost = left_cost
-                left_cost = costs[j]
-                if s2[j] != char_1:
+                left_cost = costs[unsafe_offset=j]
+                if p2[unsafe_offset=j] != char_1:
                     if above_cost < current_cost:
                         current_cost = above_cost
                     if left_cost < current_cost:
                         current_cost = left_cost
                     current_cost += 1
-                costs[j] = current_cost
+                costs[unsafe_offset=j] = current_cost
                 above_cost = current_cost
         return current_cost
 
@@ -272,16 +280,18 @@ struct Levenshtein(DistanceComparer):
     ) -> Int:
         var len_1 = len(s1)
         var len_2 = len(s2)
-        var costs = Span(self._costs)
+        var p1 = s1.unsafe_ptr()
+        var p2 = s2.unsafe_ptr()
+        var costs = self._costs.unsafe_ptr()
         for j in range(len_2):
-            costs[j] = j + 1 if j < max_d else max_d + 1
+            costs[unsafe_offset=j] = j + 1 if j < max_d else max_d + 1
         var len_diff = len_2 - len_1
         var j_start_offset = max_d - len_diff
         var j_start = 0
         var j_end = max_d
         var current_cost = 0
         for i in range(len_1):
-            var char_1 = s1[i]
+            var char_1 = p1[unsafe_offset=i]
             var prev_cost = i
             var above_cost = i
             if i > j_start_offset:
@@ -290,15 +300,15 @@ struct Levenshtein(DistanceComparer):
                 j_end += 1
             for j in range(j_start, j_end):
                 current_cost = prev_cost
-                prev_cost = costs[j]
-                if s2[j] != char_1:
+                prev_cost = costs[unsafe_offset=j]
+                if p2[unsafe_offset=j] != char_1:
                     if above_cost < current_cost:
                         current_cost = above_cost
                     if prev_cost < current_cost:
                         current_cost = prev_cost
                     current_cost += 1
-                costs[j] = current_cost
+                costs[unsafe_offset=j] = current_cost
                 above_cost = current_cost
-            if costs[i + len_diff] > max_d:
+            if costs[unsafe_offset=i + len_diff] > max_d:
                 return -1
         return current_cost if current_cost <= max_d else -1

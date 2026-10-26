@@ -35,31 +35,48 @@ comptime TERM_OFFSETS = 0
 """UInt32[word_count + 1]: byte offsets of each term in TERM_ARENA."""
 comptime TERM_ARENA = 1
 """UInt8: all terms, UTF-8, concatenated in term id order."""
-comptime TERM_LENGTHS = 2
-"""UInt32[word_count]: term lengths in codepoints."""
+comptime TERM_RECORD_OFFSETS = 2
+"""UInt32[word_count]: offset of each term's record in TERM_RECORDS."""
 comptime COUNTS = 3
 """Int64[word_count]: term counts."""
 comptime TERM_SLOT_HASHES = 4
 """UInt64[term_slots]: open-addressing table of term hashes (0 = empty)."""
 comptime TERM_SLOT_IDS = 5
 """UInt32[term_slots]: term id of each slot."""
-comptime DELETE_SLOT_HASHES = 6
-"""UInt64[delete_slots]: open-addressing table of delete hashes (0 = empty)."""
-comptime DELETE_SLOT_STARTS = 7
-"""UInt32[delete_slots + 1]: CSR offsets of each slot's postings."""
-comptime POSTINGS = 8
-"""UInt32: term ids, grouped by slot, in term id order within a slot."""
-comptime BIGRAM_OFFSETS = 9
+comptime DELETE_SLOTS = 6
+"""UInt32[2 * (delete_slots + 1)]: the deletes table, as (fingerprint, start) pairs.
+
+A fingerprint is the upper half of a delete hash (never 0; 0 = empty slot).
+A slot's postings are `POSTINGS[start : next slot's start]`; one final pair
+`(0, total)` closes the last slot. Fingerprint and range sit side by side, so
+a probe reads one cache line.
+"""
+comptime POSTINGS = 7
+"""UInt32: term record offsets, grouped by slot, in term id order within a slot."""
+comptime BIGRAM_OFFSETS = 8
 """UInt32[bigram_count + 1]: byte offsets of each bigram in BIGRAM_ARENA."""
-comptime BIGRAM_ARENA = 10
+comptime BIGRAM_ARENA = 9
 """UInt8: all bigram keys ("w1 w2"), UTF-8, concatenated."""
-comptime BIGRAM_COUNTS = 11
+comptime BIGRAM_COUNTS = 10
 """Int64[bigram_count]: bigram counts."""
-comptime BIGRAM_SLOT_HASHES = 12
+comptime BIGRAM_SLOT_HASHES = 11
 """UInt64[bigram_slots]: open-addressing table of bigram hashes (0 = empty)."""
-comptime BIGRAM_SLOT_IDS = 13
+comptime BIGRAM_SLOT_IDS = 12
 """UInt32[bigram_slots]: bigram id of each slot."""
-comptime SECTION_COUNT = 14
+comptime TERM_RECORDS = 13
+"""UInt32: one record per term, in term id order: length, term id, codepoints.
+
+A posting points straight at a record, so a lookup reads a term with one
+memory access and never decodes UTF-8.
+"""
+comptime POSTING_LENGTHS = 14
+"""UInt8[len(POSTINGS)]: min(term length, 255) of each posting.
+
+Lets lookups apply length filters without touching the term records.
+"""
+comptime SECTION_COUNT = 15
+comptime RECORD_HEADER = 2
+"""Codepoints of a record start this many values after its offset."""
 
 
 @fieldwise_init
@@ -160,7 +177,11 @@ struct ImageWriter(Movable):
         """Appends `data` as `section`, aligned to `ALIGNMENT` bytes."""
         var start = (len(self.bytes) + ALIGNMENT - 1) // ALIGNMENT * ALIGNMENT
         var size = len(data) * size_of[T]()
-        self.bytes.resize(start + size, 0)
+        if start + size > self.bytes.capacity():
+            # Grow geometrically: exact growth would copy the image each time.
+            self.bytes.reserve(max(2 * self.bytes.capacity(), start + size))
+        self.bytes.resize(start, 0)  # zero padding, for deterministic files
+        self.bytes.resize(unsafe_uninit_length=start + size)  # memcpy fills it
         if size > 0:
             unsafe_memcpy(
                 dest=self.bytes.unsafe_ptr().unsafe_offset(start),
@@ -280,6 +301,12 @@ def _expect_length(sections: List[Section], section: Int, length: Int) raises:
         )
 
 
+def fingerprint(h: UInt64) -> UInt32:
+    """The deletes-table key of a delete hash: its upper half, never 0."""
+    var f = UInt32(h >> 32)
+    return f if f != 0 else 1
+
+
 def _check_slots(slots: Int, what: StringSlice) raises:
     if slots < 8 or (slots & (slots - 1)) != 0:
         raise _corrupted(
@@ -287,35 +314,78 @@ def _check_slots(slots: Int, what: StringSlice) raises:
         )
 
 
+def _check_offsets(
+    offsets: ImmSpan[UInt32, _], arena_length: Int, what: StringSlice
+) raises:
+    """Offsets must rise from 0 to `arena_length`."""
+    if offsets[0] != 0 or Int(offsets[len(offsets) - 1]) != arena_length:
+        raise _corrupted(String(t"{what} offsets do not cover the arena"))
+    for i in range(len(offsets) - 1):
+        if offsets[i + 1] < offsets[i]:
+            raise _corrupted(String(t"{what} offsets are not increasing"))
+
+
 def _check_strings(
     data: ImmSpan[UInt8, _],
     sections: List[Section],
     offsets_section: Int,
     arena_section: Int,
-    lengths_section: Int,
     what: StringSlice,
 ) raises:
-    """Offsets must rise from 0 to the arena size; each string must be UTF-8.
-
-    If `lengths_section` >= 0, it must hold each string's codepoint count.
-    """
+    """Each string must be valid UTF-8 inside its arena."""
     var offsets = _typed[UInt32](data, sections[offsets_section])
     var arena = _typed[UInt8](data, sections[arena_section])
-    if offsets[0] != 0 or Int(offsets[len(offsets) - 1]) != len(arena):
-        raise _corrupted(String(t"{what} offsets do not cover the arena"))
+    _check_offsets(offsets, len(arena), what)
     for i in range(len(offsets) - 1):
-        var start = Int(offsets[i])
-        var end = Int(offsets[i + 1])
-        if end < start or end > len(arena):
-            raise _corrupted(
-                String(t"{what} offsets are not increasing or out of range")
-            )
-        var count = utf8_codepoint_count(arena[start:end])
+        var count = utf8_codepoint_count(
+            arena[Int(offsets[i]) : Int(offsets[i + 1])]
+        )
         if count < 0:
             raise _corrupted(String(t"{what} {i} is not valid UTF-8"))
-        if lengths_section >= 0:
-            if Int(_typed[UInt32](data, sections[lengths_section])[i]) != count:
-                raise _corrupted(String(t"{what} {i} has a wrong length"))
+
+
+def _check_records(
+    data: ImmSpan[UInt8, _], sections: List[Section], word_count: Int
+) raises:
+    """Term records must be contiguous, in id order, and match the UTF-8 terms.
+    """
+    var offsets = _typed[UInt32](data, sections[TERM_OFFSETS])
+    var arena = _typed[UInt8](data, sections[TERM_ARENA])
+    var record_offsets = _typed[UInt32](data, sections[TERM_RECORD_OFFSETS])
+    var records = _typed[UInt32](data, sections[TERM_RECORDS])
+    var position = 0
+    for term_id in range(word_count):
+        if Int(
+            record_offsets[term_id]
+        ) != position or position + RECORD_HEADER > len(records):
+            raise _corrupted(String(t"term record {term_id} is misplaced"))
+        var length = Int(records[position])
+        if Int(
+            records[position + 1]
+        ) != term_id or position + RECORD_HEADER + length > len(records):
+            raise _corrupted(String(t"term record {term_id} is malformed"))
+        var text = StringSlice(
+            unsafe_from_utf8=arena[
+                Int(offsets[term_id]) : Int(offsets[term_id + 1])
+            ]
+        )
+        var k = position + RECORD_HEADER
+        for c in text.codepoints():
+            if (
+                k == position + RECORD_HEADER + length
+                or records[k] != c.to_u32()
+            ):
+                raise _corrupted(
+                    String(t"term record {term_id} does not match its text")
+                )
+            k += 1
+        if k != position + RECORD_HEADER + length:
+            raise _corrupted(
+                String(t"term record {term_id} does not match its text")
+            )
+        position = k
+    if position != len(records):
+        raise _corrupted("term records have trailing data")
 
 
 def _check_table(
@@ -380,36 +450,54 @@ def validate_image(
     _check_slots(header.delete_slots, "delete")
     _check_slots(header.bigram_slots, "bigram")
     _expect_length(sections, TERM_OFFSETS, 4 * (wc + 1))
-    _expect_length(sections, TERM_LENGTHS, 4 * wc)
+    _expect_length(sections, TERM_RECORD_OFFSETS, 4 * wc)
+    if sections[TERM_RECORDS].length % 4 != 0:
+        raise _corrupted("term records size is not a multiple of 4")
     _expect_length(sections, COUNTS, 8 * wc)
     _expect_length(sections, TERM_SLOT_HASHES, 8 * header.term_slots)
     _expect_length(sections, TERM_SLOT_IDS, 4 * header.term_slots)
-    _expect_length(sections, DELETE_SLOT_HASHES, 8 * header.delete_slots)
-    _expect_length(sections, DELETE_SLOT_STARTS, 4 * (header.delete_slots + 1))
+    _expect_length(sections, DELETE_SLOTS, 8 * (header.delete_slots + 1))
     _expect_length(sections, BIGRAM_OFFSETS, 4 * (bc + 1))
     _expect_length(sections, BIGRAM_COUNTS, 8 * bc)
     _expect_length(sections, BIGRAM_SLOT_HASHES, 8 * header.bigram_slots)
     _expect_length(sections, BIGRAM_SLOT_IDS, 4 * header.bigram_slots)
     if sections[POSTINGS].length % 4 != 0:
         raise _corrupted("postings size is not a multiple of 4")
+    _expect_length(sections, POSTING_LENGTHS, sections[POSTINGS].length // 4)
 
-    _check_strings(
-        data, sections, TERM_OFFSETS, TERM_ARENA, TERM_LENGTHS, "term"
-    )
-    _check_strings(data, sections, BIGRAM_OFFSETS, BIGRAM_ARENA, -1, "bigram")
+    _check_strings(data, sections, TERM_OFFSETS, TERM_ARENA, "term")
+    _check_strings(data, sections, BIGRAM_OFFSETS, BIGRAM_ARENA, "bigram")
+    _check_records(data, sections, wc)
     _check_table(data, sections, TERM_SLOT_HASHES, TERM_SLOT_IDS, wc, "term")
     _check_table(
         data, sections, BIGRAM_SLOT_HASHES, BIGRAM_SLOT_IDS, bc, "bigram"
     )
-    _check_table(data, sections, DELETE_SLOT_HASHES, -1, 0, "delete")
-
-    var starts = _typed[UInt32](data, sections[DELETE_SLOT_STARTS])
+    var slots = _typed[UInt32](data, sections[DELETE_SLOTS])
     var postings = _typed[UInt32](data, sections[POSTINGS])
-    if starts[0] != 0 or Int(starts[len(starts) - 1]) != len(postings):
-        raise _corrupted("delete buckets do not cover the postings")
-    for i in range(len(starts) - 1):
-        if starts[i + 1] < starts[i]:
+    var empty = 0
+    for i in range(header.delete_slots):
+        if slots[2 * i] == 0:
+            empty += 1
+        if slots[2 * i + 3] < slots[2 * i + 1]:
             raise _corrupted("delete buckets are not increasing")
-    for term_id in postings:
-        if Int(term_id) >= wc:
+    if empty == 0:
+        raise _corrupted("delete table has no empty slot")
+    if slots[1] != 0 or Int(slots[len(slots) - 1]) != len(postings):
+        raise _corrupted("delete buckets do not cover the postings")
+    # Every posting must be the offset of a record start. A bitmap of the
+    # record starts is small enough to stay in the CPU cache, so this pass
+    # reads the postings sequentially. Posting lengths are only hints for
+    # filtering, and lookups never trust them for memory access, so they are
+    # left to the checksum.
+    var records_length = sections[TERM_RECORDS].length // 4
+    var record_offsets = _typed[UInt32](data, sections[TERM_RECORD_OFFSETS])
+    var is_start = List[UInt64](length=records_length // 64 + 1, fill=0)
+    for term_id in range(wc):
+        var offset = Int(record_offsets[term_id])
+        is_start[offset >> 6] |= UInt64(1) << UInt64(offset & 63)
+    for k in range(len(postings)):
+        var offset = Int(postings[k])
+        if offset >= records_length:
             raise _corrupted("a posting points past the last term")
+        if (is_start[offset >> 6] >> UInt64(offset & 63)) & 1 == 0:
+            raise _corrupted("a posting does not point at a term record")

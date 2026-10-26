@@ -10,7 +10,10 @@ The index is built in two passes, so no per-bucket lists are allocated:
 pass 1 counts postings per hash, pass 2 fills them in term id order.
 """
 
-from symspell._hash import hash_codepoints
+from std.sys.intrinsics import prefetch
+
+from symspell._hash import hash_codepoints, hash_finish, hash_start, hash_step
+from symspell._image import RECORD_HEADER, fingerprint
 
 comptime EMPTY: UInt64 = 0
 """Slot hash value of an empty slot. `hash_codepoints` never returns it."""
@@ -28,19 +31,6 @@ def probe_start(h: UInt64, slots: Int) -> Int:
     return Int(h & UInt64(slots - 1))
 
 
-def find_slot(hashes: ImmSpan[UInt64, _], h: UInt64) -> Int:
-    """Returns the slot holding `h`, or -1. For tables with unique hashes."""
-    var mask = len(hashes) - 1
-    var i = probe_start(h, len(hashes))
-    while True:
-        var found = hashes[i]
-        if found == h:
-            return i
-        if found == EMPTY:
-            return -1
-        i = (i + 1) & mask
-
-
 # ===----------------------------------------------------------------------=== #
 # Delete enumeration
 # ===----------------------------------------------------------------------=== #
@@ -52,65 +42,88 @@ struct DeleteGenerator(Movable):
     var max_distance: Int
     var prefix_length: Int
     var hashes: List[UInt64]
+    var _seen: List[UInt64]
+    var _stamps: List[UInt32]
+    var _generation: UInt32
     var _positions: List[Int]
-    var _buffer: List[UInt32]
 
     def __init__(out self, max_distance: Int, prefix_length: Int):
         self.max_distance = max_distance
         self.prefix_length = prefix_length
         self.hashes = List[UInt64]()
+        self._seen = List[UInt64](length=64, fill=0)
+        self._stamps = List[UInt32](length=64, fill=0)
+        self._generation = 0
         self._positions = List[Int]()
-        self._buffer = List[UInt32]()
 
     def generate(mut self, term: ImmSpan[UInt32, _]):
         """Fills `self.hashes` with the distinct delete hashes of `term`.
 
         Enumerates every set of up to `max_distance` positions to remove from
-        the prefix. Duplicate strings give duplicate hashes, which are removed.
-        Two distinct deletes with the same hash share one bucket anyway.
+        the prefix and hashes the rest in one pass. Equal strings give equal
+        hashes, which are removed; two distinct deletes with the same hash
+        share one bucket anyway.
         """
         self.hashes.clear()
-        var prefix = term[: min(len(term), self.prefix_length)]
-        var n = len(prefix)
+        self._generation += 1
+        if self._generation == 0:
+            for i in range(len(self._stamps)):
+                self._stamps[i] = 0
+            self._generation = 1
+        var n = min(len(term), self.prefix_length)
+        var text = term.unsafe_ptr()
+        self._positions.resize(max(self.max_distance, 1), 0)
+        var removed = self._positions.unsafe_ptr()
         for k in range(min(self.max_distance, n) + 1):
-            self._positions.clear()
             for i in range(k):
-                self._positions.append(i)
+                removed[unsafe_offset=i] = i
             while True:
-                self._emit(prefix)
-                if not self._next_combination(n):
+                var h = hash_start()
+                var next = 0
+                for i in range(n):
+                    if next < k and removed[unsafe_offset=next] == i:
+                        next += 1
+                    else:
+                        h = hash_step(h, text[unsafe_offset=i])
+                self._add(hash_finish(h, n - k))
+                # Advance to the next k-subset of range(n).
+                var j = k - 1
+                while j >= 0 and removed[unsafe_offset=j] == n - k + j:
+                    j -= 1
+                if j < 0:
                     break
-        sort(self.hashes)
-        var unique = 0
-        for i in range(len(self.hashes)):
-            if i == 0 or self.hashes[i] != self.hashes[i - 1]:
-                self.hashes[unique] = self.hashes[i]
-                unique += 1
-        self.hashes.resize(unique, 0)
+                removed[unsafe_offset=j] += 1
+                for m in range(j + 1, k):
+                    removed[unsafe_offset=m] = removed[unsafe_offset=m - 1] + 1
 
-    def _emit(mut self, prefix: ImmSpan[UInt32, _]):
-        """Hashes `prefix` without the codepoints at `self._positions`."""
-        self._buffer.clear()
-        var p = 0
-        for i in range(len(prefix)):
-            if p < len(self._positions) and self._positions[p] == i:
-                p += 1
-            else:
-                self._buffer.append(prefix[i])
-        self.hashes.append(hash_codepoints(self._buffer))
+    def _add(mut self, h: UInt64):
+        """Appends `h` to `hashes` unless this term already produced it."""
+        if len(self.hashes) * 2 >= len(self._seen):
+            self._grow()
+        var mask = len(self._seen) - 1
+        var seen = self._seen.unsafe_ptr()  # indices are masked: in range
+        var stamps = self._stamps.unsafe_ptr()
+        var i = Int(h) & mask
+        while stamps[unsafe_offset=i] == self._generation:
+            if seen[unsafe_offset=i] == h:
+                return
+            i = (i + 1) & mask
+        seen[unsafe_offset=i] = h
+        stamps[unsafe_offset=i] = self._generation
+        self.hashes.append(h)
 
-    def _next_combination(mut self, n: Int) -> Bool:
-        """Advances `self._positions` to the next k-subset of range(n)."""
-        var k = len(self._positions)
-        var i = k - 1
-        while i >= 0 and self._positions[i] == n - k + i:
-            i -= 1
-        if i < 0:
-            return False
-        self._positions[i] += 1
-        for j in range(i + 1, k):
-            self._positions[j] = self._positions[j - 1] + 1
-        return True
+    def _grow(mut self):
+        var size = len(self._seen) * 2
+        self._seen = List[UInt64](length=size, fill=0)
+        self._stamps = List[UInt32](length=size, fill=0)
+        self._generation = 1
+        var mask = size - 1
+        for h in self.hashes:
+            var i = Int(h) & mask
+            while self._stamps[i] == self._generation:
+                i = (i + 1) & mask
+            self._seen[i] = h
+            self._stamps[i] = self._generation
 
 
 def is_delete_of(
@@ -131,11 +144,18 @@ def is_delete_of(
         or prefix_len - len(candidate) > max_distance
     ):
         return False
+    var n = len(candidate)
+    if n == 0:
+        return True
+    var c = candidate.unsafe_ptr()
+    var t = term.unsafe_ptr()
     var j = 0
-    for i in range(prefix_len):
-        if j < len(candidate) and term[i] == candidate[j]:
+    for i in range(prefix_len):  # i < len(term), j < n: no bounds checks needed
+        if t[unsafe_offset=i] == c[unsafe_offset=j]:
             j += 1
-    return j == len(candidate)
+            if j == n:
+                return True
+    return False
 
 
 # ===----------------------------------------------------------------------=== #
@@ -156,6 +176,12 @@ struct HashCounter(Movable):
         self.counts = List[UInt32](length=slots, fill=0)
         self.size = 0
 
+    def prefetch(self, h: UInt64):
+        """Starts loading the slot that `add(h, ...)` will look at first."""
+        var i = probe_start(h, len(self.hashes))
+        prefetch(self.hashes.unsafe_ptr().unsafe_offset(i))
+        prefetch(self.counts.unsafe_ptr().unsafe_offset(i))
+
     def add(mut self, h: UInt64, amount: UInt32):
         """Adds `amount` to the count of `h`, inserting it if new."""
         var mask = len(self.hashes) - 1
@@ -168,9 +194,6 @@ struct HashCounter(Movable):
         self.counts[i] += amount
         if self.size * 4 > len(self.hashes) * 3:
             self._grow()
-
-    def take_hashes(deinit self) -> List[UInt64]:
-        return self.hashes^
 
     def _grow(mut self):
         var old_hashes = self.hashes^
@@ -218,51 +241,119 @@ def build_id_table(item_hashes: ImmSpan[UInt64, _]) -> IdTable:
 struct DeleteTable(Movable):
     """The finished deletes index arrays."""
 
-    var slot_hashes: List[UInt64]
-    var slot_starts: List[UInt32]
+    var slots: List[UInt32]
+    """(fingerprint, start) pairs, see `_image.DELETE_SLOTS`."""
+    var slot_count: Int
     var postings: List[UInt32]
+    var lengths: List[UInt8]
     var entry_count: Int
 
 
+def record_text(
+    records: ImmSpan[UInt32, _], offset: UInt32
+) -> ImmSpan[UInt32, records.origin]:
+    """The codepoints of the term record at `offset`."""
+    var start = Int(offset) + RECORD_HEADER
+    return records[start : start + Int(records[Int(offset)])]
+
+
 def build_delete_table(
-    terms: List[List[UInt32]],
-    ghosts: List[List[UInt32]],
+    records: List[UInt32],
+    record_offsets: List[UInt32],
+    ghost_codepoints: List[UInt32],
+    ghost_offsets: List[UInt32],
     max_distance: Int,
     prefix_length: Int,
 ) raises -> DeleteTable:
-    """Builds the deletes index for `terms` (term id = position).
+    """Builds the deletes index over term records (see `_image.TERM_RECORDS`).
 
-    `ghosts` are deleted terms. Their deletes add (empty) buckets, so that
-    `entry_count` matches symspellpy, which keeps such keys.
+    Postings hold record offsets, in term id order within each bucket. Ghosts
+    are deleted terms, as plain codepoints with offsets. Their deletes add
+    (empty) buckets, so that `entry_count` matches symspellpy, which keeps such
+    keys.
     """
     var generator = DeleteGenerator(max_distance, prefix_length)
-    var counter = HashCounter(len(terms) * 8)
-    # Pass 1: count postings per delete hash.
-    for term in terms:
-        generator.generate(term)
+    var counter = HashCounter(len(record_offsets) * 8)
+    var all_records = Span(records)
+    var ghosts = Span(ghost_codepoints)
+
+    # Pass 1: count postings per delete hash. Each term's slots are
+    # prefetched first, so the cache misses overlap.
+    for offset in record_offsets:
+        generator.generate(record_text(all_records, offset))
+        for h in generator.hashes:
+            counter.prefetch(h)
         for h in generator.hashes:
             counter.add(h, 1)
-    for term in ghosts:
-        generator.generate(term)
+    for i in range(len(ghost_offsets) - 1):
+        generator.generate(
+            ghosts[Int(ghost_offsets[i]) : Int(ghost_offsets[i + 1])]
+        )
         for h in generator.hashes:
             counter.add(h, 0)
-    var slots = len(counter.hashes)
-    var starts = List[UInt32](capacity=slots + 1)
+    # Fold the exact hashes into the fingerprint table. Hashes that share a
+    # fingerprint share a bucket; lookups verify every term anyway (D3).
+    var entry_count = counter.size
+    var slot_count = slot_count_for(entry_count)
+    var mask = slot_count - 1
+    var slots = List[UInt32](length=2 * (slot_count + 1), fill=0)
+    var bucket_sizes = List[UInt32](length=slot_count, fill=0)
+    for k in range(len(counter.hashes)):
+        var h = counter.hashes[k]
+        if h == EMPTY:
+            continue
+        var f = fingerprint(h)
+        var i = Int(f) & mask
+        while slots[2 * i] != 0 and slots[2 * i] != f:
+            i = (i + 1) & mask
+        slots[2 * i] = f
+        bucket_sizes[i] += counter.counts[k]
+    _ = counter^  # free it before pass 2
     var total = 0
-    for i in range(slots):
-        starts.append(UInt32(total))
-        total += Int(counter.counts[i])
-    starts.append(UInt32(total))
+    for i in range(slot_count):
+        slots[2 * i + 1] = UInt32(total)
+        total += Int(bucket_sizes[i])
+    slots[2 * slot_count + 1] = UInt32(total)
     if total > Int(UInt32.MAX):
         raise Error("dictionary too large: more than 2**32 index postings")
     # Pass 2: fill postings in term id order.
-    var cursor = List[UInt32](starts[:slots])
+    var cursor = List[UInt32](capacity=slot_count)
+    for i in range(slot_count):
+        cursor.append(slots[2 * i + 1])
     var postings = List[UInt32](length=total, fill=0)
-    for term_id in range(len(terms)):
-        generator.generate(terms[term_id])
+    var lengths = List[UInt8](length=total, fill=0)
+    var term_slots = List[Int]()
+    for offset in record_offsets:
+        var text = record_text(all_records, offset)
+        var length = UInt8(min(len(text), 255))
+        generator.generate(text)
         for h in generator.hashes:
-            var slot = find_slot(counter.hashes, h)
-            postings[Int(cursor[slot])] = UInt32(term_id)
+            prefetch(
+                slots.unsafe_ptr().unsafe_offset(
+                    2 * (Int(fingerprint(h)) & mask)
+                )
+            )
+        term_slots.clear()
+        for h in generator.hashes:
+            var slot = find_fingerprint(slots, mask, fingerprint(h))
+            term_slots.append(slot)
+            prefetch(cursor.unsafe_ptr().unsafe_offset(slot))
+        for slot in term_slots:
+            var at = Int(cursor[slot])
+            postings[at] = offset
+            lengths[at] = length
             cursor[slot] += 1
-    var entry_count = counter.size
-    return DeleteTable(counter^.take_hashes(), starts^, postings^, entry_count)
+    return DeleteTable(slots^, slot_count, postings^, lengths^, entry_count)
+
+
+def find_fingerprint(slots: ImmSpan[UInt32, _], mask: Int, f: UInt32) -> Int:
+    """The slot holding fingerprint `f` in a (fingerprint, start) table, or -1.
+    """
+    var i = Int(f) & mask
+    while True:
+        var found = slots[2 * i]
+        if found == f:
+            return i
+        if found == 0:
+            return -1
+        i = (i + 1) & mask

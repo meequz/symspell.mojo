@@ -11,7 +11,7 @@ normalize it first if it may contain ligatures or other compatibility forms.
 from std.math import log10
 
 from symspell.index import SymSpell
-from symspell.scratch import LookupScratch
+from symspell.scratch import Hit, LookupScratch
 from symspell.suggestion import Composition
 from symspell.text import (
     capitalize_string,
@@ -56,6 +56,29 @@ def _is_ascii_punctuation(text: List[UInt32]) -> Bool:
     )
 
 
+def _top_result(
+    index: SymSpell,
+    found: Bool,
+    hit: Hit,
+    part: List[UInt32],
+    lowered: List[UInt32],
+) -> String:
+    """The corrected text of a part: its best suggestion, or the part itself.
+
+    Keeps a leading capital, like symspellpy (`str.capitalize`).
+    """
+    if not found:
+        return to_string(part)
+    var result: String
+    if hit.kind == Hit.TERM:
+        result = String(index.term(hit.term_id))
+    else:  # the phrase itself (exact match or ignore_token)
+        result = to_string(lowered)
+    if len(part) > 0 and is_upper(part[0]):
+        return capitalize_string(result)
+    return result^
+
+
 def word_segmentation(
     index: SymSpell,
     phrase: StringSlice,
@@ -80,12 +103,15 @@ def word_segmentation(
         raise Error(
             "StopIteration: max_segmentation_word_length must be positive"
         )
+    if med > index.config().max_dictionary_edit_distance:
+        raise Error("distance too large")
     var compositions = List[Composition]()
     for _ in range(array_size):
         compositions.append(Composition())
     var scratch = LookupScratch()
     var part = List[UInt32]()
     var lowered = List[UInt32]()
+    var unknown_log_probs = List[Float64]()
     var idx = -1
     var next_idx = 0  # the next value of Python's itertools.cycle
 
@@ -107,32 +133,28 @@ def word_segmentation(
 
             lowered.clear()
             lower(part, lowered)
-            var results = index.lookup(
-                to_string(lowered),
-                Verbosity.TOP,
-                med,
-                ignore_token=ignore_token,
-                scratch=scratch,
-            )
-            var top_result: String
+            var found = index._lookup_top(lowered, med, ignore_token, scratch)
+            var hit = scratch.hits[0] if found else Hit(Hit.PHRASE, -1, 0, 0)
             var top_log_prob: Float64
-            if results:
-                top_result = results[0].term
-                if len(part) > 0 and is_upper(part[0]):
-                    top_result = capitalize_string(top_result)
-                top_ed += results[0].distance
-                top_log_prob = _checked_log10(
-                    Float64(results[0].count) / Float64(N)
-                )
+            if found:
+                top_ed += hit.distance
+                top_log_prob = _checked_log10(Float64(hit.count) / Float64(N))
             else:
-                top_result = to_string(part)
                 top_ed += len(part)
-                top_log_prob = _unknown_word_log_prob(len(part))
+                # It depends only on the length: compute it once per length.
+                while len(unknown_log_probs) <= len(part):
+                    unknown_log_probs.append(
+                        _unknown_word_log_prob(len(unknown_log_probs))
+                    )
+                top_log_prob = unknown_log_probs[len(part)]
 
             var dest = (i + idx) % array_size
             if j == 0:
                 compositions[dest] = Composition(
-                    to_string(part), top_result, top_ed, top_log_prob
+                    to_string(part),
+                    _top_result(index, found, hit, part, lowered),
+                    top_ed,
+                    top_log_prob,
                 )
                 continue
             ref previous = compositions[idx]
@@ -148,6 +170,8 @@ def word_segmentation(
                 )
                 or spaced_sum < current_sum
             ):
+                # Strings are built only here, for the parts that win.
+                var top_result = _top_result(index, found, hit, part, lowered)
                 var result_cps = to_codepoints(top_result)
                 if _is_ascii_punctuation(result_cps) or (
                     len(result_cps) == 2 and result_cps[0] == 0x27

@@ -18,11 +18,13 @@ from symspell._image import (
     BIGRAM_SLOT_HASHES,
     BIGRAM_SLOT_IDS,
     COUNTS,
-    DELETE_SLOT_HASHES,
-    DELETE_SLOT_STARTS,
+    DELETE_SLOTS,
     POSTINGS,
     TERM_ARENA,
-    TERM_LENGTHS,
+    POSTING_LENGTHS,
+    RECORD_HEADER,
+    TERM_RECORD_OFFSETS,
+    TERM_RECORDS,
     TERM_OFFSETS,
     TERM_SLOT_HASHES,
     TERM_SLOT_IDS,
@@ -315,43 +317,55 @@ struct SymSpellBuilder(Copyable, Movable):
         """
         var arena = List[UInt8]()
         var offsets = List[UInt32](capacity=self._word_count + 1)
-        var lengths = List[UInt32](capacity=self._word_count)
+        var records = List[UInt32]()
+        var record_offsets = List[UInt32](capacity=self._word_count)
         var counts = List[Int64](capacity=self._word_count)
         var hashes = List[UInt64](capacity=self._word_count)
-        var codepoints = List[List[UInt32]](capacity=self._word_count)
-        var ghosts = List[List[UInt32]]()
+        var ghosts = List[UInt32]()
+        var ghost_offsets: List[UInt32] = [0]
         for slot in range(len(self._terms)):
-            var cps = to_codepoints(self._terms[slot])
+            ref term = self._terms[slot]
             if not self._alive[slot]:
-                ghosts.append(cps^)
+                for c in term.codepoints():
+                    ghosts.append(c.to_u32())
+                ghost_offsets.append(UInt32(len(ghosts)))
                 continue
             offsets.append(UInt32(len(arena)))
-            arena.extend(self._terms[slot].as_bytes())
-            lengths.append(UInt32(len(cps)))
+            arena.extend(term.as_bytes())
+            var start = len(records)
+            record_offsets.append(UInt32(start))
+            records.append(UInt32(self._lengths[slot]))
+            records.append(UInt32(len(counts)))  # the term id
+            for c in term.codepoints():
+                records.append(c.to_u32())
             counts.append(Int64(self._counts[slot]))
-            hashes.append(hash_codepoints(cps))
-            codepoints.append(cps^)
+            hashes.append(
+                hash_codepoints(Span(records)[start + RECORD_HEADER :])
+            )
         offsets.append(UInt32(len(arena)))
         var terms = build_id_table(hashes)
         var deletes = build_delete_table(
-            codepoints,
+            records,
+            record_offsets,
             ghosts,
+            ghost_offsets,
             self.config.max_dictionary_edit_distance,
             self.config.prefix_length,
         )
         writer.add(TERM_OFFSETS, offsets)
         writer.add(TERM_ARENA, arena)
-        writer.add(TERM_LENGTHS, lengths)
+        writer.add(TERM_RECORD_OFFSETS, record_offsets)
+        writer.add(TERM_RECORDS, records)
         writer.add(COUNTS, counts)
         writer.add(TERM_SLOT_HASHES, terms.hashes)
         writer.add(TERM_SLOT_IDS, terms.ids)
-        writer.add(DELETE_SLOT_HASHES, deletes.slot_hashes)
-        writer.add(DELETE_SLOT_STARTS, deletes.slot_starts)
+        writer.add(DELETE_SLOTS, deletes.slots)
         writer.add(POSTINGS, deletes.postings)
+        writer.add(POSTING_LENGTHS, deletes.lengths)
         return (
             deletes.entry_count,
             len(terms.hashes),
-            len(deletes.slot_hashes),
+            deletes.slot_count,
         )
 
     def _add_bigrams(self, mut writer: ImageWriter) -> Int:

@@ -28,16 +28,6 @@ struct Suggestion(Copyable, Equatable, Movable, Writable):
         writer.write(self.term, ", ", self.distance, ", ", self.count)
 
 
-def sort_suggestions(mut suggestions: List[Suggestion]):
-    """Stable sort by distance, then by descending count (Python `list.sort`).
-    """
-    for i in range(1, len(suggestions)):
-        var j = i
-        while j > 0 and suggestions[j].precedes(suggestions[j - 1]):
-            suggestions.swap_elements(j, j - 1)
-            j -= 1
-
-
 def suggestion_with_probability(term: String, distance: Int) -> Suggestion:
     """Port of symspellpy `SuggestItem.create_with_probability`.
 

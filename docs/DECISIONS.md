@@ -117,19 +117,27 @@ the exact symspellpy value for every fixture. Lookups are not affected by collis
 ## D17. Binary index format, version 1
 
 - One image: a 256-byte header (magic `SYMSPELL`, version, endianness marker, the scalar fields,
-  a checksum, and a table of 14 sections), then the sections, each aligned to 64 bytes.
-  The layout is documented in `src/symspell/_image.mojo`.
+  a checksum, and a table of 15 sections), then the sections, each aligned to 64 bytes.
+  The layout is documented in `src/symspell/_image.mojo`. Phase 6 changed the layout for speed
+  (D19); the format is unreleased, so the version stayed 1.
 - `build()` produces exactly these bytes in memory, `save()` writes them, and `open()` memory-maps
   them. A saved file is used without parsing or copying.
-- Offsets are `UInt32`, so an index is limited to 4 GiB. The 82k English index is 24 MB.
-- `open()` always validates the structure: section sizes match the header counts, offsets rise and stay
-  inside their arena, terms are valid UTF-8 with the stored lengths, ids are in range, and every hash
-  table has an empty slot (so probing ends). After that, no read can leave the file, even for a crafted
-  file. This costs one linear pass. The fuzz test found one missing check here (an offset past the
-  arena before the "increasing" check), now fixed.
+- Offsets are `UInt32`, so an index is limited to 4 GiB. The 82k English index is about 24 MB.
+- `open()` validates the structure: section sizes match the header counts, offsets rise and stay
+  inside their arena, terms are valid UTF-8, each term record matches its UTF-8 text, every posting
+  points at a record start, ids are in range, and every hash table has an empty slot (so probing
+  ends). After that, no read can leave the file, even for a crafted file. This costs one linear pass.
+  The fuzz test found one missing check here (an offset past the arena before the "increasing"
+  check), now fixed.
+- Posting lengths (D19) are not validated: they are only hints for filtering. Lookups read every
+  length they use for memory access from the validated records. A wrong hint can only change
+  results, and the checksum catches that kind of damage.
 - The checksum (FNV-1a over 8-byte words) catches random corruption. It is not cryptographic.
-  `verify_checksum=False` skips it. On the English index, `open()` takes about 15 ms with the
-  checksum and about 9 ms without (warm page cache).
+  `verify_checksum=False` skips it.
+- `trusted=True` skips the checksum and the structural checks (only the header and the section
+  table are checked). Opening then costs almost nothing, because mmap loads pages lazily: a 329 MB
+  index opens in under a millisecond. It is meant for files you wrote yourself; a damaged file can
+  then crash the process. The default stays safe.
 - If `mmap` fails, or with `use_mmap=False`, the file is read into memory instead.
 - Only little-endian machines are supported (all current Mojo targets). A file with a different
   endianness marker is rejected.
@@ -148,3 +156,45 @@ the exact symspellpy value for every fixture. Lookups are not affected by collis
   `Float64(count) / Float64(N)`, which is identical for counts below 2**53 (about 9 * 10**15) and may
   differ in the last bit above that. Real counts are far smaller.
 - `word_segmentation` removes `-` but does not NFKC-normalize (D7).
+
+## D19. Performance work (phase 6)
+
+Measured, not guessed: each change was kept only if `bench/bench.mojo lookups` (best of several runs,
+because the development machine was busy) showed a win, and the differential tests still passed.
+No sampling profiler was available (`perf` is not installed, `ptrace` is restricted), so work was
+located with counters (candidates, postings and distance calls per lookup) and micro-benchmarks.
+
+Findings and the changes they led to, for the English dictionary, `TOP`, distance 2:
+
+1. **Bounds checks.** Mojo's default build checks every `List`/`Span` index; this alone doubled lookup
+   time. Hot loops (distance, membership check, sets, image access) now index raw pointers. Each
+   such loop only uses indices that the surrounding code (or `open()` validation) keeps in range,
+   and the test suite also runs with all assertions on (`pixi run test-debug`).
+2. **Decoding UTF-8 per posting.** The index stores each term's codepoints, so lookups never decode.
+3. **Section table lookups.** Raw pointers to all sections are computed once, when the index is built
+   or opened.
+4. **Candidate handling.** Deletes of a candidate are written straight into the candidate buffer and
+   hashed while copying (the hash takes its length at the end, so this is possible); duplicates are
+   rolled back. No candidate is copied or hashed twice.
+5. **Sorting.** `ALL` can return hundreds of suggestions. They are sorted as small `Hit` records with
+   a stable merge sort (Python's `list.sort` is stable too) before any string is made.
+6. **Cache misses.** With the index bigger than the CPU cache, each posting cost about 100 ns of
+   waiting. Now:
+   - a posting points straight at a **term record** (length, id, codepoints), one memory access;
+   - a **posting length** byte array lets a pre-filter skip about half of the postings without
+     touching their records;
+   - the deletes table stores **(32-bit fingerprint, start) pairs**, so one probe reads one cache
+     line (and the table shrank from 12 to 8 MB); buckets whose fingerprints collide merge, which is
+     correct because every term is verified (D3); `entry_count` still counts exact 64-bit hashes;
+   - the records of a bucket's surviving postings and the table slots of new candidates are
+     **prefetched**, so their memory accesses overlap.
+7. **Build.** Delete enumeration hashes each combination in one tight pass (a recursive walk was
+   slower: about 10 million calls), duplicate deletes go through a tiny set instead of a sort, table
+   slots are prefetched per term, and the image grows geometrically without zero-filling.
+
+Tried and dropped: prefetching candidate slots a fixed distance ahead instead of at creation (no
+measurable difference).
+
+Not done: ASCII and bit-parallel distance fast paths. A distance call costs about 35 ns and a `TOP`
+lookup makes about 11 of them, under 10% of the lookup time, so faster distance code cannot move the
+total much. The plain SoftWx port stays (one implementation, easier to trust).
