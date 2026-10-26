@@ -13,7 +13,7 @@ from std.ffi import c_int, external_call
 from std.math import ceil
 from std.os import makedirs, remove
 from std.os.path import exists, getsize
-from std.sys import argv
+from std.sys import CompilationTarget, argv
 from std.time import perf_counter_ns
 
 from symspell import (
@@ -60,7 +60,11 @@ def peak_mb() raises -> Float64:
 
 def drop_from_page_cache(path: String) raises:
     """Asks the kernel to evict a file's pages (POSIX_FADV_DONTNEED), for cold opens.
+
+    Linux only. Elsewhere the "cold" timings are warm.
     """
+    comptime if not CompilationTarget.is_linux():
+        return
     var c_path = path
     var fd = external_call["open", c_int, num_fixed_args=2](
         c_path.as_c_string_span(), c_int(0), c_int(0)

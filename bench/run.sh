@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Runs all benchmarks and writes raw results to bench/results/.
 # Usage: pixi run bench   (or: bash bench/run.sh [--skip-python])
+#        pixi run bench-smoke   (bash bench/run.sh --smoke: a short Mojo-only run, for CI)
 # BENCH_RUNS=3 runs the timings 3 times, alternating the two libraries, and
 # keeps each metric's median (bench/median.py). BENCHMARKS.md uses 3.
 # For stable numbers, close other programs first; see BENCHMARKS.md.
@@ -13,6 +14,10 @@ if [[ ! -f bench/data/large_dict.txt ]]; then
     "$PIXI" run -e ref python bench/gen_data.py
 fi
 mojo build -I build bench/bench.mojo -o build/bench
+if [[ "${1:-}" == "--smoke" ]]; then
+    ./build/bench timings --quick
+    exit 0
+fi
 
 RUNS="${BENCH_RUNS:-1}"
 rm -f bench/results/mojo_timings_run*.jsonl bench/results/symspellpy_run*.json

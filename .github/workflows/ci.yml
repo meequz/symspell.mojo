@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux x86-64
+            os: ubuntu-24.04
+          - name: Linux arm64
+            os: ubuntu-24.04-arm
+          - name: macOS arm64
+            os: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.11.2
+        with:
+          environments: default ref
+
+      # The large symspellpy fixtures are not committed (docs/DECISIONS.md, D9).
+      # They depend only on reference/ and the pinned symspellpy, so cache them.
+      - name: Cache generated fixtures
+        uses: actions/cache@v4
+        with:
+          path: tests/fixtures/lookup_*.tsv
+          key: fixtures-${{ hashFiles('reference/**', 'pixi.lock') }}
+
+      - name: Unit, differential, property and fuzz tests
+        run: pixi run test
+
+      - name: Tests with debug assertions
+        run: pixi run test-debug
+
+      - name: Examples and CLI
+        run: pixi run examples
+
+      - name: Benchmark smoke test
+        run: pixi run bench-smoke

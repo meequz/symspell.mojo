@@ -126,3 +126,9 @@ each step and keeping only what helps:
 - RAM after build: allocate the index image once, at its final size.
 
 What happened is in docs/DECISIONS.md, D20.
+
+### Phase 7: what was done
+
+As planned above. The tool has `build`, `check`, `lookup`, `correct` and `segment` commands
+(`pixi run cli`). The recipe was built and tested locally with rattler-build. CI is written but runs
+for the first time on GitHub. Details in docs/DECISIONS.md, D21.

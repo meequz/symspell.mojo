@@ -247,3 +247,22 @@ Mojo runtime) keeps freed memory, so this number is the index (24 MB) plus what 
 build's temporary arrays leave behind. Parsing alone leaves about 20 MB. The ¼-of-symspellpy target
 (about 31 MB) would need a much smaller builder; it is not met. Memory after `open()` (26 MB) is.
 
+
+## D21. Packaging, examples and CI (phase 7)
+
+- **Package format.** `recipe.yaml` follows current modular-community recipes for Mojo 1.2: it
+  precompiles `src/symspell` into `$PREFIX/lib/mojo/symspell.mojoc`, where `mojo` finds packages
+  without `-I`. It depends on `mojo-compiler`, because a `.mojoc` only works with the compiler
+  version that made it. Its test runs `examples/quick_start.mojo` against the installed package.
+  It was built and tested locally with `rattler-build` from a local copy of the source. The `tag`
+  source needs a pushed `v0.1.0` tag.
+- **The command-line tool** is an example (`examples/cli.mojo`), not part of the library. It parses
+  its arguments by hand, so it needs no dependency. `pixi run cli` writes `build/bin/symspell`.
+  `pixi run examples` runs every example and checks the tool's output on a small file.
+- **CI** runs on Linux x86-64, Linux arm64 and macOS arm64: all tests, all tests with debug
+  assertions, the examples, and a short benchmark (`pixi run bench-smoke`, about 30 s). The large
+  symspellpy fixtures (D9) are cached by the hash of `reference/` and `pixi.lock`. Only Linux
+  x86-64 was tested before the workflow was written; the other two run for the first time on GitHub.
+- **macOS.** The library uses only POSIX calls that macOS has (`mmap`, `pthread_create`, `open`,
+  `lseek`). The benchmark's cold-cache step (`posix_fadvise`) exists only on Linux; elsewhere it
+  does nothing, so "cold" timings there are warm. Memory benchmarks read `/proc` and are Linux only.

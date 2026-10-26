@@ -16,6 +16,9 @@ fixtures = "bash reference/ensure_fixtures.sh"
 test = { cmd = "bash tests/run_all.sh", depends-on = ["build", "fixtures"] }
 test-debug = { cmd = "MOJO_FLAGS='-D ASSERT=all' bash tests/run_all.sh", depends-on = ["build", "fixtures"] }
 bench = { cmd = "bash bench/run.sh", depends-on = ["build"] }
+cli = { cmd = "mkdir -p build/bin && mojo build -I build examples/cli.mojo -o build/bin/symspell", depends-on = ["build"] }
+examples = { cmd = "bash examples/run_all.sh", depends-on = ["cli"] }
+bench-smoke = { cmd = "bash bench/run.sh --smoke", depends-on = ["build"] }
 fmt = "mojo format src tests bench examples"
 
 [feature.ref.dependencies]
