@@ -15,9 +15,11 @@ import gen_intl_dict
 import gen_load
 import gen_lookup
 import gen_symspellpy_fixtures
+import gen_unicode
 from _common import log
 
 GENERATORS = {
+    "unicode": gen_unicode,
     "intl_dict": gen_intl_dict,
     "symspellpy": gen_symspellpy_fixtures,
     "distance": gen_distance,

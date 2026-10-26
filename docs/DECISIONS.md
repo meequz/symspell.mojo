@@ -63,3 +63,24 @@ The `tests/fixtures/lookup_*.tsv` files are about 32 MB. They are in `.gitignore
 `pixi run test` depends on `pixi run fixtures`, which generates them with symspellpy if any is missing
 (about 2 minutes). The generators use fixed seeds, and two runs give byte-identical files.
 All other fixtures are small and committed.
+
+## D10. `mojo precompile` instead of `mojo package`
+
+In Mojo 1.2, `mojo package` is deprecated and requires a `.mojoc` output. `pixi run build` uses
+`mojo precompile src/symspell -o build/symspell.mojoc`. Tests import it with `-I build`.
+
+## D11. Distance comparers: a trait plus a faithful SoftWx port
+
+`DistanceComparer` is a trait with one method, `distance(mut self, a, b, max_distance) -> Int`, on
+codepoint spans. It is `mut` because each comparer keeps its DP buffers between calls, so a lookup
+allocates nothing. One comparer per thread.
+
+`DamerauOsa` and `Levenshtein` are line-by-line ports of symspellpy's bounded SoftWx algorithms,
+with the same special cases (`max_distance <= 0`, clamping to `2**31 - 1`, affix trimming, banding).
+Tests compare them with symspellpy (12,000 pairs) and with textbook DP oracles in `tests/_oracles.mojo`.
+Faster variants (ASCII bytes, bit-parallel) are for phase 6, and only if benchmarks justify them.
+
+## D12. Generated Unicode tables are not formatted
+
+`mojo format` would put every number of `_unicode_data.mojo` on its own line (17,000 lines instead of
+1,500). The generator wraps the tables in `# fmt: off` / `# fmt: on`.

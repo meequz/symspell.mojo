@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Runs every tests/test_*.mojo file against the built package.
 # Usage: tests/run_all.sh [name-filter]
+# Extra compiler flags go in MOJO_FLAGS, e.g. MOJO_FLAGS="-D ASSERT=all".
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -12,7 +13,8 @@ for test_file in tests/test_*.mojo; do
     [[ -z "$filter" || "$test_file" == *"$filter"* ]] || continue
     count=$((count + 1))
     echo "=== $test_file"
-    if ! mojo run -I build "$test_file"; then
+    # shellcheck disable=SC2086
+    if ! mojo run ${MOJO_FLAGS:-} -I build "$test_file"; then
         failed+=("$test_file")
     fi
 done

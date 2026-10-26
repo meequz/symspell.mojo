@@ -1,6 +1,6 @@
 .pixi/
 build/
-*.mojopkg
+*.mojoc
 __pycache__/
 bench/data/
 *.idx
