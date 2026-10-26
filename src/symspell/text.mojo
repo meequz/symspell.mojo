@@ -288,3 +288,49 @@ def capitalize_string(text: StringSlice) -> String:
     var out = List[UInt32](capacity=len(cps))
     capitalize(cps, out)
     return to_string(out)
+
+
+def utf8_codepoint_count(data: ImmSpan[UInt8, _]) -> Int:
+    """Returns the number of codepoints, or -1 if `data` is not valid UTF-8.
+
+    Rejects overlong forms, surrogates and values above U+10FFFF, like
+    Python's UTF-8 decoder.
+    """
+    var n = len(data)
+    var i = 0
+    var count = 0
+    while i < n:
+        var b0 = data[i]
+        var extra: Int
+        var lo: UInt8 = 0x80
+        var hi: UInt8 = 0xBF
+        if b0 < 0x80:
+            extra = 0
+        elif b0 >= 0xC2 and b0 <= 0xDF:
+            extra = 1
+        elif b0 >= 0xE0 and b0 <= 0xEF:
+            extra = 2
+            if b0 == 0xE0:
+                lo = 0xA0  # overlong
+            elif b0 == 0xED:
+                hi = 0x9F  # surrogates
+        elif b0 >= 0xF0 and b0 <= 0xF4:
+            extra = 3
+            if b0 == 0xF0:
+                lo = 0x90  # overlong
+            elif b0 == 0xF4:
+                hi = 0x8F  # above U+10FFFF
+        else:
+            return -1
+        if i + extra >= n and extra > 0:
+            return -1
+        for k in range(1, extra + 1):
+            var b = data[i + k]
+            if k == 1:
+                if b < lo or b > hi:
+                    return -1
+            elif b < 0x80 or b > 0xBF:
+                return -1
+        i += extra + 1
+        count += 1
+    return count

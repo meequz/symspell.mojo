@@ -18,6 +18,9 @@ Header (256 bytes):
 from std.memory import unsafe_memcpy
 from std.sys import size_of
 
+from symspell.config import DistanceAlgorithm, SymSpellConfig
+from symspell.text import utf8_codepoint_count
+
 comptime MAGIC = "SYMSPELL"
 comptime FORMAT_VERSION: UInt32 = 1
 comptime ENDIAN_MARKER: UInt32 = 0x01020304
@@ -225,10 +228,6 @@ def parse_image(
         or _load[UInt32](data, 20) != SECTION_COUNT
     ):
         raise Error("corrupted index: bad header size or section count")
-    if verify_checksum:
-        var expected = _load[UInt64](data, _CHECKSUM_OFFSET)
-        if checksum(data[HEADER_SIZE:]) != expected:
-            raise Error("corrupted index: checksum mismatch")
     var fields = List[Int]()
     for i in range(_FIELD_COUNT):
         fields.append(Int(_load[Int64](data, _FIELDS_OFFSET + 8 * i)))
@@ -243,4 +242,174 @@ def parse_image(
         ):
             raise Error(t"corrupted index: section {s} is out of bounds")
         sections.append(Section(offset, length))
+    # After the bounds check, so a truncated file is reported as such.
+    if verify_checksum:
+        var expected = _load[UInt64](data, _CHECKSUM_OFFSET)
+        if checksum(data[HEADER_SIZE:]) != expected:
+            raise Error("corrupted index: checksum mismatch")
     return (Header.from_fields(fields), sections^)
+
+
+# ===----------------------------------------------------------------------=== #
+# Structural validation
+# ===----------------------------------------------------------------------=== #
+
+
+def _corrupted(what: String) -> Error:
+    return Error("corrupted index: ", what)
+
+
+def _typed[
+    T: TrivialRegisterPassable
+](data: ImmSpan[UInt8, _], section: Section) -> ImmSpan[T, data.origin]:
+    return ImmSpan[T, data.origin](
+        unsafe_ptr=data.unsafe_ptr()
+        .unsafe_offset(section.offset)
+        .unsafe_bitcast[T](),
+        length=section.length // size_of[T](),
+    )
+
+
+def _expect_length(sections: List[Section], section: Int, length: Int) raises:
+    if sections[section].length != length:
+        raise _corrupted(
+            String(
+                t"section {section} has {sections[section].length} bytes,"
+                t" expected {length}"
+            )
+        )
+
+
+def _check_slots(slots: Int, what: StringSlice) raises:
+    if slots < 8 or (slots & (slots - 1)) != 0:
+        raise _corrupted(
+            String(t"{what} table size {slots} is not a power of two >= 8")
+        )
+
+
+def _check_strings(
+    data: ImmSpan[UInt8, _],
+    sections: List[Section],
+    offsets_section: Int,
+    arena_section: Int,
+    lengths_section: Int,
+    what: StringSlice,
+) raises:
+    """Offsets must rise from 0 to the arena size; each string must be UTF-8.
+
+    If `lengths_section` >= 0, it must hold each string's codepoint count.
+    """
+    var offsets = _typed[UInt32](data, sections[offsets_section])
+    var arena = _typed[UInt8](data, sections[arena_section])
+    if offsets[0] != 0 or Int(offsets[len(offsets) - 1]) != len(arena):
+        raise _corrupted(String(t"{what} offsets do not cover the arena"))
+    for i in range(len(offsets) - 1):
+        var start = Int(offsets[i])
+        var end = Int(offsets[i + 1])
+        if end < start or end > len(arena):
+            raise _corrupted(
+                String(t"{what} offsets are not increasing or out of range")
+            )
+        var count = utf8_codepoint_count(arena[start:end])
+        if count < 0:
+            raise _corrupted(String(t"{what} {i} is not valid UTF-8"))
+        if lengths_section >= 0:
+            if Int(_typed[UInt32](data, sections[lengths_section])[i]) != count:
+                raise _corrupted(String(t"{what} {i} has a wrong length"))
+
+
+def _check_table(
+    data: ImmSpan[UInt8, _],
+    sections: List[Section],
+    hashes_section: Int,
+    ids_section: Int,
+    id_limit: Int,
+    what: StringSlice,
+) raises:
+    """Ids must be in range and at least one slot must be empty (probing stops).
+    """
+    var hashes = _typed[UInt64](data, sections[hashes_section])
+    var empty = 0
+    for h in hashes:
+        if h == 0:
+            empty += 1
+    if empty == 0:
+        raise _corrupted(String(t"{what} table has no empty slot"))
+    if ids_section >= 0:
+        var ids = _typed[UInt32](data, sections[ids_section])
+        for i in range(len(ids)):
+            if hashes[i] != 0 and Int(ids[i]) >= id_limit:
+                raise _corrupted(String(t"{what} table points past the end"))
+
+
+def validate_image(
+    data: ImmSpan[UInt8, _], header: Header, sections: List[Section]
+) raises:
+    """Checks every invariant that lookups rely on to stay in bounds.
+
+    After this succeeds, no read of the index can go outside `data`, even for
+    a deliberately crafted file. Takes time linear in the file size.
+    """
+    var config = SymSpellConfig(
+        header.max_dictionary_edit_distance,
+        header.prefix_length,
+        header.count_threshold,
+        DistanceAlgorithm(header.distance_algorithm),
+    )
+    try:
+        config.validate()
+    except e:
+        raise _corrupted(String(e))
+    if header.distance_algorithm != 0 and header.distance_algorithm != 1:
+        raise _corrupted("unknown distance algorithm")
+    var limit = len(data)
+    for value in [
+        header.word_count,
+        header.entry_count,
+        header.max_length,
+        header.bigram_count,
+        header.term_slots,
+        header.delete_slots,
+        header.bigram_slots,
+    ]:
+        if value < 0 or value > limit:
+            raise _corrupted("a header count is out of range")
+    var wc = header.word_count
+    var bc = header.bigram_count
+    _check_slots(header.term_slots, "term")
+    _check_slots(header.delete_slots, "delete")
+    _check_slots(header.bigram_slots, "bigram")
+    _expect_length(sections, TERM_OFFSETS, 4 * (wc + 1))
+    _expect_length(sections, TERM_LENGTHS, 4 * wc)
+    _expect_length(sections, COUNTS, 8 * wc)
+    _expect_length(sections, TERM_SLOT_HASHES, 8 * header.term_slots)
+    _expect_length(sections, TERM_SLOT_IDS, 4 * header.term_slots)
+    _expect_length(sections, DELETE_SLOT_HASHES, 8 * header.delete_slots)
+    _expect_length(sections, DELETE_SLOT_STARTS, 4 * (header.delete_slots + 1))
+    _expect_length(sections, BIGRAM_OFFSETS, 4 * (bc + 1))
+    _expect_length(sections, BIGRAM_COUNTS, 8 * bc)
+    _expect_length(sections, BIGRAM_SLOT_HASHES, 8 * header.bigram_slots)
+    _expect_length(sections, BIGRAM_SLOT_IDS, 4 * header.bigram_slots)
+    if sections[POSTINGS].length % 4 != 0:
+        raise _corrupted("postings size is not a multiple of 4")
+
+    _check_strings(
+        data, sections, TERM_OFFSETS, TERM_ARENA, TERM_LENGTHS, "term"
+    )
+    _check_strings(data, sections, BIGRAM_OFFSETS, BIGRAM_ARENA, -1, "bigram")
+    _check_table(data, sections, TERM_SLOT_HASHES, TERM_SLOT_IDS, wc, "term")
+    _check_table(
+        data, sections, BIGRAM_SLOT_HASHES, BIGRAM_SLOT_IDS, bc, "bigram"
+    )
+    _check_table(data, sections, DELETE_SLOT_HASHES, -1, 0, "delete")
+
+    var starts = _typed[UInt32](data, sections[DELETE_SLOT_STARTS])
+    var postings = _typed[UInt32](data, sections[POSTINGS])
+    if starts[0] != 0 or Int(starts[len(starts) - 1]) != len(postings):
+        raise _corrupted("delete buckets do not cover the postings")
+    for i in range(len(starts) - 1):
+        if starts[i + 1] < starts[i]:
+            raise _corrupted("delete buckets are not increasing")
+    for term_id in postings:
+        if Int(term_id) >= wc:
+            raise _corrupted("a posting points past the last term")

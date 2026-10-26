@@ -26,7 +26,9 @@ from symspell._image import (
     Header,
     Section,
     parse_image,
+    validate_image,
 )
+from symspell._mmap import MappedFile
 from symspell.casing import case_transfer_similar
 from symspell.config import DistanceAlgorithm, SymSpellConfig
 from symspell.delete_index import EMPTY, find_slot, is_delete_of, probe_start
@@ -79,22 +81,93 @@ def _spans_equal(a: ImmSpan[UInt32, _], b: ImmSpan[UInt32, _]) -> Bool:
 
 
 struct SymSpell(Movable):
-    """A frozen SymSpell index. Build one with `SymSpellBuilder`."""
+    """A frozen SymSpell index.
 
+    Build one with `SymSpellBuilder`, or load a saved one with `SymSpell.open`.
+    """
+
+    # The image lives either in `_storage` (built or read into memory) or in
+    # `_mapping` (memory-mapped file). `_base` points to its first byte; the
+    # bytes never move, so it stays valid when the index is moved.
     var _storage: List[UInt8]
+    var _mapping: Optional[MappedFile]
     var _base: ImmPointer[UInt8, ImmUntrackedOrigin]
+    var _size: Int
     var _header: Header
     var _sections: List[Section]
 
     def __init__(out self, var image: List[UInt8]) raises:
-        """Wraps a built image. Use `SymSpellBuilder.build()` instead."""
+        """Wraps a freshly built image. Use `SymSpellBuilder.build()` instead.
+        """
         var parsed = parse_image(image, verify_checksum=False)
         self._header = parsed[0].copy()
         self._sections = parsed[1].copy()
         self._base = (
             image.unsafe_ptr().as_imm().unsafe_origin_cast[ImmUntrackedOrigin]()
         )
+        self._size = len(image)
         self._storage = image^
+        self._mapping = None
+
+    def __init__(
+        out self, var mapping: MappedFile, verify_checksum: Bool
+    ) raises:
+        """Wraps a mapped file after validating it. Use `SymSpell.open`."""
+        var data = mapping.bytes()
+        var parsed = parse_image(data, verify_checksum)
+        validate_image(data, parsed[0], parsed[1])
+        self._header = parsed[0].copy()
+        self._sections = parsed[1].copy()
+        self._base = data.unsafe_ptr()
+        self._size = len(data)
+        self._storage = List[UInt8]()
+        self._mapping = mapping^
+
+    @staticmethod
+    def open(
+        path: StringSlice, verify_checksum: Bool = True, use_mmap: Bool = True
+    ) raises -> SymSpell:
+        """Loads an index written by `save`.
+
+        The file is memory-mapped, so opening is fast and the operating system
+        shares the pages between processes. With `use_mmap=False`, or where
+        mmap fails, the file is read into memory instead.
+
+        Raises for a missing, truncated, corrupted or incompatible file. The
+        structure is always validated, so a bad file cannot cause
+        out-of-bounds reads. `verify_checksum=False` skips the checksum, which
+        saves one pass over the file but lets random corruption through as
+        wrong results.
+        """
+        var file = String(path)
+        if use_mmap:
+            var mapping: Optional[MappedFile] = None
+            try:
+                mapping = MappedFile(file)
+            except:
+                pass  # fall back to reading the file below
+            if mapping:
+                return SymSpell(mapping.take(), verify_checksum)
+        var image: List[UInt8]
+        with open(file, "r") as f:
+            image = f.read_bytes()
+        var parsed = parse_image(image, verify_checksum)
+        validate_image(image, parsed[0], parsed[1])
+        return SymSpell(image^)
+
+    def save(self, path: StringSlice) raises:
+        """Writes the index to a file that `SymSpell.open` can load."""
+        with open(String(path), "w") as f:
+            f.write_bytes(self._bytes())
+
+    def _bytes(self) -> ImmSpan[UInt8, ImmUntrackedOrigin]:
+        return ImmSpan[UInt8, ImmUntrackedOrigin](
+            unsafe_ptr=self._base, length=self._size
+        )
+
+    def is_memory_mapped(self) -> Bool:
+        """Whether the index reads directly from a memory-mapped file."""
+        return Bool(self._mapping)
 
     # --- Typed views of the image ---
 

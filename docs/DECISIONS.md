@@ -113,3 +113,23 @@ symspellpy's `entry_count` is the number of distinct delete strings. The index o
 64-bit hashes, so two different deletes with the same hash would count once. For the English
 dictionary (676,094 deletes) the chance of any such collision is about 1 in 10^8, and the tests check
 the exact symspellpy value for every fixture. Lookups are not affected by collisions (D3).
+
+## D17. Binary index format, version 1
+
+- One image: a 256-byte header (magic `SYMSPELL`, version, endianness marker, the scalar fields,
+  a checksum, and a table of 14 sections), then the sections, each aligned to 64 bytes.
+  The layout is documented in `src/symspell/_image.mojo`.
+- `build()` produces exactly these bytes in memory, `save()` writes them, and `open()` memory-maps
+  them. A saved file is used without parsing or copying.
+- Offsets are `UInt32`, so an index is limited to 4 GiB. The 82k English index is 24 MB.
+- `open()` always validates the structure: section sizes match the header counts, offsets rise and stay
+  inside their arena, terms are valid UTF-8 with the stored lengths, ids are in range, and every hash
+  table has an empty slot (so probing ends). After that, no read can leave the file, even for a crafted
+  file. This costs one linear pass. The fuzz test found one missing check here (an offset past the
+  arena before the "increasing" check), now fixed.
+- The checksum (FNV-1a over 8-byte words) catches random corruption. It is not cryptographic.
+  `verify_checksum=False` skips it. On the English index, `open()` takes about 15 ms with the
+  checksum and about 9 ms without (warm page cache).
+- If `mmap` fails, or with `use_mmap=False`, the file is read into memory instead.
+- Only little-endian machines are supported (all current Mojo targets). A file with a different
+  endianness marker is rejected.
