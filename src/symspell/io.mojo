@@ -62,19 +62,19 @@ def rstrip_whitespace(text: StringSlice) -> StringSlice[text.origin]:
 
 def split_fields(
     text: StringSlice, separator: StringSlice
-) raises -> List[String]:
+) raises -> List[StringSlice[text.origin]]:
     """Python `str.split(separator)`: keeps empty fields."""
     if separator.byte_length() == 0:
         raise Error("ValueError: empty separator")
-    var parts = List[String]()
+    var parts = List[StringSlice[text.origin]]()
     var start = 0
     while True:
         var found = text.find(separator, start)
         if found < 0:
             break
-        parts.append(String(_slice(text, start, found)))
+        parts.append(_slice(text, start, found))
         start = found + separator.byte_length()
-    parts.append(String(_slice(text, start, text.byte_length())))
+    parts.append(_slice(text, start, text.byte_length()))
     return parts^
 
 

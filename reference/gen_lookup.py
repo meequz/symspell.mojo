@@ -2,6 +2,7 @@
 
 Each file starts with a config record:
     C  dictionary  max_dictionary_edit_distance  prefix_length  count_threshold
+       distance_algorithm
 followed by summary records:
     S  word_count  entry_count  max_length
 and query records:
@@ -13,6 +14,7 @@ A query that raises in symspellpy has n = "E" and the error message as term_1.
 import random
 
 from symspellpy import SymSpell, Verbosity
+from symspellpy.editdistance import DistanceAlgorithm, EditDistance
 
 from _common import (
     EN_DICT,
@@ -31,7 +33,8 @@ from _common import (
 
 VERBOSITIES = [Verbosity.TOP, Verbosity.CLOSEST, Verbosity.ALL]
 
-# name, dictionary, d, p, t, number of plain queries, number of flag queries
+# name, dictionary, d, p, t, number of plain queries, number of flag queries.
+# Names ending in "_lev" use the Levenshtein distance instead of OSA.
 CONFIGS = [
     ("en_d2_p7_t1", EN_DICT, 2, 7, 1, 3000, 800),
     ("en_d3_p7_t1", EN_DICT, 3, 7, 1, 700, 150),
@@ -42,6 +45,8 @@ CONFIGS = [
     ("intl_d2_p7_t1", INTL_DICT, 2, 7, 1, 2500, 800),
     ("intl_d3_p5_t1", INTL_DICT, 3, 5, 1, 800, 200),
     ("intl_d2_p7_t3000", INTL_DICT, 2, 7, 3000, 800, 200),
+    ("en_d2_p7_t1_lev", EN_DICT, 2, 7, 1, 1500, 300),
+    ("intl_d3_p7_t1_lev", INTL_DICT, 3, 7, 1, 800, 200),
 ]
 
 
@@ -106,13 +111,15 @@ def main() -> None:
     for name, dictionary, d, p, t, n_plain, n_flags in CONFIGS:
         log(f"lookup {name}")
         rng = random.Random(f"{SEED}-{name}")
-        sym = SymSpell(d, p, t)
+        levenshtein = name.endswith("_lev")
+        algorithm = DistanceAlgorithm.LEVENSHTEIN if levenshtein else DistanceAlgorithm.DAMERAU_OSA
+        sym = SymSpell(d, p, t, distance_comparer=EditDistance(algorithm))
         sym.load_dictionary(dictionary, 0, 1)
         terms = read_dictionary_terms(dictionary)
         queries = make_queries(rng, terms, n_plain)
 
         out = FixtureWriter(f"lookup_{name}.tsv", __doc__)
-        out.write("C", dictionary.name, d, p, t)
+        out.write("C", dictionary.name, d, p, t, "levenshtein" if levenshtein else "osa")
         out.write("S", sym.word_count, sym.entry_count, sym._max_length)
         for phrase in queries:
             for verbosity in VERBOSITIES:

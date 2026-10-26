@@ -63,6 +63,7 @@ def main() -> None:
     print("| Metric | symspellpy | symspell (Mojo) | Mojo is |")
     print("|---|---|---|---|")
     print(row("Build from the text file", p.get("build_en_s"), m.get("build_en_s"), "s"))
+    print(row("Build, first one in a new process", p.get("build_en_first_s"), m.get("build_en_first_s"), "s"))
     print(row("Load a saved index (Python: pickle; Mojo: `open`, cold cache)", p.get("load_pickle_en_s"), m.get("open_cold_ms", 0) / 1000 if m.get("open_cold_ms") else None, "s"))
     print(row("Load a saved index, warm cache", None, m.get("open_warm_ms", 0) / 1000 if m.get("open_warm_ms") else None, "s", label="–"))
     print(row("Saved index size", p.get("pickle_en_mb"), m.get("index_en_mb"), "MB"))

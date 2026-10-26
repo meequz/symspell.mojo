@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Runs all benchmarks and writes raw results to bench/results/.
 # Usage: pixi run bench   (or: bash bench/run.sh [--skip-python])
+# BENCH_RUNS=3 runs the timings 3 times, alternating the two libraries, and
+# keeps each metric's median (bench/median.py). BENCHMARKS.md uses 3.
 # For stable numbers, close other programs first; see BENCHMARKS.md.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -12,8 +14,18 @@ if [[ ! -f bench/data/large_dict.txt ]]; then
 fi
 mojo build -I build bench/bench.mojo -o build/bench
 
-echo "== Mojo timings"
-./build/bench timings | tee bench/results/mojo_timings.jsonl
+RUNS="${BENCH_RUNS:-1}"
+rm -f bench/results/mojo_timings_run*.jsonl bench/results/symspellpy_run*.json
+for run in $(seq 1 "$RUNS"); do
+    echo "== Mojo timings (run $run of $RUNS)"
+    ./build/bench timings | tee "bench/results/mojo_timings_run$run.jsonl"
+    if [[ "${1:-}" != "--skip-python" ]]; then
+        echo "== symspellpy (run $run of $RUNS)"
+        "$PIXI" run -e ref python bench/bench_symspellpy.py
+        mv bench/results/symspellpy.json "bench/results/symspellpy_run$run.json"
+    fi
+done
+python3 bench/median.py
 
 echo "== Mojo memory (one process per measurement)"
 {
@@ -24,8 +36,4 @@ echo "== Mojo memory (one process per measurement)"
     rm -f build/tmp/en.idx
 } | tee bench/results/mojo_memory.jsonl
 
-if [[ "${1:-}" != "--skip-python" ]]; then
-    echo "== symspellpy"
-    "$PIXI" run -e ref python bench/bench_symspellpy.py
-fi
 python3 bench/report.py

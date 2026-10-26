@@ -19,6 +19,7 @@ from symspell import (
     SymSpellConfig,
     Verbosity,
 )
+from symspell.config import DistanceAlgorithm
 from symspell.text import to_codepoints
 
 comptime CONFIGS: List[String] = [
@@ -31,6 +32,8 @@ comptime CONFIGS: List[String] = [
     "intl_d2_p7_t1",
     "intl_d3_p5_t1",
     "intl_d2_p7_t3000",
+    "en_d2_p7_t1_lev",
+    "intl_d3_p7_t1_lev",
 ]
 
 
@@ -52,7 +55,13 @@ def _check_fixture(name: String) raises -> Int:
     assert_equal(c[0], "C")
     var index = _load(
         _dictionary_path(c[1]),
-        SymSpellConfig(to_int(c[2]), to_int(c[3]), to_int(c[4])),
+        SymSpellConfig(
+            to_int(c[2]),
+            to_int(c[3]),
+            to_int(c[4]),
+            DistanceAlgorithm.LEVENSHTEIN if c[5]
+            == "levenshtein" else DistanceAlgorithm.DAMERAU_OSA,
+        ),
     )
     ref s = records[1]
     assert_equal(index.word_count(), to_int(s[1]), String(name, " word_count"))

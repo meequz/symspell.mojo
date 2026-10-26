@@ -8,6 +8,12 @@ from std.testing import TestSuite, assert_equal, assert_true
 
 from _fixtures import read_records, show, to_int
 from _oracles import Rng, bounded, levenshtein_reference, osa_reference
+from symspell._bitparallel import (
+    MAX_PATTERN,
+    PatternMasks,
+    levenshtein_distance,
+    osa_distance,
+)
 from symspell.distance import DamerauOsa, DistanceComparer, Levenshtein
 from symspell.text import to_codepoints
 
@@ -151,6 +157,48 @@ def test_random_pairs_match_oracles() raises:
         assert_equal(lev.distance(a, a, 3), 0)
         # OSA never exceeds Levenshtein, and transposition is one edit.
         assert_true(exact_osa <= exact_lev)
+
+
+def test_bit_parallel_match_oracles() raises:
+    var rng = Rng(13)
+    var alphabets = _alphabets()
+    var masks = PatternMasks()
+    var maxes: List[Int] = [-1, 0, 1, 2, 3, 5, 1000]
+    for n in range(8000):
+        ref alphabet = alphabets[rng.below(len(alphabets))]
+        var long = n % 10 == 0
+        var a = rng.codepoints(alphabet, 1, MAX_PATTERN if long else 14)
+        var b = rng.mutate(a, alphabet, rng.between(0, 12 if long else 5))
+        masks.set(a)
+        assert_equal(masks.length, len(a))
+        var exact_osa = osa_reference(a, b)
+        var exact_lev = levenshtein_reference(a, b)
+        for max_distance in maxes:
+            assert_equal(
+                osa_distance(masks, b, max_distance),
+                bounded(exact_osa, max_distance),
+            )
+            assert_equal(
+                levenshtein_distance(masks, b, max_distance),
+                bounded(exact_lev, max_distance),
+            )
+
+
+def test_bit_parallel_pattern_limits() raises:
+    var masks = PatternMasks()
+    masks.set(List[UInt32]())
+    assert_equal(masks.length, -1)
+    var long = List[UInt32](length=MAX_PATTERN + 1, fill=0x61)
+    masks.set(long)
+    assert_equal(masks.length, -1)
+    # A reused PatternMasks forgets the previous pattern's characters.
+    masks.set(to_codepoints("abc"))
+    masks.set(to_codepoints("xyz"))
+    assert_equal(osa_distance(masks, to_codepoints("abc"), 10), 3)
+    assert_equal(osa_distance(masks, to_codepoints("xzy"), 10), 1)
+    masks.set(to_codepoints("Белраусь"))
+    assert_equal(osa_distance(masks, to_codepoints("Беларусь"), 10), 1)
+    assert_equal(levenshtein_distance(masks, to_codepoints("Беларусь"), 10), 2)
 
 
 def test_levenshtein_triangle_inequality() raises:

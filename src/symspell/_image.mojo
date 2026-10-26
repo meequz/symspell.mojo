@@ -171,6 +171,16 @@ struct ImageWriter(Movable):
         self.offsets = List[Int](length=SECTION_COUNT, fill=0)
         self.lengths = List[Int](length=SECTION_COUNT, fill=0)
 
+    @staticmethod
+    def space[T: TrivialRegisterPassable](count: Int) -> Int:
+        """Bytes that a section of `count` values of `T` takes, with padding."""
+        return (count * size_of[T]() + ALIGNMENT - 1) // ALIGNMENT * ALIGNMENT
+
+    def reserve(mut self, section_bytes: Int):
+        """Makes room for sections taking `section_bytes` (see `space`), so
+        that adding them never moves the image."""
+        self.bytes.reserve(len(self.bytes) + ALIGNMENT + section_bytes)
+
     def add[
         T: TrivialRegisterPassable
     ](mut self, section: Int, data: ImmSpan[T, _]):

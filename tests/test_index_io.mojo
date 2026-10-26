@@ -176,6 +176,22 @@ def test_builds_are_deterministic() raises:
     remove(b)
 
 
+def test_thread_count_does_not_change_the_index() raises:
+    # English is large enough that every build stage uses several threads.
+    var builder = SymSpellBuilder()
+    builder.load_dictionary("data/frequency_dictionary_en_82_765.txt")
+    var expected = List[UInt8]()
+    for threads in [1, 2, 3, 4, 7]:
+        var path = _tmp(String("threads_", threads, ".idx"))
+        builder.snapshot(threads).save(path)
+        var data = _read(path)
+        remove(path)
+        if threads == 1:
+            expected = data^
+        else:
+            assert_true(data == expected, String(threads, " threads"))
+
+
 def test_empty_dictionary_round_trip() raises:
     var path = _tmp("empty.idx")
     SymSpellBuilder().build().save(path)

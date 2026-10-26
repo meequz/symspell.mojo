@@ -137,6 +137,8 @@ def timings(quick: Bool) raises:
         parse_times.append(t1 - t0)
         build_times.append(t2 - t1)
         _ = index.word_count()
+    # The first build runs on a fresh heap, so it is a little slower.
+    emit("build_en_first_s", Float64(parse_times[0] + build_times[0]) / 1e9)
     sort(parse_times)
     sort(build_times)
     emit("parse_en_s", Float64(parse_times[len(parse_times) // 2]) / 1e9)

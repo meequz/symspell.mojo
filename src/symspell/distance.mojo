@@ -42,11 +42,17 @@ def _prefix_suffix_prep(
     """symspellpy `helpers.prefix_suffix_prep`. Expects `len(a) <= len(b)`."""
     var len_1 = len(a)
     var len_2 = len(b)
-    while len_1 != 0 and a[len_1 - 1] == b[len_2 - 1]:
+    var pa = a.unsafe_ptr()
+    var pb = b.unsafe_ptr()
+    # len_1 <= len_2, so every index below is in range for both.
+    while (
+        len_1 != 0
+        and pa[unsafe_offset=len_1 - 1] == pb[unsafe_offset=len_2 - 1]
+    ):
         len_1 -= 1
         len_2 -= 1
     var start = 0
-    while start != len_1 and a[start] == b[start]:
+    while start != len_1 and pa[unsafe_offset=start] == pb[unsafe_offset=start]:
         start += 1
     return _Trimmed(len_1 - start, len_2 - start, start)
 

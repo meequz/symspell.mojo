@@ -11,6 +11,8 @@ lookup (symspellpy's incremental workflow) therefore means building again;
 much as building the whole dictionary from scratch.
 """
 
+from std.sys.info import num_logical_cores
+
 from symspell._image import (
     BIGRAM_ARENA,
     BIGRAM_COUNTS,
@@ -217,7 +219,9 @@ struct SymSpellBuilder(Copyable, Movable):
             var stripped = rstrip_whitespace(line)
             var parts: List[String]
             if separator:
-                parts = split_fields(stripped, separator.value())
+                parts = List[String]()
+                for field in split_fields(stripped, separator.value()):
+                    parts.append(String(field))
             else:
                 parts = split_whitespace(to_codepoints(stripped))
             if len(parts) < min_parts:
@@ -285,14 +289,25 @@ struct SymSpellBuilder(Copyable, Movable):
 
     # --- Building ---
 
-    def build(var self) raises -> SymSpell:
-        """Builds the frozen index, consuming the builder."""
-        return self.snapshot()
+    def build(var self, threads: Int = 0) raises -> SymSpell:
+        """Builds the frozen index, consuming the builder.
 
-    def snapshot(self) raises -> SymSpell:
-        """Builds the frozen index and keeps the builder for more changes."""
+        `threads` is how many threads generate deletes; 0 means one per
+        logical core. The index is the same for any number of threads.
+        """
+        return self.snapshot(threads)
+
+    def snapshot(self, threads: Int = 0) raises -> SymSpell:
+        """Builds the frozen index and keeps the builder for more changes.
+
+        `threads` works as in `build`.
+        """
         var writer = ImageWriter()
-        var term_count = self._add_terms(writer)
+        var term_count = self._add_terms(
+            writer,
+            threads if threads > 0 else num_logical_cores(),
+            self._bigram_space(),
+        )
         var bigram_count = self._add_bigrams(writer)
         var header = Header(
             max_dictionary_edit_distance=self.config.max_dictionary_edit_distance,
@@ -311,9 +326,12 @@ struct SymSpellBuilder(Copyable, Movable):
         return SymSpell(writer^.finish(header))
 
     def _add_terms(
-        self, mut writer: ImageWriter
+        self, mut writer: ImageWriter, threads: Int, bigram_space: Int
     ) raises -> Tuple[Int, Int, Int]:
         """Adds the term sections. Returns (entry_count, term_slots, delete_slots).
+
+        Before adding them, it reserves room for these and `bigram_space`
+        bytes of bigram sections, so the image is allocated once.
         """
         var arena = List[UInt8]()
         var offsets = List[UInt32](capacity=self._word_count + 1)
@@ -351,6 +369,20 @@ struct SymSpellBuilder(Copyable, Movable):
             ghost_offsets,
             self.config.max_dictionary_edit_distance,
             self.config.prefix_length,
+            threads,
+        )
+        writer.reserve(
+            ImageWriter.space[UInt32](len(offsets))
+            + ImageWriter.space[UInt8](len(arena))
+            + ImageWriter.space[UInt32](len(record_offsets))
+            + ImageWriter.space[UInt32](len(records))
+            + ImageWriter.space[Int64](len(counts))
+            + ImageWriter.space[UInt64](len(terms.hashes))
+            + ImageWriter.space[UInt32](len(terms.ids))
+            + ImageWriter.space[UInt32](len(deletes.slots))
+            + ImageWriter.space[UInt32](len(deletes.postings))
+            + ImageWriter.space[UInt8](len(deletes.lengths))
+            + bigram_space
         )
         writer.add(TERM_OFFSETS, offsets)
         writer.add(TERM_ARENA, arena)
@@ -366,6 +398,21 @@ struct SymSpellBuilder(Copyable, Movable):
             deletes.entry_count,
             len(terms.hashes),
             deletes.slot_count,
+        )
+
+    def _bigram_space(self) -> Int:
+        """Bytes that `_add_bigrams` will add (see `ImageWriter.space`)."""
+        var n = len(self._bigrams)
+        var arena = 0
+        for key in self._bigrams.keys():
+            arena += key.byte_length()
+        var slots = slot_count_for(n)
+        return (
+            ImageWriter.space[UInt32](n + 1)
+            + ImageWriter.space[UInt8](arena)
+            + ImageWriter.space[Int64](n)
+            + ImageWriter.space[UInt64](slots)
+            + ImageWriter.space[UInt32](slots)
         )
 
     def _add_bigrams(self, mut writer: ImageWriter) -> Int:

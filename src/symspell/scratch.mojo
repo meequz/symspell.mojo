@@ -6,6 +6,7 @@ once the buffers have grown to their working size. Sets are cleared in O(1)
 by bumping a generation number instead of wiping their arrays.
 """
 
+from symspell._bitparallel import PatternMasks
 from symspell._hash import hash_finish, hash_start, hash_step
 from symspell.distance import DamerauOsa, Levenshtein
 
@@ -49,9 +50,9 @@ struct _StampedSet(Movable):
 
     def put(mut self, i: Int, key: UInt64, value: Int):
         """Stores at free slot `i` (found by probing), growing if needed."""
-        self.keys[i] = key
-        self.values[i] = value
-        self.stamps[i] = self.generation
+        self.keys.unsafe_ptr()[unsafe_offset=i] = key
+        self.values.unsafe_ptr()[unsafe_offset=i] = value
+        self.stamps.unsafe_ptr()[unsafe_offset=i] = self.generation
         self.size += 1
         if self.size * 2 > len(self.keys):
             self._grow()
@@ -156,6 +157,8 @@ struct LookupScratch(Movable):
     var considered_terms: _StampedSet
     var osa: DamerauOsa
     var levenshtein: Levenshtein
+    var masks: PatternMasks
+    """The phrase's masks for the bit-parallel distances."""
 
     def __init__(out self):
         self.original = List[UInt32]()
@@ -170,6 +173,7 @@ struct LookupScratch(Movable):
         self.considered_terms = _StampedSet()
         self.osa = DamerauOsa()
         self.levenshtein = Levenshtein()
+        self.masks = PatternMasks()
 
     def set_phrase(mut self, text: ImmSpan[UInt32, _]):
         """Uses `text` as both the original and the search phrase."""
@@ -198,18 +202,22 @@ struct LookupScratch(Movable):
         return len(self.candidate_hashes)
 
     def candidate(self, k: Int) -> ImmSpan[UInt32, ImmUntrackedOrigin]:
-        """Candidate `k`. Valid until the next `add_deletes_of` call."""
-        var start = self.candidate_starts[k]
+        """Candidate `k`. Valid until the next `add_deletes_of` call.
+
+        `k` must be below `candidate_count()`.
+        """
+        var starts = self.candidate_starts.unsafe_ptr()
+        var start = starts[unsafe_offset=k]
         return ImmSpan[UInt32, ImmUntrackedOrigin](
             unsafe_ptr=self.candidates.unsafe_ptr()
             .as_imm()
             .unsafe_origin_cast[ImmUntrackedOrigin]()
             .unsafe_offset(start),
-            length=self.candidate_starts[k + 1] - start,
+            length=starts[unsafe_offset=k + 1] - start,
         )
 
     def candidate_hash(self, k: Int) -> UInt64:
-        return self.candidate_hashes[k]
+        return self.candidate_hashes.unsafe_ptr()[unsafe_offset=k]
 
     def push_phrase_prefix(mut self, length: Int):
         """Adds the first `length` codepoints of `self.phrase` as a candidate.
@@ -257,12 +265,14 @@ struct LookupScratch(Movable):
         The delete is `candidates[start:start + length]`.
         """
         ref seen = self.considered_deletes
+        var starts = self.candidate_starts.unsafe_ptr()
         var i = seen.start(h)
         while seen.occupied(i):
             if seen.key_at(i) == h:
-                var other = seen.values[i]
-                var other_start = self.candidate_starts[other]
-                if self.candidate_starts[other + 1] - other_start == length:
+                # Values are indices of earlier candidates: in range.
+                var other = seen.values.unsafe_ptr()[unsafe_offset=i]
+                var other_start = starts[unsafe_offset=other]
+                if starts[unsafe_offset=other + 1] - other_start == length:
                     var p = self.candidates.unsafe_ptr()
                     var same = True
                     for c in range(length):

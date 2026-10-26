@@ -113,3 +113,16 @@ Private modules start with `_`.
 - Mojo stdlib gaps may need small workarounds. Each one goes in an isolated module and in `DECISIONS.md`.
 - Passing a Mojo function to `pthread_create` needs a C-ABI callback. I will probe this early in phase 6.
   If it fails, I fall back to sequential batch and report it.
+
+### Phase 6b. Push harder on speed (added after phase 6)
+
+Phase 6 missed the 10× targets for lookups and build. Plan for a second round, measuring after
+each step and keeping only what helps:
+
+- Lookups: bit-parallel distances (Myers, Hyyrö) for phrases up to 64 codepoints; remove the last
+  bounds checks; store length hints inside each bucket (one cache miss less); prefetch ahead.
+- Build: remove bounds checks; generate deletes once; multi-threaded build with a result that does
+  not depend on the thread count.
+- RAM after build: allocate the index image once, at its final size.
+
+What happened is in docs/DECISIONS.md, D20.

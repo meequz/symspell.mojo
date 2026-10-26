@@ -131,6 +131,20 @@ def try_parse_int64(text: StringSlice) -> Optional[Int]:
     Accepts surrounding Unicode whitespace, an optional sign, Unicode decimal
     digits and single underscores between digits. Returns None otherwise.
     """
+    # Fast path: 1 to 18 ASCII digits, which cannot overflow.
+    var bytes = text.as_bytes()
+    var n = len(bytes)
+    if n > 0 and n <= 18:
+        var value = 0
+        var p = bytes.unsafe_ptr()
+        for i in range(n):
+            var d = Int(p[unsafe_offset=i]) - 0x30
+            if d < 0 or d > 9:
+                value = -1
+                break
+            value = value * 10 + d
+        if value >= 0:
+            return value
     var cps = to_codepoints(text)
     var start = 0
     var end = len(cps)

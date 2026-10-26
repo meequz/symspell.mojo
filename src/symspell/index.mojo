@@ -8,6 +8,7 @@ with its own `LookupScratch`.
 from std.sys import size_of
 from std.sys.intrinsics import prefetch
 
+from symspell._bitparallel import levenshtein_distance, osa_distance
 from symspell._hash import hash_codepoints
 from symspell._image import (
     BIGRAM_ARENA,
@@ -499,6 +500,19 @@ struct SymSpell(Movable):
         var p = self._header.prefix_length
         if phrase_len - med > self._header.max_length:
             return False
+        # The first candidate is the phrase prefix. Start loading its bucket
+        # now, so that this overlaps with the exact-match probe.
+        scratch.reset_candidates()
+        var phrase_prefix_len = phrase_len
+        if phrase_prefix_len > p:
+            phrase_prefix_len = p
+            scratch.push_phrase_prefix(p)
+        else:
+            # The lowercased phrase may be longer than the original
+            # (`transfer_casing`); symspellpy then uses all of it.
+            scratch.push_phrase_prefix(len(scratch.phrase))
+        if med > 0:
+            self._prefetch_bucket(scratch.candidate_hash(0))
         var exact = self._find_term(scratch.phrase)
         if exact >= 0:
             var kind = Hit.ORIGINAL if transfer_casing else Hit.PHRASE
@@ -513,13 +527,14 @@ struct SymSpell(Movable):
             return False
 
         var med2 = med
-        scratch.reset_candidates()
-        var phrase_prefix_len = phrase_len
-        if phrase_prefix_len > p:
-            phrase_prefix_len = p
-            scratch.push_phrase_prefix(p)
-        else:
-            scratch.push_phrase_prefix(len(scratch.phrase))
+        scratch.masks.set(scratch.phrase)
+        # symspellpy always adds the deletes of the phrase prefix: its
+        # len_diff is 0, and med2 stays >= 1 because every hit found here has
+        # a distance >= 1. Adding them first lets their buckets load while
+        # the first bucket is processed. The candidate order does not change.
+        scratch.add_deletes_of(0)
+        for c in range(1, scratch.candidate_count()):
+            self._prefetch_bucket(scratch.candidate_hash(c))
         var pointer = 0
         while pointer < scratch.candidate_count():
             # Valid until `add_deletes_of` below adds more candidates.
@@ -535,6 +550,12 @@ struct SymSpell(Movable):
                 break
 
             var bucket = self._bucket(candidate_hash)
+            if pointer < scratch.candidate_count():
+                # Start loading the next candidate's bucket (its table slot
+                # was prefetched when it was added).
+                var next = self._bucket(scratch.candidate_hash(pointer))
+                prefetch(self._t.postings.unsafe_offset(next[0]))
+                prefetch(self._t.posting_lengths.unsafe_offset(next[0]))
             # Pre-filter by the stored lengths, and start loading the records
             # of the survivors so the memory accesses overlap. med2 only
             # shrinks while the bucket is processed and `_consider` checks
@@ -562,7 +583,7 @@ struct SymSpell(Movable):
                 scratch.survivors.append(k)
             for s in range(len(scratch.survivors)):
                 med2 = self._consider(
-                    scratch.survivors[s],
+                    scratch.survivors.unsafe_ptr()[unsafe_offset=s],
                     candidate,
                     phrase_len,
                     phrase_prefix_len,
@@ -572,8 +593,9 @@ struct SymSpell(Movable):
                     scratch,
                 )
 
-            # Add the deletes of this candidate as new candidates.
-            if len_diff < med and candidate_len <= p:
+            # Add the deletes of this candidate as new candidates (those of
+            # the first candidate were added before the loop).
+            if candidate_index > 0 and len_diff < med and candidate_len <= p:
                 if verbosity != Verbosity.ALL and len_diff >= med2:
                     continue
                 var first_new = scratch.candidate_count()
@@ -671,10 +693,18 @@ struct SymSpell(Movable):
                 return med2
             if not scratch.considered_terms.insert_if_absent(UInt64(term_id)):
                 return med2
-            if (
+            var levenshtein = (
                 self._header.distance_algorithm
                 == DistanceAlgorithm.LEVENSHTEIN.value
-            ):
+            )
+            if scratch.masks.length > 0:  # phrase of 1 to 64 codepoints
+                if levenshtein:
+                    distance = levenshtein_distance(
+                        scratch.masks, suggestion, med2
+                    )
+                else:
+                    distance = osa_distance(scratch.masks, suggestion, med2)
+            elif levenshtein:
                 distance = scratch.levenshtein.distance(
                     phrase, suggestion, med2
                 )

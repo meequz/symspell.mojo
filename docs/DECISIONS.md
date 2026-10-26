@@ -31,7 +31,8 @@ even with collisions. Inside a bucket, term ids stay in insertion order, as in s
 ## D4. No `parallelize` in `std`
 
 In Mojo 1.2, `parallelize` lives in `max.algorithm`, which is part of the large `max` package.
-We do not want that dependency. `lookup_batch` uses a small pthread helper in an isolated private module.
+We do not want that dependency. `lookup_batch` and `build()` (D20) use a small pthread helper in an
+isolated private module.
 
 ## D5. No `mmap` in `std`
 
@@ -195,6 +196,54 @@ Findings and the changes they led to, for the English dictionary, `TOP`, distanc
 Tried and dropped: prefetching candidate slots a fixed distance ahead instead of at creation (no
 measurable difference).
 
-Not done: ASCII and bit-parallel distance fast paths. A distance call costs about 35 ns and a `TOP`
-lookup makes about 11 of them, under 10% of the lookup time, so faster distance code cannot move the
-total much. The plain SoftWx port stays (one implementation, easier to trust).
+Not done in phase 6: ASCII and bit-parallel distance fast paths. The estimate behind this was
+wrong: distance is a third of a lookup's compute time once the data is in cache. D20 adds them.
+
+## D20. More performance work (phase 6b)
+
+Phase 6 missed the 10× targets for lookups and build. A second round, with a real profiler this
+time: callgrind (valgrind's instruction counter) through `pixi exec`, so the project does not
+depend on it. Each change was kept only if a best-of-5 benchmark improved and the tests passed.
+
+Lookups. With the data in cache, a `TOP` lookup at distance 2 took 2.6 µs of compute; cold, 4.9 µs.
+
+1. **Bit-parallel distances** (`_bitparallel.mojo`): Myers' algorithm for Levenshtein and Hyyrö's
+   (2003) for optimal string alignment. The phrase's character masks are built once per lookup,
+   then each comparison costs a few word operations per codepoint of the term. They give the exact
+   distance, so the results do not change. Phrases over 64 codepoints keep the SoftWx port (D11).
+   Tested against the textbook DP oracles on random strings up to 64 codepoints, and by the
+   differential suite, which now also covers Levenshtein lookups (two new fixture configs).
+2. **The last bounds checks** on hot paths (the candidate sets, prefix trimming).
+3. **Earlier prefetching.** The first candidate's bucket starts loading before the exact-match
+   probe. The first candidate's deletes are added before its bucket is processed (symspellpy always
+   adds them; the candidate order does not change). Each bucket's postings start loading while the
+   previous bucket is processed.
+
+Tried and dropped: storing the length hints inside each bucket, next to the record offsets (format
+version 2). It saved one cache miss per bucket on paper, but the two loads already overlapped, and
+lookups did not get faster. Format version 1 stays. Prefetching two buckets ahead was slower than one.
+
+Build. It took 0.42 s; delete generation ran twice (once per pass) and was 45% of it.
+
+4. **Deletes are generated once**, into one array of hashes in term order. Hashing starts from the
+   stored hash of the part before the first removed position.
+5. **No duplicate check per term.** It took 45 of 70 ms. A term whose deletes coincide (as in
+   "letter") now gives repeated keys, which the sort below puts side by side, and the output step
+   drops. This is also a little stricter than before: a term never appears twice in one bucket,
+   even when two of its different deletes share a fingerprint.
+6. **Counting is a set.** Bucket sizes are no longer counted: the output step finds each bucket's
+   start as it writes. Only the distinct 64-bit hashes are collected, for `entry_count` (D16).
+7. **Buckets are filled by a stable radix sort** of (slot, term) keys instead of random writes.
+8. **Threads** (`build(threads=0)`, `snapshot(threads=0)`; 0 means one per logical core). Delete
+   generation and slot lookup split the terms into ranges; the distinct-hash sets split the hashes
+   into 8 fixed partitions by their top bits; each radix sort pass splits the keys into chunks. The
+   pieces are always joined in the same order, so the index is byte-identical for any thread
+   count (a test builds English with 1, 2, 3, 4 and 7 threads).
+9. **Parsing** keeps fields as slices and reads plain ASCII counts directly.
+10. **The image is allocated once**, at its final size.
+
+Memory after a build did not improve: about 52 MB (51 before). The allocator (tcmalloc, inside the
+Mojo runtime) keeps freed memory, so this number is the index (24 MB) plus what the builder and the
+build's temporary arrays leave behind. Parsing alone leaves about 20 MB. The ¼-of-symspellpy target
+(about 31 MB) would need a much smaller builder; it is not met. Memory after `open()` (26 MB) is.
+

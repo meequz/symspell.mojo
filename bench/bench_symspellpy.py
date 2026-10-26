@@ -92,6 +92,7 @@ def main() -> None:
         loads.append((seconds, delta))
         del sym
     r["build_en_s"] = statistics.median(x[0] for x in loads)
+    r["build_en_first_s"] = loads[0][0]
     r["rss_en_mb"] = statistics.median(x[1] for x in loads)
     print(f"build en: {r['build_en_s']:.2f} s, +{r['rss_en_mb']:.0f} MB", file=sys.stderr)
 
